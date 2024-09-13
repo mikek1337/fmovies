@@ -1,4 +1,4 @@
-import { latestMovies } from "@/app/lib/tmd";
+import { latestMovies } from "@/lib/tmd";
 export async function GET(req:Request){
     const resData = await latestMovies();
     const movies = resData.data;
