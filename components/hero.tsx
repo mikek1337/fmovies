@@ -23,7 +23,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
             {
                 index = 0
             }
-        }, 5000);
+        }, 10000);
         return ()=>clearInterval(interval)
     },[])
     const loadMovieSilde  = (index:number)=>{
@@ -32,7 +32,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
     }
     return(
         <div className="flex justify-center">
-        <div className='w-full '>
+        <div className='w-fit '>
         <div className='w-fit rounded-2xl   '>
                 <BlurFade inView key={movie.id}>
                     <div  className={cn('relative  w-full justify-center ')}>
