@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
 
 const Header: FC = async () => {
-  const generList = await (await geners()).data;
+
   return (
     <div className="flex items-center justify-between border p-3">
       <div className="flex items-center gap-4">
@@ -31,7 +31,7 @@ const Header: FC = async () => {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Geners</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <Gener genersList={generList} />
+                  <Gener />
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
@@ -39,6 +39,13 @@ const Header: FC = async () => {
                 <Link href="/docs" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     TV
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/docs" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Movies
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>

@@ -31,7 +31,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
         setMovieIndex(index);
     }
     return(
-        <div className="flex justify-center">
+        <div className="flex justify-center broder border-y-emerald-700">
         <div className='w-fit '>
         <div className='w-fit rounded-2xl   '>
                 <BlurFade inView key={movie.id}>
@@ -56,7 +56,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
                             </div>
                         </div>
                         <div className='border border-red-600'>
-                            <Image src={`http://image.tmdb.org/t/p/original${movie.backdrop_path}`} className='object-cover h-[600px] rounded-md' width={1200} height={500} alt={movie.title}/>
+                            <Image src={`http://image.tmdb.org/t/p/original${movie.backdrop_path}`} className='object-cover h-[600px]  rounded-md' width={1200} height={500} alt={movie.title}/>
                         </div>
                     </div>
                     </BlurFade>

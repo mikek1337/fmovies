@@ -1,3 +1,4 @@
+import Footer from "@/components/footer"
 import Header from "@/components/header"
 
 interface HomeLayoutProps{
@@ -8,6 +9,7 @@ export default function HomeLayout({children}:HomeLayoutProps){
         <>
             <Header/>
             {children}
+            <Footer/>
         </>
     )
 }

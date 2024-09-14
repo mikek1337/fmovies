@@ -19,3 +19,20 @@ export const geners = async ()=>{
         }
     })
 }
+
+export const popularMovies = async () =>{
+    return axios.get<MovieResponse>(`${process.env.API_BASE_URL!}movie/popular?language=en-US&api_key=${process.env.API_KEY}&page=1`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    }
+    )
+}
+
+export const newSeries = () =>{
+    return axios.get<MovieResponse>(`${process.env.API_BASE_URL!}trending/tv/day?language=en-US&api_key=${process.env.API_KEY}`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
