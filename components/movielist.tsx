@@ -9,10 +9,10 @@ interface MovieListProps{
 const MovieList:FC<MovieListProps> = ({movies, mediaType}) => {
     return(
         <div className="grid grid-cols-8 gap-5">
-            {movies.results.map((movie)=>(
+            {movies.results?.map((movie)=>(
                 <div className="border h-fit" key={movie.id}>
                     <div className="relative rounded-md group w-full">
-                        <Image src={`http://image.tmdb.org/t/p/original${movie.poster_path}`} className='object-contain  rounded-md w-full' width={50} height={50} alt={movie.title}/>
+                        <Image src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`} className='object-contain  rounded-md w-full' width={500} height={500} alt={movie.title}/>
                         <span className="absolute top-1 right-1 text-xs font-semibold bg-indigo-900 text-white rounded-lg px-1">{mediaType=='tv'?"TV":"Movie"}</span>
                         
                     </div>

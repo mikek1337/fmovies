@@ -1,8 +1,8 @@
 export interface GenerResponse{
-    genres:gener[]
+    genres:Gener[]
 }
 
-export interface gener{
+export interface Gener{
     id:number,
     name:string
 }

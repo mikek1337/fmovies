@@ -15,6 +15,8 @@ import { Input } from "./ui/input";
 import { buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
+import SearchMovies from "./searchMovies";
+import Search from "./search";
 
 const Header: FC = async () => {
 
@@ -54,7 +56,7 @@ const Header: FC = async () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Input type="text" placeholder="Search Movies..." className="w-96"/>
+        <Search/>
         <Link className={cn(buttonVariants({variant:'ghost'}))} href="#">Signup</Link>
         <Link className={cn(buttonVariants({variant:"default"}))} href="#">Login</Link>
       </div>

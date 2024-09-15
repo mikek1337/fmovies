@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MovieResponse } from '../app/types/moviedbresponse';
+import { MovieDetail, MovieResponse } from '../app/types/moviedbresponse';
 import { GenerResponse } from '@/app/types/gener';
 
 
@@ -36,3 +36,28 @@ export const newSeries = () =>{
         }
     })
 }
+
+export const movieDetail = (id:number)=>{
+    return axios.get<MovieDetail>(`${process.env.API_BASE_URL!}movie/${id}?language=en-US&api_key=${process.env.API_KEY}`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
+
+export const getRecommendation = (id:number)=>{
+    return axios.get<MovieResponse>(`${process.env.API_BASE_URL!}movie/${id}recommendations?language=en-US&page=1&api_key=${process.env.API_KEY}`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
+
+export const searchMulti = (query:string)=>{
+    return axios.get<MovieResponse>(`https://api.themoviedb.org/3/search/multi?language=en-US&page=1&api_key=9ed599ad339b09bfa549e72c8575e639&query=${query}`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
+

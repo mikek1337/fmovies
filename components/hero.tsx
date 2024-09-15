@@ -44,7 +44,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
                                         <span className='text-5xl font-extrabold  '>{movie.media_type=="movie"?movie.title:movie.name}</span>
                                         <p className='text-sm max-w-[500px]  line-clamp-4'>{movie.overview}</p>
                                         <div className='flex items-center gap-5'>
-                                            <Link className={cn(buttonVariants({variant:'default'}),'flex items-center gap-2 w-fit')} href={`watch/${movie.id}`}>
+                                            <Link className={cn(buttonVariants({variant:'default'}),'flex items-center gap-2 w-fit')} href={movie.media_type=='movie'?`home/watch/movie/${movie.id}`:`home/watch/series/${movie.id}`}>
                                             <Play className='w-5 h-5 fill-white'/>
                                             Watch now
                                             </Link>
