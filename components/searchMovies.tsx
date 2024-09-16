@@ -54,7 +54,7 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
                 <CommandGroup heading="Suggestions">
                     {loading && <CommandItem><Loader className="w-4 h-4 animate-spin"/></CommandItem>}
                     {movies?.results.map((movie)=>(
-                        <CommandItem key={movie?.id}>
+                        <CommandItem key={movie?.id} asChild>
                             <Link href={`/home/watch/${movie.media_type==='tv'?'series':'movie'}/${movie.id}`} className="flex gap-2">
                             <Image src={`http://image.tmdb.org/t/p/w500${movie?.poster_path}`} className="w-[50px] h-[50px] rounded-lg" width={500} height={500} alt={movie?.title}/>
                             <div className="flex flex-col gap-2">
