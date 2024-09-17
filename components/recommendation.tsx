@@ -6,8 +6,7 @@ interface RecommendationProps{
     id: number
 }
 const Recommendation:FC<RecommendationProps> = async({id})=>{
-    const recommendationsRes = await (await getRecommendation(id));
-    const recommendations = recommendationsRes.data;
+    const recommendations = await (await getRecommendation(id)).data;
     if(!recommendations)
     {
         return(

@@ -25,7 +25,9 @@ const Header: FC = async () => {
       <div className="flex items-center gap-4">
         <div className="flex items-center">
             <Play className="w-10 h-10 fill-indigo-900 text-indigo-900 "/>
-          <h1 className="text-3xl font-extrabold text-indigo-700">Movies</h1>
+            <Link href='/'>
+            <h1 className="text-3xl font-extrabold text-indigo-700">Movies</h1>
+          </Link>
         </div>
         <div>
           <NavigationMenu>

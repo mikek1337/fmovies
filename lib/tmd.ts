@@ -54,10 +54,17 @@ export const getRecommendation = (id:number)=>{
 }
 
 export const searchMulti = (query:string)=>{
-    return axios.get<MovieResponse>(`https://api.themoviedb.org/3/search/multi?language=en-US&page=1&NEXT_PUBLIC_API_KEY=9ed599ad339b09bfa549e72c8575e639&query=${query}`,{
+    return axios.get<MovieResponse>(`https://api.themoviedb.org/3/search/multi?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query}`,{
         headers:{
             "Content-Type":"application/json"
         }
     })
 }
 
+export const seriesDetail = (id:number)=>{
+    return axios.get<MovieDetail>(`${process.env.NEXT_PUBLIC_API_BASE_URL}tv/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,{
+        headers:{
+            "Content-Type": "application/json"
+        }
+    })
+}

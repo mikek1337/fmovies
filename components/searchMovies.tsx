@@ -6,6 +6,7 @@ import { searchMulti } from "@/lib/tmd";
 import Image from "next/image";
 import { Calendar, Loader, Stars } from "lucide-react";
 import Link from "next/link";
+import axios from "axios";
 interface SearchMoviesProps{
     isOpen?:boolean;
     onOpenChange?:()=>void;
@@ -33,10 +34,11 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
   useEffect(()=>{
     if(query != ""){
         setLoading(true);
-        searchMulti(query).then((res)=>{
+        axios.get<MovieResponse>(`/api/movies/search?query=${query}`).then((res)=>{
             setMovies(res.data);
             setLoading(false);
-        }).catch((err)=>{
+        }
+        ).catch((err)=>{
             console.log(err);
             setLoading(false);
         })

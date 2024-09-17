@@ -8,11 +8,7 @@ const Page = ({params}:{params:{id:string}})=>{
     return(        
     <>
         <Series id={parseInt(params.id)}/>
-        <div>
-            <Suspense fallback={<div>Loading...</div>}>
-            <Recommendation id={parseInt(params.id)}/>
-            </Suspense>
-        </div>
+        
         </>)
 }
 
