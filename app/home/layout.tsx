@@ -3,15 +3,14 @@ import Header from "@/components/header"
 
 interface HomeLayoutProps{
     children:React.ReactNode
-    searchModal:React.ReactNode
+    
 }
-export default function HomeLayout({children, searchModal}:HomeLayoutProps){
+export default function HomeLayout({children}:HomeLayoutProps){
     return(
         <>
             <Header/>
             {children}
             <Footer/>
-            {searchModal}
         </>
     )
 }

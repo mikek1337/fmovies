@@ -22,8 +22,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  searchModal
 }: Readonly<{
   children: React.ReactNode;
+  searchModal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -34,6 +36,7 @@ export default function RootLayout({
         <Suspense fallback={<Loader className="w-5 h-5 animate-spin"/>}>
         {children}
         </Suspense>
+        {searchModal}
       </body>
     </html>
   );
