@@ -20,15 +20,7 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
     if(queryString){
         setQuery(queryString);
         setLoading(true);
-      /* setTimeout(()=>{
-          searchMulti(query).then((res)=>{
-              setMovies(res.data);
-              setLoading(false);
-          }).catch((err)=>{
-              console.log(err);
-              setLoading(false);
-          })
-      },2000) */
+   
     }
   }
   useEffect(()=>{
@@ -46,17 +38,17 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
   },[query])
     return (
         <CommandDialog open={isOpen} onOpenChange={onOpenChange}>
-            <CommandInput placeholder="Search Movies, Tv series...." onValueChange={search}/>
-            <CommandList>
+            <CommandInput placeholder="Search Movies, Tv series...." onValueChange={search} />
+            <CommandList inert={loading} inlist={movies?.results}>
                 {
                     movies?.results.length === 0 && (
                         <CommandEmpty>No Movies or Series found</CommandEmpty>
                     )
                 }
-                <CommandGroup heading="Suggestions">
+                <CommandGroup heading="Suggestions" >
                     {loading && <CommandItem><Loader className="w-4 h-4 animate-spin"/></CommandItem>}
                     {movies?.results.map((movie)=>(
-                        <CommandItem key={movie?.id} asChild>
+                        <CommandItem key={movie?.id}>
                             <Link href={`/home/watch/${movie.media_type==='tv'?'series':'movie'}/${movie.id}`} className="flex gap-2">
                             <Image src={`http://image.tmdb.org/t/p/w500${movie?.poster_path}`} className="w-[50px] h-[50px] rounded-lg" width={500} height={500} alt={movie?.title}/>
                             <div className="flex flex-col gap-2">

@@ -18,10 +18,10 @@ const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
                     <p className="max-w-[500px]">{seriesDetails.overview}</p>
                     <div className="flex justify-between gap-2">
                         <div>
-                            <span className="flex items-center gap-2">Gener: {seriesDetails.genres.map(gener=>(
+                            <span className="grid grid-cols-3 items-center gap-2">Gener: {seriesDetails.genres.map(gener=>(
                                 <span>{gener.name},</span>
                             ))}</span>
-                            <span className="flex items-center gap-1">Production: {seriesDetails.production_companies.map(prod=>(
+                            <span className="grid grid-cols-3 items-center gap-1">Production: {seriesDetails.production_companies.map(prod=>(
                                 <span>{prod.name},</span>
                             ))}</span>
                             <span className="flex items-center gap-1">Country: {seriesDetails.production_countries.map(country=>(

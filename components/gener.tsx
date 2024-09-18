@@ -4,8 +4,9 @@ import { FC } from "react";
 interface GenerProps{
     genersList?: GenerResponse
 }
-const Gener:FC<GenerProps> = async() =>{
+const Gener:FC = async() =>{
     const genersList = await (await geners()).data;
+    console.log(genersList.genres[0].name);
     return(
         <ul className="grid grid-cols-12 w-full text-indigo-300">
             {
