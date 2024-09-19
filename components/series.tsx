@@ -43,7 +43,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
     },[id, season])
     return(
         <>
-        <div className="grid grid-cols-12 w-full h-fit  my-4 border px-5">
+        <div className="grid grid-cols-12 w-full h-fit  my-4 border px-5 ">
             <div className="col-span-2 overflow-auto">
                 <span className="font-bold flex justify-center w-full my-10">{series?.seasons.filter(seasonValue=>seasonValue.season_number ===season).map((res)=>(
                     res.name
@@ -63,8 +63,8 @@ const Series:FC<SeriesProps> = ({id}) =>{
             <VideoPlayer videoUrl={videoUrl}/>
             </div>
         </div>
-        <div className=" my-10 flex justify-center">
-            <div className="flex items-start justify-between">
+        <div className=" my-10 flex justify-center  border">
+            <div className="flex items-start justify-between w-full">
                 {
                     loading && (<Loader className="w-5 h-5 animate-spin"/>)
                 }
@@ -76,7 +76,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
             </div>            
             
         </div>
-        <div className="flex items-center gap-3 mx-5">
+        <div className="flex items-center gap-3 mx-5 w-full border">
             {
                 series?.seasons.map(seasonValue=>(
                 <div className={cn("flex  justify-center items-center relative rounded-lg border  cursor-pointer bg-black/30 bg-blend-darken", {"border-indigo-600 border-2":seasonValue.season_number===season})} key={seasonValue.id} onClick={()=>changeSeason(seasonValue.season_number)}>

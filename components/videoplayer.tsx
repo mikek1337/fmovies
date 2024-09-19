@@ -4,9 +4,9 @@ interface VideoPlayerProps{
 }
 const VideoPlayer:FC<VideoPlayerProps> = ({videoUrl})=>{
     return(
-        <div className="flex justify-center max-w-full">
-            <div className="max-w-full h-fit bg-zinc-900">
-                <iframe src={videoUrl} className="w-[1200px] h-[700px] rounded-md mx-auto " allow="autoplay; encrypted-media" allowFullScreen></iframe>
+        <div className="flex justify-center w-full">
+            <div className="flex w-full h-fit bg-zinc-900">
+                <iframe src={videoUrl} className="md:w-[1200px] md:h-[700px] w-full h-[500px] rounded-md mx-auto " allow="autoplay; encrypted-media" allowFullScreen></iframe>
             </div>
         </div>
     )

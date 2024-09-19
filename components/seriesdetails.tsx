@@ -8,10 +8,10 @@ interface MovieDetailsProps{
 const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
  
     return(
-        <div className="flex w-screen gap-2justify-evenly p-10 my-10 shadow-md ">
+        <div className="flex w-screen gap-2 justify-evenly p-10 my-10 shadow-md ">
             <div className="flex gap-10 w-full">
                 <div className="w-fit">
-                    <Image src={`http://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`} className='object-contain w-[200px] h-[300px]   rounded-md' width={500} height={500} alt={seriesDetails.name}/>
+                    <Image src={`http://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`} className='object-contain md:w-[200px]  md:h-[300px] w-[500px] h-[500px]   rounded-md' width={500} height={500} alt={seriesDetails.name}/>
                 </div>
                 <div className="w-fit">
                     <span className="font-semibold">{seriesDetails.name}</span>

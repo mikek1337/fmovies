@@ -18,19 +18,21 @@ import { Play } from "lucide-react";
 import SearchMovies from "./searchMovies";
 import Search from "./search";
 import SearchDialog from "./searchdialog";
+import MobileHeaderMenu from "./mobileheadermenu";
 
 const Header: FC = async () => {
 
   return (
-    <div className="flex items-center justify-between border p-3">
+    <div className="flex items-center justify-between border p-3 w-screen md:w-auto">
       <div className="flex items-center gap-4">
         <div className="flex items-center">
-            <Play className="w-10 h-10 fill-indigo-900 text-indigo-900 "/>
+          <MobileHeaderMenu/>
+            <Play className="md:w-10 md:h-10 w-5 h-5 fill-indigo-900 text-indigo-900 "/>
             <Link href='/home'>
-            <h1 className="text-3xl font-extrabold text-indigo-700">Movies</h1>
+            <h1 className="md:text-3xl text-xl font-extrabold text-indigo-700">Movies</h1>
           </Link>
         </div>
-        <div>
+        <div className="hidden">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
