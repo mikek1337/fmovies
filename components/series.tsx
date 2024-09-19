@@ -76,7 +76,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
             </div>            
             
         </div>
-        <div className="flex items-center gap-3 mx-5 w-full border">
+        <div className="md:flex grid grid-flow-row-dense items-center gap-3 mx-5 w-full border">
             {
                 series?.seasons.map(seasonValue=>(
                 <div className={cn("flex  justify-center items-center relative rounded-lg border  cursor-pointer bg-black/30 bg-blend-darken", {"border-indigo-600 border-2":seasonValue.season_number===season})} key={seasonValue.id} onClick={()=>changeSeason(seasonValue.season_number)}>
