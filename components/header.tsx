@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
 import SearchMovies from "./searchMovies";
 import Search from "./search";
+import SearchDialog from "./searchdialog";
 
 const Header: FC = async () => {
 
@@ -58,7 +59,7 @@ const Header: FC = async () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Search/>
+        <SearchDialog/>
         <Link className={cn(buttonVariants({variant:'ghost'}))} href="#">Signup</Link>
         <Link className={cn(buttonVariants({variant:"default"}))} href="#">Login</Link>
       </div>

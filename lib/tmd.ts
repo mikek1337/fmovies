@@ -46,7 +46,7 @@ export const movieDetail = (id:number)=>{
 }
 
 export const getRecommendation = (id:number)=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/${id}recommendations?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
+    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/${id}/recommendations?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
         headers:{
             "Content-Type":"application/json"
         }

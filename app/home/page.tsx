@@ -7,7 +7,6 @@ import PopularTvSeries from '@/components/populartvseries';
 
 const Page = async ()=>{
     const movies:MovieResponse = await (await latestMovies()).data
-    console.log(movies);
     return(
         <div className='my-1'>
             <Hero movies={movies}/>

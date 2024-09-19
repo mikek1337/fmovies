@@ -6,7 +6,7 @@ interface MovieDetailsProps{
 }
 const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
     const movieDetails = await (await movieDetail(id)).data;
-    console.log(movieDetails);
+    
     return(
         <div className="grid grid-cols-4 justify-between   gap-2 border">
             <div className="w-fit">
@@ -19,13 +19,13 @@ const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
                 <p className="max-w-[500px] text-xs">{movieDetails.overview}</p>
                 <div className=" my-3 grid grid-cols-2 items-center gap-2">
                     <div className="text-xs">
-                        <span className="flex items-center gap-2">Gener: {movieDetails.genres.map((gener)=>(
+                        <span className="grid grid-flow-col-dense items-center gap-2">Gener: {movieDetails.genres.map((gener)=>(
                             <span className="bg-zinc-200 rounded-full px-2" key={gener.id}>{gener.name}</span>
                         ))}</span>
-                        <span className="flex items-center gap-2">Production: {movieDetails.production_companies.map(prod=>(
+                        <span className="grid grid-flow-col-dense items-center gap-2">Production: {movieDetails.production_companies.map(prod=>(
                             <span className="bg-zinc-200 rounded-full  px-2" key={prod.id}>{prod.name}</span>
                         ))}</span>
-                        <span className="flex items-center gap-2">Country: {movieDetails.production_countries.map(country=>(
+                        <span className="grid grid-flow-col-dense items-center gap-2">Country: {movieDetails.production_countries.map(country=>(
                             <span className="bg-zinc-200 rounded-full px-2" key={country.id}>{country.name}</span>
                         ))}</span>
                     </div>

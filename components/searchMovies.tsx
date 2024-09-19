@@ -39,14 +39,15 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
     return (
         <CommandDialog open={isOpen} onOpenChange={onOpenChange}>
             <CommandInput placeholder="Search Movies, Tv series...." onValueChange={search} />
-            <CommandList inert={loading} inlist={movies?.results}>
+            {loading && <Loader className="w-4 h-4 animate-spin"/>}
+            
                 {
                     movies?.results.length === 0 && (
                         <CommandEmpty>No Movies or Series found</CommandEmpty>
                     )
                 }
-                <CommandGroup heading="Suggestions" >
-                    {loading && <CommandItem><Loader className="w-4 h-4 animate-spin"/></CommandItem>}
+                
+                    
                     {movies?.results.map((movie)=>(
                         <CommandItem key={movie?.id}>
                             <Link href={`/home/watch/${movie.media_type==='tv'?'series':'movie'}/${movie.id}`} className="flex gap-2">
@@ -68,8 +69,8 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
                             </Link>
                         </CommandItem>
                     ))}
-                </CommandGroup>
-            </CommandList>
+                
+            
         </CommandDialog>
     )
 }
