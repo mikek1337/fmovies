@@ -59,7 +59,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
 
                 </div>
             </div>
-            <div className="col-span-10">
+            <div className="col-span-10 ">
             <VideoPlayer videoUrl={videoUrl}/>
             </div>
         </div>
@@ -79,8 +79,8 @@ const Series:FC<SeriesProps> = ({id}) =>{
         <div className="flex items-center gap-3 mx-5">
             {
                 series?.seasons.map(seasonValue=>(
-                <div className={cn("flex justify-center items-center relative rounded-lg border  cursor-pointer bg-black/30 bg-blend-darken", {"border-indigo-600 border-2":seasonValue.season_number===season})} key={seasonValue.id} onClick={()=>changeSeason(seasonValue.season_number)}>
-                    <span className={cn("absolute text-2xl text-white font-extrabold p-1 z-10 ",{"text-indigo-300":season===seasonValue.season_number})}>{seasonValue.name}</span>
+                <div className={cn("flex  justify-center items-center relative rounded-lg border  cursor-pointer bg-black/30 bg-blend-darken", {"border-indigo-600 border-2":seasonValue.season_number===season})} key={seasonValue.id} onClick={()=>changeSeason(seasonValue.season_number)}>
+                    <span className={cn("absolute text-2xl text-white font-extrabold p-1 z-10  ",{"text-indigo-300":season===seasonValue.season_number})}>{seasonValue.name}</span>
                     <Image src={`http://image.tmdb.org/t/p/w500${seasonValue.poster_path}`} alt="" width={500} height={500} className="object-cover w-[300px] h-[200px]"/>
                     <div className="absolute bg-blend-darken w-full h-full bg-black/50 top-0"></div>
                 </div>

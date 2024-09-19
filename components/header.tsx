@@ -35,7 +35,7 @@ const Header: FC = async () => {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Geners</NavigationMenuTrigger>
-                <NavigationMenuContent >
+                <NavigationMenuContent>
                   <Gener />
                 </NavigationMenuContent>
               </NavigationMenuItem>

@@ -6,12 +6,11 @@ interface GenerProps{
 }
 const Gener:FC = async() =>{
     const genersList = await (await geners()).data;
-    console.log(genersList.genres[0].name);
     return(
-        <ul className="grid grid-cols-12 w-full text-indigo-300">
+        <ul className="grid grid-cols-12 gap-10 items-center justify-center p-3">
             {
                 genersList?.genres.map((gener)=>(
-                    <li key={gener.id} className="w-fit col-span-3">{gener.name}</li>
+                    <li key={gener.id} className="w-fit col-span-3 text-sm  text-center px-2 font-bold hover:text-indigo-500 cursor-pointer">{gener.name}</li>
                 ))
             }
         </ul>
