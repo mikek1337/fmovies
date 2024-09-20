@@ -20,7 +20,7 @@ const Recommendation:FC<RecommendationProps> = ({id})=>{
     }, [id])
     return(
         <div className="px-2 my-20">
-            <h1 className="font-extrabold my-3 text-5xl">Recommendations</h1>
+            <h1 className="font-extrabold my-3 md:text-5xl text-3xl">Recommendations</h1>
             <hr className="my-10"/>
             {
                 loading && <Loader className="w-5 h-5 animate-spin mx-auto"/>

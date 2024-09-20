@@ -4,7 +4,7 @@ import { GenerResponse } from '@/app/types/gener';
 
 
 export const latestMovies = async ()=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/all/day?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
+    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/movie/day?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
         headers:{
             "Content-Type": "application/json",
             
@@ -54,7 +54,23 @@ export const getRecommendation = (id:number)=>{
 }
 
 export const searchMulti = (query:string)=>{
-    return axios.get<MovieResponse>(`https://api.themoviedb.org/3/search/multi?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query}`,{
+    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/multi?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query}`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
+
+export const popularSeries = (page:number)=>{
+    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}tv/popular?language=en-US&page=${page}&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
+
+export const searchSeries = (queries:string)=>{
+    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/tv?${queries}api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
         headers:{
             "Content-Type":"application/json"
         }

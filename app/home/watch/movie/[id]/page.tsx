@@ -9,10 +9,10 @@ const Page = async({params}:{params:{id:string}})=>{
     const videoUrl = `https://vidsrc.icu/embed/movie/${params.id}`
     return(
         <>
-        <div className="w-full my-4">
+        <div className="">
             <VideoPlayer videoUrl={videoUrl}/>
         </div>
-        <div className=" my-10 flex justify-center">
+        <div className=" my-10 ">
             
             <Suspense fallback={<div>Loading...</div>}>
             <MovieDetails id={parseInt(params.id)}/>

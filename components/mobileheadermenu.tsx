@@ -28,7 +28,9 @@ const MobileHeaderMenu = ()=>{
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>         
           <DropdownMenuItem>
+            <Link href="/home/series" passHref>
             <Tv className="mr-2 h-4 w-4" />
+            </Link>
             <span>TV</span>
           </DropdownMenuItem>
           <DropdownMenuItem>

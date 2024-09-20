@@ -26,13 +26,15 @@ const Header: FC = async () => {
     <div className="flex items-center justify-between border p-3 w-screen md:w-auto">
       <div className="flex items-center gap-4">
         <div className="flex items-center">
-          <MobileHeaderMenu/>
+          <div className="block md:hidden">
+            <MobileHeaderMenu/>
+          </div>
             <Play className="md:w-10 md:h-10 w-5 h-5 fill-indigo-900 text-indigo-900 "/>
             <Link href='/home'>
             <h1 className="md:text-3xl text-xl font-extrabold text-indigo-700">Movies</h1>
           </Link>
         </div>
-        <div className="hidden">
+        <div className="hidden md:block">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -43,7 +45,7 @@ const Header: FC = async () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/docs" legacyBehavior passHref>
+                <Link href="/home/series" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     TV
                   </NavigationMenuLink>

@@ -7,6 +7,7 @@ import axios from "axios"
 import SeriesDetails from "./seriesdetails"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 interface SeriesProps{
     id:number
 }
@@ -51,7 +52,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
                 <div className="h-[300px]">
                     {
                         Array.from({length: seasonEpisodes}).fill(0).map((_,index)=>(
-                            <div className={cn("px-1 py-2 border cursor-pointer", {"font-extrabold":(index + 1)===episode})} onClick={()=>{changeEpisode(index + 1)}}>
+                            <div className={cn("px-1 py-2 border cursor-pointer", {"font-extrabold":(index + 1)===episode})} onClick={()=>{changeEpisode(index + 1)}} key={`ep${index}`}>
                                 <span>{`Episode ${index + 1}`}</span>
                             </div>
                         ))
@@ -76,6 +77,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
             </div>            
             
         </div>
+        <ScrollArea className="whitespace-nowrap rounded-md border w-fit">
         <div className="md:flex grid grid-flow-row-dense items-center gap-3 mx-5 w-full border">
             {
                 series?.seasons.map(seasonValue=>(
@@ -87,6 +89,8 @@ const Series:FC<SeriesProps> = ({id}) =>{
                 ))
             }
         </div>
+        <ScrollBar orientation="horizontal" />
+        </ScrollArea>
         </>
     )
 }
