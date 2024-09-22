@@ -1,5 +1,5 @@
 "use client"
-import { Loader } from "lucide-react"
+import { ChevronRight, Loader } from "lucide-react"
 import VideoPlayer from "./videoplayer"
 import { FC, useEffect, useState } from "react"
 import { MovieDetail } from "@/app/types/moviedbresponse"
@@ -8,6 +8,7 @@ import SeriesDetails from "./seriesdetails"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
+import Recommendation from "./recommendation"
 interface SeriesProps{
     id:number
 }
@@ -44,8 +45,8 @@ const Series:FC<SeriesProps> = ({id}) =>{
     },[id, season])
     return(
         <>
-        <div className="grid grid-cols-12 w-full h-fit  my-4 border px-5 ">
-            <div className="col-span-2 overflow-auto">
+        <div className="relative  grid grid-cols-12 w-full h-fit  my-4 border px-5 ">
+            <div className="md:relative hidden md:block absolute md:col-span-2 md:w-auto w-5/12  overflow-auto bg-white h-full">
                 <span className="font-bold flex justify-center w-full my-10">{series?.seasons.filter(seasonValue=>seasonValue.season_number ===season).map((res)=>(
                     res.name
                 ))}</span>
@@ -58,12 +59,30 @@ const Series:FC<SeriesProps> = ({id}) =>{
                         ))
                     }
 
+                
                 </div>
             </div>
-            <div className="col-span-10 ">
+
+            <div className="md:col-span-10 col-span-12 ">
             <VideoPlayer videoUrl={videoUrl}/>
             </div>
         </div>
+        <div className="md:hidden my-10 px-1">
+                <span className="font-bold text-lg">{series?.seasons.filter(seasonValue=>season===seasonValue.season_number).map(res=>(
+                    res.name
+                ))}</span>
+            <div className="grid grid-cols-8 ">
+                    {
+                        Array.from({length: seasonEpisodes}).fill(0).map((_,index)=>(
+                            <div className={cn("px-1 py-2  cursor-pointer w-8 h-8 flex items-center justify-center", {"bg-indigo-700 text-white rounded-md font-semibold":(index + 1)===episode})} onClick={()=>{changeEpisode(index + 1)}} key={`ep${index}`}>
+                                <span>{`${index + 1}`}</span>
+                            </div>
+                        ))
+                    }
+
+                
+                </div>
+            </div>
         <div className=" my-10 flex justify-center  border">
             <div className="flex items-start justify-between w-full">
                 {
@@ -91,6 +110,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
         </div>
         <ScrollBar orientation="horizontal" />
         </ScrollArea>
+        <Recommendation id={id} mediaType="tv"/>
         </>
     )
 }

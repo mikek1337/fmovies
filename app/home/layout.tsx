@@ -7,7 +7,7 @@ interface HomeLayoutProps{
 }
 export default function HomeLayout({children}:HomeLayoutProps){
     return(
-        <main className="w-fit border border-red-950 ">
+        <main className="border border-red-950 ">
             <Header/>
             {children}
             <Footer/>

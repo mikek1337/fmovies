@@ -8,34 +8,39 @@ interface MovieDetailsProps{
 const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
  
     return(
-        <div className="flex w-screen gap-2 justify-evenly p-10 my-10 shadow-md ">
-            <div className="flex gap-10 w-full">
-                <div className="w-fit">
-                    <Image src={`http://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`} className='object-contain md:w-[200px]  md:h-[300px] w-[500px] h-[500px]   rounded-md' width={500} height={500} alt={seriesDetails.name}/>
+        <div className="flex md:flex-row flex-col gap-2 w-full border px-1">
+            <div className="w-fit h-fit border mx-auto ">
+                    <Image src={`http://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`} className='object-contain w-[200px] md:h-[300px]   rounded-md' width={500} height={500} alt={seriesDetails.name}/>
                 </div>
-                <div className="w-fit">
-                    <span className="font-semibold">{seriesDetails.name}</span>
-                    <p className="max-w-[500px]">{seriesDetails.overview}</p>
-                    <div className="flex justify-between gap-2">
-                        <div>
-                            <span className="grid grid-cols-3 items-center gap-2">Gener: {seriesDetails.genres.map(gener=>(
-                                <span>{gener.name},</span>
-                            ))}</span>
-                            <span className="grid grid-cols-3 items-center gap-1">Production: {seriesDetails.production_companies.map(prod=>(
-                                <span>{prod.name},</span>
-                            ))}</span>
-                            <span className="flex items-center gap-1">Country: {seriesDetails.production_countries.map(country=>(
-                                <span>{country.name},</span>
-                            ))}</span>
-                        </div>
+            <div className="w-fit">
+                <span className="font-extrabold flex items-center gap-2 md:text-5xl text-3xl">{seriesDetails.name} 
+                <span className="text-xs md:text-base font-bold bg-indigo-600 text-white rounded-full px-3">Movie</span>
+                </span>
+                <p className="md:max-w-[700px] sm:max-w-[400px]  text-xs md:text-base ">{seriesDetails.overview}</p>
+                <div className="flex flex-col ">
+                    <div className="flex flex-col gap-1 text-xs my-1">
+                        <div className="flex w-fit items-center gap-2">
+                            <span>Gener:</span>
+                            {seriesDetails.genres.map((gener)=>(
+                            <span className="bg-zinc-200 rounded-full px-2" key={gener.id}>{gener.name}</span>
+                        ))}</div>
+                        <div className="grid grid-cols-4   w-full items-center gap-2 border">
+                            <span className="col-span-1">Production:</span>
+                            {seriesDetails.production_companies.map(prod=>(
+                            <span className="bg-zinc-200 rounded-full w-fit  px-2" key={prod.id}>{prod.name}</span>
+                        ))}</div>
+                        <div className="flex w-fit items-center gap-2">
+                            <span>Country:</span>
+                            {seriesDetails.production_countries.map(country=>(
+                            <span className="bg-zinc-200 rounded-full px-2" key={country.id}>{country.name}</span>
+                        ))}</div>
+                    </div>
+                    <div className="flex flex-col text-xs">
+                        <span>Release Date: {new Date(seriesDetails.first_air_date).toDateString()}</span>
+                        <span>Rating: {seriesDetails.vote_average.toFixed(1)}</span>
                     </div>
                 </div>
             </div>
-                    <div className="flex flex-col self-end">
-                        <span>Release Date: {seriesDetails.first_air_date}</span>
-                        <span>Runtime: {(seriesDetails.runtime/60).toString().split('.').join(" ")}</span>
-                        <span>Rating: {seriesDetails.vote_average.toFixed(1)}</span>
-                    </div>
         </div>
     )
 }

@@ -1,4 +1,6 @@
+"use client"
 import { FC } from "react";
+import {signIn} from "next-auth/react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -64,7 +66,7 @@ const Header: FC = async () => {
       </div>
       <div className="flex items-center gap-4">
         <SearchDialog/>
-        <Link className={cn(buttonVariants({variant:'ghost'}))} href="#">Signup</Link>
+        <Link className={cn(buttonVariants({variant:'ghost'}))} href="#" onClick={()=>signIn()}>Signup</Link>
         <Link className={cn(buttonVariants({variant:"default"}))} href="#">Login</Link>
       </div>
     </div>

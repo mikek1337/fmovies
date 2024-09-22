@@ -21,24 +21,45 @@ const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
                     <div className="flex flex-col gap-1 text-xs my-1">
                         <div className="flex w-fit items-center gap-2">
                             <span>Gener:</span>
+                            <div className="grid md:grid-cols-4 grid-cols-2 gap-2  items-center">
                             {movieDetails.genres.map((gener)=>(
                             <span className="bg-zinc-200 rounded-full px-2" key={gener.id}>{gener.name}</span>
-                        ))}</div>
-                        <div className="grid grid-cols-4   w-full items-center gap-2 border">
+                        ))}</div></div>
+                        <div className="flex  w-full items-center gap-2 border">
                             <span className="col-span-1">Production:</span>
+                            <div className="grid md:grid-cols-4 grid-cols-2 gap-2  items-center">
                             {movieDetails.production_companies.map(prod=>(
-                            <span className="bg-zinc-200 rounded-full w-fit  px-2" key={prod.id}>{prod.name}</span>
+                            <span className="rounded-full w-fit   px-2" key={prod.id}>{prod.name}</span>
                         ))}</div>
-                        <div className="flex w-fit items-center gap-2">
+
+                            </div>
+                        <div className="flex justify-between w-full items-center gap-2">
                             <span>Country:</span>
+                            <div className="grid md:grid-cols-4 grid-cols-2 gap-2  items-center">
                             {movieDetails.production_countries.map(country=>(
                             <span className="bg-zinc-200 rounded-full px-2" key={country.id}>{country.name}</span>
-                        ))}</div>
+                        ))}</div></div>
                     </div>
-                    <div className="flex flex-col text-xs">
-                        <span>Release Date: {new Date(movieDetails.release_date).toDateString()}</span>
-                        <span>Runtime: {(movieDetails.runtime/60).toString().split('.').join(" ")}</span>
-                        <span>Rating: {movieDetails.vote_average.toFixed(1)}</span>
+                    <div className="flex flex-col text-xs px-1">
+                        <div className="flex items-center justify-between">
+                        <span>Release Date:</span>
+                        <span className="text-start">
+                        {new Date(movieDetails.release_date).toDateString()}
+                        </span> 
+
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span>Runtime:</span>
+                            <span className="text-start">
+                            {`${movieDetails.runtime} min`}
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span>Rating:</span> 
+                            <span>
+                            {movieDetails.vote_average.toFixed(1)}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
