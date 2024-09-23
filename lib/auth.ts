@@ -3,6 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from './db';
+import { compareSync } from 'bcrypt';
 export const AuthOptions:NextAuthOptions = {
     adapter: PrismaAdapter(db),
     providers:[
@@ -13,6 +14,11 @@ export const AuthOptions:NextAuthOptions = {
                 password: {  label: "Password", type: "password" }
             },
             async authorize(credentials){
+                const {username, password} = credentials;
+                const user = await db.user.findFirst({where:{username}});
+                if(user &&  user.password && compareSync(password, user.password)){
+                    return user;
+                }
                 return null
             }
         }),

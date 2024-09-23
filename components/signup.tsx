@@ -9,11 +9,26 @@ import { FadeText } from "./magicui/fade-text";
 import { Button, buttonVariants } from "./ui/button";
 import { Icons } from "./icons";
 import { cn } from "@/lib/utils";
-
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 const Signup: FC = () => {
+    const router = useRouter();
     const {register, handleSubmit, formState:{errors}} = useForm<SignupSchemaType>({resolver:zodResolver(SignupSchema)});
+    const {isPending, mutate} = useMutation({
+        mutationKey:["signup"],
+        mutationFn: async (data:SignupSchemaType)=>{
+            const res = await fetch('/api/auth/register',{body:JSON.stringify(data), method:"POST"});
+            return await res.json();
+        },
+        onSuccess: (data)=>{
+            router.push('/api/auth/signin');
+        },
+        onError: (error)=>{
+            console.log(error)
+        }
+    }) 
     const submit= (data:SignupSchemaType)=>{
-        console.log(data)
+        mutate(data);
     }
     return(
         <div className="flex items-center justify-center w-full h-screen bg-indigo-100">
@@ -35,7 +50,7 @@ const Signup: FC = () => {
                     </div>
                     <div className="my-2">
                         <Input type="password" placeholder="Confirm Password" {...register('confirmPassword')}/>
-                        {errors.root && <FadeText text={errors.root.message} className="text-red-500 font-semibold text-xs"/>}
+                        {errors.confirmPassword && <FadeText text={errors.confirmPassword.message} className="text-red-500 font-semibold text-xs"/>}
                     </div>
                     <div className="my-1">
                         <Button variant="outline" type="submit" className="w-full">
