@@ -60,7 +60,7 @@ const Page = () =>{
                 <div className="flex items-center justify-center gap-2 my-2">
                     <Button onClick={()=>page < 1 ? setPage(page-1):-1} className="bg-indigo-700 text-white">Previous</Button>
                     <span>{page}/{movies?.total_pages}</span>
-                    <Button onClick={()=>page < movies?.total_pages?setPage(page+1):-1} className="bg-indigo-700 text-white">Next</Button>
+                    <Button onClick={()=>movies?.total_pages && page < movies?.total_pages?setPage(page+1):-1} className="bg-indigo-700 text-white">Next</Button>
                 </div>
               </div>
        </div>

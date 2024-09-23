@@ -12,17 +12,14 @@ import {
 } from "./ui/navigation-menu";
 import Link from "next/link";
 import Gener from "./gener";
-import { geners } from "@/lib/tmd";
-import { Input } from "./ui/input";
 import { buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
-import SearchMovies from "./searchMovies";
-import Search from "./search";
+
 import SearchDialog from "./searchdialog";
 import MobileHeaderMenu from "./mobileheadermenu";
 
-const Header: FC = async () => {
+const Header: FC = () => {
 
   return (
     <div className="flex items-center justify-between border p-3 w-screen md:w-auto">
@@ -66,8 +63,8 @@ const Header: FC = async () => {
       </div>
       <div className="flex items-center gap-4">
         <SearchDialog/>
-        <Link className={cn(buttonVariants({variant:'ghost'}))} href="#" onClick={()=>signIn()}>Signup</Link>
-        <Link className={cn(buttonVariants({variant:"default"}))} href="#">Login</Link>
+        <Link className={cn(buttonVariants({variant:'ghost'}))} href="/signup" >Signup</Link>
+        <Link className={cn(buttonVariants({variant:"default"}))} href="#" onClick={()=>signIn()}>Login</Link>
       </div>
     </div>
   );

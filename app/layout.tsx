@@ -4,6 +4,8 @@ import { Inter } from "next/font/google"
 import "./globals.css";
 import { Suspense } from "react";
 import { Loader } from "lucide-react";
+import { SessionProvider } from "next-auth/react";
+import Providers from "@/components/providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,9 +37,11 @@ export default function RootLayout({
       <body
         className={`${inter.className}`}
       >
+        <Providers>
         <Suspense fallback={<Loader className="w-5 h-5 animate-spin"/>}>
         {children}
         </Suspense>
+        </Providers>
         {searchModal}
       </body>
     </html>
