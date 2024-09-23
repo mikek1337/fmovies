@@ -1,6 +1,6 @@
 "use client"
 import { FC } from "react";
-import {signIn} from "next-auth/react"
+import {signIn, useSession} from "next-auth/react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,13 +14,14 @@ import Link from "next/link";
 import Gener from "./gener";
 import { buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { Play } from "lucide-react";
+import { Film, Play } from "lucide-react";
 
 import SearchDialog from "./searchdialog";
 import MobileHeaderMenu from "./mobileheadermenu";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Header: FC = () => {
-
+  const session = useSession();
   return (
     <div className="flex items-center justify-between border p-3 w-screen md:w-auto">
       <div className="flex items-center gap-4">
@@ -63,8 +64,29 @@ const Header: FC = () => {
       </div>
       <div className="flex items-center gap-4">
         <SearchDialog/>
-        <Link className={cn(buttonVariants({variant:'ghost'}))} href="/signup" >Signup</Link>
-        <Link className={cn(buttonVariants({variant:"default"}))} href="#" onClick={()=>signIn()}>Login</Link>
+        {
+          session.data ?(
+            <div className="flex items-center gap-2">
+              <div>
+                <Link href="/home/watchlist" className="flex items-center gap-2">
+                  <Film className="w-5 h-5 "/>
+                  <span className="text-sm">Watch List</span>
+                </Link>
+
+              </div>
+              <Avatar>
+                <AvatarImage src={session.data.user?.image} alt={session.data.user?.name}/>
+                <AvatarFallback>{session.data.user?.name}</AvatarFallback>
+              </Avatar>
+              <span className="text-sm font-semibold">{session.data.user.username}</span>
+            </div>
+          ):(
+            <>
+              <Link className={cn(buttonVariants({variant:'ghost'}))} href="/signup" >Signup</Link>
+              <Link className={cn(buttonVariants({variant:"default"}))} href="#" onClick={()=>signIn()}>Login</Link>
+            </>
+          )
+        }
       </div>
     </div>
   );

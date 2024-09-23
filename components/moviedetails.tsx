@@ -8,8 +8,8 @@ const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
     const movieDetails = await (await movieDetail(id)).data;
     
     return(
-        <div className="flex md:flex-row flex-col gap-2 w-full border px-1">
-            <div className="w-fit h-fit border mx-auto ">
+        <div className="flex md:flex-row flex-col gap-2 w-full max-w-[1200px] border px-1">
+            <div className="w-fit h-fit border  ">
                     <Image src={`http://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} className='object-contain w-[200px] md:h-[300px]   rounded-md' width={500} height={500} alt={movieDetails.name}/>
                 </div>
             <div className="w-fit">
@@ -25,7 +25,7 @@ const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
                             {movieDetails.genres.map((gener)=>(
                             <span className="bg-zinc-200 rounded-full px-2" key={gener.id}>{gener.name}</span>
                         ))}</div></div>
-                        <div className="flex  w-full items-center gap-2 border">
+                        <div className="flex  w-full items-center gap-2 ">
                             <span className="col-span-1">Production:</span>
                             <div className="grid md:grid-cols-4 grid-cols-2 gap-2  items-center">
                             {movieDetails.production_companies.map(prod=>(
@@ -41,20 +41,20 @@ const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
                         ))}</div></div>
                     </div>
                     <div className="flex flex-col text-xs px-1">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center ">
                         <span>Release Date:</span>
                         <span className="text-start">
                         {new Date(movieDetails.release_date).toDateString()}
                         </span> 
 
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center ">
                             <span>Runtime:</span>
                             <span className="text-start">
                             {`${movieDetails.runtime} min`}
                             </span>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center ">
                             <span>Rating:</span> 
                             <span>
                             {movieDetails.vote_average.toFixed(1)}
