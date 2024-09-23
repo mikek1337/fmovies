@@ -38,9 +38,9 @@ export default function RootLayout({
         className={`${inter.className}`}
       >
         <Providers>
-        <Suspense fallback={<Loader className="w-5 h-5 animate-spin"/>}>
+        
         {children}
-        </Suspense>
+       
         </Providers>
         {searchModal}
       </body>
