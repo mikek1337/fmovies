@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { Loader } from "lucide-react";
 import { SessionProvider } from "next-auth/react";
 import Providers from "@/components/providers";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,6 +42,7 @@ export default function RootLayout({
         
         {children}
        
+        <Toaster/>
         </Providers>
         {searchModal}
       </body>

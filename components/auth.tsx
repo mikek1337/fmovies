@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import UserProfile from "./userprofile";
 
 const Auth = () => {
   const session = useSession();
@@ -42,6 +43,9 @@ const Auth = () => {
                   {session.data.user.username}
                 </span>
               </DropdownMenuLabel>
+              <DropdownMenuItem>
+                <UserProfile/>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="md:hidden">
                 <Link

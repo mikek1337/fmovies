@@ -20,6 +20,7 @@ import SearchDialog from "./searchdialog";
 import MobileHeaderMenu from "./mobileheadermenu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Auth from "./auth";
+import UserProfile from "./userprofile";
 
 const Header: FC = () => {
   return (
@@ -57,6 +58,9 @@ const Header: FC = () => {
                     Movies
                   </NavigationMenuLink>
                 </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <UserProfile/>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
