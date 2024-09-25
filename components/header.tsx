@@ -59,9 +59,6 @@ const Header: FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                <UserProfile/>
-              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>

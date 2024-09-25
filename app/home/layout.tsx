@@ -4,7 +4,7 @@ import { Loader } from "lucide-react"
 import { Suspense } from "react"
 
 interface HomeLayoutProps{
-    children:React.ReactNode
+    children:React.ReactNode,
     
 }
 export default function HomeLayout({children}:HomeLayoutProps){
@@ -13,7 +13,7 @@ export default function HomeLayout({children}:HomeLayoutProps){
             <Header/>
          
             {children}
-           
+            
             <Footer/>
         </main>
     )

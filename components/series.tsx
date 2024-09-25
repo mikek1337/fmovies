@@ -9,6 +9,7 @@ import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import Recommendation from "./recommendation"
+import Comment from "./comment"
 interface SeriesProps{
     id:number
 }
@@ -111,6 +112,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
         <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <Recommendation id={id} mediaType="tv"/>
+        <Comment id={id} season={season} episode={episode}/>
         </>
     )
 }

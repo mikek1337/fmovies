@@ -26,10 +26,11 @@ export const metadata: Metadata = {
 const inter = Inter({subsets:['latin']})
 export default function RootLayout({
   children,
-  searchModal
+  searchModal,
 }: Readonly<{
   children: React.ReactNode;
   searchModal: React.ReactNode;
+
 }>) {
   
   return (

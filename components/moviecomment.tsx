@@ -1,0 +1,3 @@
+const Moviecomment = () => {
+    const comments = 
+}

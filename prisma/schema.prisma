@@ -56,6 +56,49 @@ model User {
   linkden       String?
   accounts      Account[]
   sessions      Session[]
+  Rating        Rating[]
+  Comment      Comment[]
+}
 
+model Rating{
+  id   String @id
+  object String
+  upVote Int?
+  downVote Int?
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id        String    @id @default(uuid())
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+  parentId  String?   // For replies, this will reference another comment's ID
+  postId    String    // Assuming comments are related to a post or similar entity
+
+  user      User      @relation(fields: [userId], references: [id])
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
+  MovieComment MovieComment[]
+  SeriesComment SeriesComment[]
+  @@index([postId])
+}
+
+model MovieComment{
+  id String @id
+  movieId String
+  commentId String
+  comment Comment @relation(fields: [commentId], references: [id])
+}
+
+model SeriesComment{
+  id String @id
+  seriesId String
+  seasonId Int
+  episodeId Int
+  commentId String
+  comment Comment @relation(fields: [commentId], references: [id])
 }
 

@@ -19,16 +19,7 @@ const Auth = () => {
   const session = useSession();
   if (session.data) {
     return (
-      <>
-        <div className="flex items-center gap-2">
-          <div className="hidden md:block">
-            <Link href="/home/watchlist" className="flex items-center gap-2">
-              <Film className="w-5 h-5 " />
-              <span className="text-sm">Watch List</span>
-            </Link>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
+            <Link href="/home/user" className="flex items-center gap-2">
               <Avatar>
                 <AvatarImage
                   src={session.data.user?.image}
@@ -36,46 +27,9 @@ const Auth = () => {
                 />
                 <AvatarFallback>{session.data.user?.name}</AvatarFallback>
               </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>
-                <span className="text-sm font-semibold">
-                  {session.data.user.username}
-                </span>
-              </DropdownMenuLabel>
-              <DropdownMenuItem>
-                <UserProfile/>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="md:hidden">
-                <Link
-                  href="/home/watchlist"
-                  className="flex items-center gap-2"
-                >
-                  <Film className="w-5 h-5 " />
-                  <span className="text-sm">Watch List</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/home/watchhistory" className="flex items-center gap-2">
-                  <History className="w-5 h-5 " />
-                  <span className="text-sm">Watch History</span>
-                </Link>
-              </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Button
-                        variant="ghost"
-                        className="w-full"
-                        onClick={() => signOut()}
-                    >
-                        <LogOut className="w-5 h-5" />
-                        Logout
-                    </Button>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </>
+              <span>{session.data.user?.username}</span>
+            </Link>
+
     );
   }
   return (
