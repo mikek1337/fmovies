@@ -96,8 +96,8 @@ model MovieComment{
 model SeriesComment{
   id String @id
   seriesId String
-  seasonId Int
-  episodeId Int
+  seasonId String
+  episodeId String
   commentId String
   comment Comment @relation(fields: [commentId], references: [id])
 }

@@ -62,11 +62,12 @@ export const getRecommendation = (id:number, mediaType?:string)=>{
 }
 
 export const searchMulti = (query:string)=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/multi?language=en-US&include_adult=true&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query}`,{
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
+        return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/multi?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query}`,{
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
+   
 }
 
 export const popularSeries = (page:number)=>{
