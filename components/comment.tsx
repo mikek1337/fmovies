@@ -1,12 +1,14 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader } from "lucide-react";
+import { Loader, ThumbsDown, ThumbsUp } from "lucide-react";
 import { FC, useState } from "react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import type { Comment } from "@prisma/client";
 import { Comments, CommentSchemaType } from "@/app/types/commentschema";
 import { Button } from "./ui/button";
+import { formatTimeToNow } from "@/lib/utils";
+import CastReply from "./castreply";
 interface CommentProps{
     id:number;
     season?:number;
@@ -33,15 +35,13 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
     const {isPending, data} = useQuery({
         queryKey:["comments", id, season, episode],
         queryFn:async()=>{
-            let comments:Comments[] = [];
-            if(season){
-                comments = await (await fetch(`/api/series/comments?id=${id}&season=${season}&episode=${episode}`)).json()
-                return comments;
-            }
-            comments = await (await fetch(`/api/movies/comments?id=${id}`)).json()
-            console.log(comments);
-            return comments;
-        }
+            
+            if(season)
+                return await (await fetch(`/api/series/comments?id=${id}&season=${season}&episode=${episode}`)).json()
+
+            return await (await fetch(`/api/movies/comments?id=${id}`)).json()
+            
+        },
     });
 
     const uploadComment = async ()=>{
@@ -71,36 +71,65 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                         <Input placeholder="Add a comment" className="w-full" onChange={(e)=>setUserComment(e.target.value)}/>
                         <Button onClick={()=>uploadComment()} disabled={submitting} className="w-fit">Post</Button>
                     </div>
-                    <div>
-                        {!isPending && data?.map((comment)=>(
-                            <>
-                            <div key={comment.id}>
-                            {comment.user && (
-                                <div  className="flex items-center gap-2 px-2 py-2 border-b">
-                                    <Avatar>
-                                        <AvatarImage src={comment.user?.image} alt={comment.user?.username}/>
-                                        <AvatarFallback>{comment.user?.username[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex flex-col gap-2">
-                                        <span className="text-sm font-semibold">{comment.user?.username}</span>
-                                        <p className="text-xs">{comment.content}</p>
+                    <div className="my-4">
+                        {data?.map((comment)=>(
+                            <div key={comment.id} className="shadow-md rounded-md p-2 ml-2">
+                                <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <Avatar className="border">
+                                            <AvatarImage src={comment.comment.user?.image} alt={comment.comment.user?.username}/>
+                                            <AvatarFallback>{comment.comment.user?.username[0]}</AvatarFallback>
+                                        </Avatar>
+                                        
                                     </div>
+                                    <div className="w-full">
+                                        <div className="flex items-center justify-between w-full">
+                                            <span className="font-semibold text-sm">{comment.comment.user?.username}</span>
+                                            <span className="text-xs text-zinc-400">{formatTimeToNow(comment.comment.createdAt)}</span>
+                                        </div>
+                                        <div >
+                                            <div className="flex items-center gap-3 justify-between">
+                                                <p className="text-sm max-w-500">{comment?.comment.content}</p>
+                                                <div className="flex items-center gap-1">
+                                                    <ThumbsUp className="w-3 h-3 fill-teal-500 text-teal-500"/>
+                                                    <ThumbsDown className="w-3 h-3 "/>
+                                                </div>
+
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <CastReply commentId={comment.id}/>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
                                 </div>
-                            )}
+                                {comment.comment.replies.map((reply)=>(
+                                    <div key={reply.id} className="ml-5">
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2">
+                                                <Avatar>
+                                                    <AvatarImage src={reply.user?.image} alt={reply.user?.username}/>
+                                                    <AvatarFallback>{reply.user?.username[0]}</AvatarFallback>
+                                                </Avatar>
+                                                
+                                            </div>
+                                            <div>
+                                                <span className="font-semibold text-sm">{reply.user?.username}</span>
+                                                <p className="text-sm">{reply.content}</p>
+                                                <div className="flex items-center gap-2">
+                                                    
+                                                    <ThumbsUp className="w-4 h-4 fill-indigo-500"/>
+                                                    <ThumbsDown className="w-4 h-4 "/>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                ))}
+                                
                             </div>
-                            {comment.replies.length !== 0 && comment.replies.map((reply)=>(
-                                <div key={reply.id} className="flex items-center gap-2 px-2 py-2 border-b">
-                                    <Avatar>
-                                        <AvatarImage src={reply.user.image} alt={reply.user.username}/>
-                                        <AvatarFallback>{comment.user?.username[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex flex-col gap-2">
-                                        <span className="text-sm font-semibold">{reply.user.username}</span>
-                                        <p className="text-xs">{reply.content}</p>
-                                    </div>
-                                </div>
-                            ))}
-                            </>
+
                         ))}
                     </div>
                 </div>

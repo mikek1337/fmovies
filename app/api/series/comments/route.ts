@@ -23,6 +23,6 @@ export async function GET(req:Request){
             }
         }
     });
-    console.log(comments);
+  
     return new Response(JSON.stringify(comments), {status:200});
 }
