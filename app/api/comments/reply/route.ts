@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         });
         const userData = await db.user.findUnique({
             where:{
-                id: user?.user.id
+                email: user?.user?.email!
             }
         });
         if(!userData){
