@@ -9,16 +9,27 @@ export async function POST(req:Request){
     {
         return new Response('Bad Request', {status:400});
     }
-    if(!user)
+    if(!user?.user)
     {
         return new Response('Unauthorized', {status:401});
+    }
+    //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const userData = await db.user.findUnique({
+        where:{
+            email: user.user?.email
+        }
+    });
+
+    if(!userData)
+    {
+        return new Response('User not found', {status:404});
     }
     const newComment = await db.comment.create({
         data:{
             id: nanoid(),
             content: comment.content,
-            postId: comment.seriesId,
-            userId: user.user?.id,
+            postId: comment.seriesId!,
+            userId: userData.id,
             SeriesComment:{
                 create:{
                     id: nanoid(),
