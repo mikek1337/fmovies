@@ -17,6 +17,7 @@ export async function POST(req: Request) {
                 id: id
             }
         });
+        /*eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain*/
         const userData = await db.user.findUnique({
             where:{
                 email: user?.user?.email!
