@@ -43,7 +43,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
                         <div >
                             <div className='absolute w-full h-full  bg-gradient-to-r from-indigo-500'>
 
-                                <div className=' px-5 flex items-center w-full border h-full'>
+                                <div className=' px-5 flex items-center w-full h-full'>
                                     <div className='flex flex-col gap-2 px-10'>
                                         <span className='text-5xl font-extrabold  text-white'>{movie?.media_type=="movie"?movie?.title:movie?.name}</span>
                                         <p className='text-sm max-w-[500px]  line-clamp-4 text-white'>{movie?.overview}</p>

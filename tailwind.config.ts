@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      backgroundImage:{
+        "home-background": "url('/movieposter.webp')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
