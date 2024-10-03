@@ -17,7 +17,14 @@ export async function POST(req: Request) {
                 id: id
             }
         });
-        console.log(id)
+        const userData = await db.user.findUnique({
+            where:{
+                id: user?.user.id
+            }
+        });
+        if(!userData){
+            return new Response('User not found', {status: 404});
+        }
         if(!comment){
             return new Response('Comment not found', {status: 404});
         }
@@ -27,7 +34,7 @@ export async function POST(req: Request) {
                 id: nanoid(),
                 parentId: comment.id,
                 content: newComment.content,
-                userId: user?.user.id,
+                userId: userData.id,
                 postId: id,
 
 
