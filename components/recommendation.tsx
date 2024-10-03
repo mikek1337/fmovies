@@ -2,7 +2,7 @@
 "use client";
 import { FC, useEffect, useState } from "react";
 import MovieList from "./movielist";
-import { FileWarningIcon, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import axios from "axios";
 import { MovieResponse } from "@/app/types/moviedbresponse";
 interface RecommendationProps{

@@ -1,4 +1,4 @@
-import { LogInIcon, LucideProps } from "lucide-react";
+import { LucideProps } from "lucide-react";
 
 export const Icons = {
     google: (props: LucideProps) => (

@@ -4,8 +4,7 @@ import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Input } from "./ui/input";
-import { Loader, Search, SearchIcon } from "lucide-react";
-import Link from "next/link";
+import { Loader, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 const SearchDialog:FC = ()=>{

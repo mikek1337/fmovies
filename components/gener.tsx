@@ -1,4 +1,3 @@
-import { GenerResponse } from "@/app/types/gener";
 import { geners } from "@/lib/tmd";
 import { FC } from "react";
 

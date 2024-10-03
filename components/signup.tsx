@@ -2,7 +2,7 @@
 import { SignupSchema, SignupSchemaType } from "@/app/types/signupschema";
 import { FC } from "react";
 import { signIn } from "next-auth/react";
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from "./ui/input";
 import { FadeText } from "./magicui/fade-text";
@@ -11,6 +11,7 @@ import { Icons } from "./icons";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 const Signup: FC = () => {
     const router = useRouter();
     const {register, handleSubmit, formState:{errors}} = useForm<SignupSchemaType>({resolver:zodResolver(SignupSchema)});
@@ -20,7 +21,7 @@ const Signup: FC = () => {
             const res = await fetch('/api/auth/register',{body:JSON.stringify(data), method:"POST"});
             return await res.json();
         },
-        onSuccess: (data)=>{
+        onSuccess: ()=>{
             router.push('/api/auth/signin');
         },
         onError: (error)=>{
@@ -65,6 +66,7 @@ const Signup: FC = () => {
                     <Button variant="ghost" onClick={()=>signIn("google")} className="flex items-center gap-2 w-full">
                         <Icons.google className="w-5 h-5"/>
                         Signup with Google
+                        {isPending && <Loader2 className="w-5 h-5 animate-spin"/>}
                     </Button>
                 </div>
 

@@ -1,5 +1,4 @@
 import { searchSeries } from "@/lib/tmd";
-import { NextApiRequest } from "next";
 
 export async function GET(req: Request){
     const url = new URL(req.url);

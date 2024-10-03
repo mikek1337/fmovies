@@ -1,5 +1,5 @@
 "use client"
-import { ChevronRight, Loader } from "lucide-react"
+import { Loader } from "lucide-react"
 import VideoPlayer from "./videoplayer"
 import { FC, useEffect, useState } from "react"
 import { MovieDetail } from "@/app/types/moviedbresponse"

@@ -27,7 +27,7 @@ export async function POST(req: Request) {
                 id: nanoid(),
                 parentId: comment.id,
                 content: newComment.content,
-                userId: user?.user.id!,
+                userId: user?.user.id,
                 postId: id,
 
 

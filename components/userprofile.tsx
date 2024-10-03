@@ -34,7 +34,7 @@ const UserProfile = () => {
             query.fetch()
         },
     });
-    const {register, handleSubmit, formState:{errors}} = useForm<ProfileType>({resolver:zodResolver(Profile)});
+    const {register, formState:{errors}} = useForm<ProfileType>({resolver:zodResolver(Profile)});
     if(!session.data)
         return null;
     return(

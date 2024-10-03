@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 const Page = () =>{
     const [page, setPage] = useState<number>(1);
     const [query, setQuery] = useState<string>('');
-    const [primaryReleaseYear, setPrimaryReleaseYear] = useState<number>(2021);
+    const [primaryReleaseYear] = useState<number>(2021);
     const [movies, setMovies] = useState<MovieResponse>();
     const [loading, setLoading] = useState<boolean>(false);
     useEffect(()=>{

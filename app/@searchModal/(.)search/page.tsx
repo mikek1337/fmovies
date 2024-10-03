@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 const Page = () => {
   const [query, setQuery] = useState<string>("");
   const [movies, setMovies] = useState<MovieResponse>();

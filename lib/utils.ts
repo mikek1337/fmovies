@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { formatDistanceToNowStrict } from 'date-fns'
 import locale from 'date-fns/locale/en-US'
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -25,6 +24,7 @@ const formatDistanceLocale = {
   almostXYears: '{{count}}y',
 }
 
+//@typescript-eslint/no-explicit-any
 function formatDistance(token: string, count: number, options?: any): string {
   options = options || {}
 
@@ -40,7 +40,7 @@ function formatDistance(token: string, count: number, options?: any): string {
       return result + ' ago'
     }
   }
-
+  
   return result
 }
 

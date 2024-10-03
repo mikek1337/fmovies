@@ -1,5 +1,5 @@
 import { latestMovies } from "@/lib/tmd";
-export async function GET(req:Request){
+export async function GET(){
     try{
     const resData = await latestMovies();
     const movies = resData.data;

@@ -1,7 +1,6 @@
 import { MovieDetail } from "@/app/types/moviedbresponse"
-import { movieDetail } from "@/lib/tmd"
 import Image from "next/image"
-import { FC, useState } from "react"
+import { FC } from "react"
 interface MovieDetailsProps{
     seriesDetails:MovieDetail,
 }

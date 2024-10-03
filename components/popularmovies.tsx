@@ -1,6 +1,6 @@
 import { MovieResponse } from '@/app/types/moviedbresponse';
 import MovieList from '@/components/movielist';
-import { latestMovies, popularMovies } from '@/lib/tmd';
+import { latestMovies } from '@/lib/tmd';
 const PopularMovies = async ()=>{
     const popular:MovieResponse = await (await latestMovies()).data
     return(

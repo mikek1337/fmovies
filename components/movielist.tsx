@@ -1,5 +1,4 @@
 import { MovieResponse } from "@/app/types/moviedbresponse"
-import { Play } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { FC } from "react"
