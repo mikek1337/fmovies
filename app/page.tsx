@@ -15,15 +15,18 @@ export default async function Home() {
             <div className="my-2">
               <h1 className="md:text-5xl text-center text-2xl font-extrabold text-indigo-400">Movies</h1>
             </div>
-            <div className="flex flex-wrap gap-1 items-center justify-center max-w-[700px] shadow-md rounded-md p-1 ">
+            <div className="flex flex-wrap  items-center justify-center max-w-[700px] shadow-md rounded-md p-1 ">
               {
-                movies.results.map((movie)=>(
+                movies.results.map((movie, index:number)=>(
                   <ToolTip text={movie.title} key={movie.id}>
-                  <span  className=" line-clamp-1 text-sm text-zinc-300 max-w-[100px]  w-fit">
-                    <Link href={`/home/watch/${movie.id}`} className="hover:text-indigo-500">
-                      {movie.title}
-                    </Link>
-                  </span>
+                    <div className="flex items-center">
+                    <span  className=" line-clamp-1 text-sm text-zinc-300 max-w-[100px]  ">
+                      <Link href={`/home/watch/${movie.id}`} className="hover:text-indigo-500">
+                        {movie.title}
+                      </Link>
+                    </span>
+                      {index < movies.results.length - 1 && <span className="text-zinc-300">, </span>}
+                    </div>
                   </ToolTip>
                 ))
               }
