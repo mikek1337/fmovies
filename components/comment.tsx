@@ -5,7 +5,7 @@ import { FC, useState } from "react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import type { Comment } from "@prisma/client";
-import { Comments, CommentSchemaType } from "@/app/types/commentschema";
+import { CommentSchemaType } from "@/app/types/commentschema";
 import { Button } from "./ui/button";
 import { formatTimeToNow } from "@/lib/utils";
 import CastReply from "./castreply";
@@ -72,7 +72,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                         <Button onClick={()=>uploadComment()} disabled={submitting} className="w-fit">Post</Button>
                     </div>
                     <div className="my-4">
-                        {data?.map((comment)=>(
+                        {data?.map((comment:any)=>(
                             <div key={comment.id} className="shadow-md rounded-md p-2 ml-2">
                                 <div className="flex items-center gap-2">
                                     <div className="flex items-center gap-2">
@@ -104,7 +104,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                     </div>
                                     
                                 </div>
-                                {comment.comment.replies.map((reply)=>(
+                                {comment.comment.replies.map((reply:any)=>(
                                     <div key={reply.id} className="ml-5">
                                         <div className="flex items-center gap-2">
                                             <div className="flex items-center gap-2">

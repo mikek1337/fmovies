@@ -24,7 +24,7 @@ export async function POST(req:Request){
                     id: nanoid(),
                     seriesId: comment.seriesId,
                     seasonId: comment.seasonId,
-                    episodeId: comment.episodeId,
+                    episodeId: comment.episodeId
                 }
             }
 

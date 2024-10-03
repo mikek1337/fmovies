@@ -1,6 +1,5 @@
 
 import { FC } from "react";
-import {signIn, useSession} from "next-auth/react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,15 +11,11 @@ import {
 } from "./ui/navigation-menu";
 import Link from "next/link";
 import Gener from "./gener";
-import { buttonVariants } from "./ui/button";
-import { cn } from "@/lib/utils";
-import { Film, Play } from "lucide-react";
-
+import { Play } from "lucide-react";
 import SearchDialog from "./searchdialog";
 import MobileHeaderMenu from "./mobileheadermenu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Auth from "./auth";
-import UserProfile from "./userprofile";
+
 
 const Header: FC = () => {
   return (

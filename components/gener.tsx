@@ -1,9 +1,7 @@
 import { GenerResponse } from "@/app/types/gener";
 import { geners } from "@/lib/tmd";
 import { FC } from "react";
-interface GenerProps{
-    genersList?: GenerResponse
-}
+
 const Gener:FC = async() =>{
     const genersList = await (await geners()).data;
     return(

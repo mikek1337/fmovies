@@ -37,7 +37,7 @@ const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
                             <span>Country:</span>
                             <div className="grid md:grid-cols-4 grid-cols-2 gap-2  items-center">
                             {movieDetails.production_countries.map(country=>(
-                            <span className="bg-zinc-200 rounded-full px-2" key={country.id}>{country.name}</span>
+                            <span className="bg-zinc-200 rounded-full px-2" key={country.iso_3166_1}>{country.name}</span>
                         ))}</div></div>
                     </div>
                     <div className="flex flex-col text-xs px-1">

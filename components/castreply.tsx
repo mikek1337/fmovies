@@ -33,7 +33,7 @@ const CastReply:FC<CastReplyProps> = ({commentId})=>{
             <span className="cursor-pointer hover:underline text-xs" aria-disabled={replying} onClick={()=>setReplying(prev=>!prev)}>Reply</span>
             <div className={cn("flex items-center gap-2",{"hidden":!replying})}>
                 <Input placeholder="Reply to comment" onChange={(e)=>setComment(e.target.value)} className="w-full"/>
-                <Button variant="ghost"  onClick={()=>uploadComment()} className="w-fit">Post</Button>
+                <Button variant="ghost"  onClick={()=>uploadComment()} className="w-fit" disabled={isPending}>Post</Button>
             </div>
         </div>
     )

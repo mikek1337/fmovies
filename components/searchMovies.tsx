@@ -1,8 +1,7 @@
 "use client"
 import { FC, useEffect, useState } from "react";
-import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command";
+import { CommandDialog, CommandEmpty, CommandInput, CommandItem } from "./ui/command";
 import { MovieResponse } from "@/app/types/moviedbresponse";
-import { searchMulti } from "@/lib/tmd";
 import Image from "next/image";
 import { Calendar, Loader, Stars } from "lucide-react";
 import Link from "next/link";

@@ -1,3 +1,3 @@
 const Moviecomment = () => {
-    const comments = 
+   return(<></>);
 }

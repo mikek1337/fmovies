@@ -18,11 +18,12 @@ export const AuthOptions:NextAuthOptions = {
                 password: {  label: "Password", type: "password" }
             },
             async authorize(credentials){
-                const {username, password} = credentials;
-                const user = await db.user.findFirst({where:{username}});
-                if(user &&  user.password && compareSync(password, user.password)){
+                if(credentials){
+                const user = await db.user.findFirst({where:{username:credentials.username}});
+                if(user &&  user.password && compareSync(credentials.password, user.password)){
                     return user;
                 }
+            }
                 return null
             },
             

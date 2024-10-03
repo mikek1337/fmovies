@@ -1,19 +1,9 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Button, buttonVariants } from "./ui/button";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { buttonVariants } from "./ui/button";
+import { signIn, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Film, History, LogOut } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import UserProfile from "./userprofile";
 
 const Auth = () => {
   const session = useSession();
@@ -27,7 +17,7 @@ const Auth = () => {
                 />
                 <AvatarFallback>{session.data.user?.name}</AvatarFallback>
               </Avatar>
-              <span>{session.data.user?.username}</span>
+              <span>{session.data.user?.name}</span>
             </Link>
 
     );

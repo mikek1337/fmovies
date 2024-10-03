@@ -32,7 +32,7 @@ const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
                         <div className="flex w-fit items-center gap-2">
                             <span>Country:</span>
                             {seriesDetails.production_countries.map(country=>(
-                            <span className="bg-zinc-200 rounded-full px-2" key={country.id}>{country.name}</span>
+                            <span className="bg-zinc-200 rounded-full px-2" key={country.iso_3166_1}>{country.name}</span>
                         ))}</div>
                     </div>
                     <div className="flex flex-col text-xs">

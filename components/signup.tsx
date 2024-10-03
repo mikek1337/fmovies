@@ -38,19 +38,19 @@ const Signup: FC = () => {
                 <form onSubmit={handleSubmit(submit)} className="p-3">
                     <div className="my-2">
                         <Input type="text" placeholder="Email" {...register('email')} />
-                        {errors.email && <FadeText text={errors.email.message} className="text-red-500 font-semibold text-xs"/>}
+                        {errors.email && <FadeText text={errors.email.message!} className="text-red-500 font-semibold text-xs"/>}
                     </div>
                     <div className="my-2">
                         <Input type="text" placeholder="Username" {...register('username')}/>
-                        {errors.username && <FadeText text={errors.username.message} className="text-red-500 font-semibold text-xs"/>}
+                        {errors.username && <FadeText text={errors.username.message!} className="text-red-500 font-semibold text-xs"/>}
                     </div>
                     <div className="my-2">
                         <Input type="password" placeholder="Password" {...register('password')}/>
-                        {errors.password && <FadeText text={errors.password.message} className="text-red-500 font-semibold text-xs"/>}
+                        {errors.password && <FadeText text={errors.password.message!} className="text-red-500 font-semibold text-xs"/>}
                     </div>
                     <div className="my-2">
                         <Input type="password" placeholder="Confirm Password" {...register('confirmPassword')}/>
-                        {errors.confirmPassword && <FadeText text={errors.confirmPassword.message} className="text-red-500 font-semibold text-xs"/>}
+                        {errors.confirmPassword && <FadeText text={errors.confirmPassword.message!} className="text-red-500 font-semibold text-xs"/>}
                     </div>
                     <div className="my-1">
                         <Button variant="outline" type="submit" className="w-full">
