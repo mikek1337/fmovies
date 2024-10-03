@@ -4,7 +4,7 @@ interface UserLayoutProps{
 export default function UserLayout({children}:UserLayoutProps){
     return(
         <div>
-
+            {children}
         </div>
     )
 }
