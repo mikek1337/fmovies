@@ -73,7 +73,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                     </div>
                     <div className="my-4">
                         {
-                        //@typescript-eslint/no-explicit-any
+                        /* eslint-disable @typescript-eslint/no-explicit-any */
                         data?.map((comment:any)=>(
                             <div key={comment.id} className="shadow-md rounded-md p-2 ml-2">
                                 <div className="flex items-center gap-2">
@@ -107,7 +107,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                     
                                 </div>
                                 {
-                                 //@typescript-eslint/no-explicit-any
+                                 /* eslint-disable @typescript-eslint/no-explicit-any */
                                 comment.comment.replies.map((reply:any)=>(
                                     <div key={reply.id} className="ml-5">
                                         <div className="flex items-center gap-2">
