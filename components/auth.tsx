@@ -12,8 +12,8 @@ const Auth = () => {
             <Link href="/home/user" className="flex items-center gap-2">
               <Avatar>
                 <AvatarImage
-                  src={session.data.user?.image}
-                  alt={session.data.user?.name}
+                  src={session.data.user?.image || ""}
+                  alt={session.data.user?.name || ""}
                 />
                 <AvatarFallback>{session.data.user?.name}</AvatarFallback>
               </Avatar>
