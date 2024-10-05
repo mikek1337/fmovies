@@ -1,7 +1,7 @@
 import{getServerSession, type NextAuthOptions} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
-import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { db } from './db';
 import { compareSync } from 'bcrypt';
 import { nanoid } from 'nanoid';
@@ -37,14 +37,15 @@ export const AuthOptions:NextAuthOptions = {
     callbacks: {
         async session({ token, session }) {
             if (token) {
-                session.user.id = token.id
-                session.user.name = token.name
-                session.user.email = token.email
-                session.user.image = token.picture
-                session.user.username = token.username
+                session.user = {
+                    ...session.user,
+                    name: token.name,
+                    email: token.email,
+                    image: token.picture,
+                };
             }
-
-            return session
+        
+            return session;
         },
 
         async jwt({ token, user }) {
