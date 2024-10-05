@@ -29,14 +29,14 @@ export async function POST(req:Request){
         data:{
             id: nanoid(),
             content: comment.content,
-            postId: comment.seriesId,
+            postId: comment.seriesId || "",
             userId: userData.id,
             SeriesComment:{
                 create:{
                     id: nanoid(),
-                    seriesId: comment.seriesId,
-                    seasonId: comment.seasonId,
-                    episodeId: comment.episodeId
+                    seriesId: comment.seriesId || "",
+                    seasonId: comment.seasonId || "",
+                    episodeId: comment.episodeId || ""
                 }
             }
 
