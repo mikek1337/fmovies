@@ -20,11 +20,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FadeText } from "./magicui/fade-text";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
-import { useToast } from "@/hooks/use-toast";
+
 
 const UserProfile = () => {
   const session = useSession();
-  const { toast } = useToast();
+
   const { isPending, data } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
