@@ -16,7 +16,7 @@ export async function POST(req:Request){
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const userData = await db.user.findUnique({
         where:{
-            email: user.user?.email
+            email: user.user?.email || ""
         }
     });
 
