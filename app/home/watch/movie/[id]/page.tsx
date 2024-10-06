@@ -17,13 +17,13 @@ const Page = async({params}:{params:{id:string}})=>{
             </Suspense>
             
         </div>
+      {  <div>
+            <Comment id={parseInt(params.id)}/>
+        </div>}
         <div>
             <Suspense fallback={<div>Loading...</div>}>
             <Recommendation id={parseInt(params.id)}/>
             </Suspense>
-        </div>
-        <div>
-            <Comment id={parseInt(params.id)}/>
         </div>
         </>
     )

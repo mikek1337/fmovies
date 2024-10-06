@@ -111,8 +111,8 @@ const Series:FC<SeriesProps> = ({id}) =>{
         </div>
         <ScrollBar orientation="horizontal" />
         </ScrollArea>
-        <Recommendation id={id} mediaType="tv"/>
         <Comment id={id} season={season} episode={episode}/>
+        <Recommendation id={id} mediaType="tv"/>
         </>
     )
 }

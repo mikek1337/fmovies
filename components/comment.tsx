@@ -9,6 +9,7 @@ import { CommentSchemaType } from "@/app/types/commentschema";
 import { Button } from "./ui/button";
 import { formatTimeToNow } from "@/lib/utils";
 import CastReply from "./castreply";
+import { useToast } from "@/hooks/use-toast";
 interface CommentProps{
     id:number;
     season?:number;
@@ -16,6 +17,7 @@ interface CommentProps{
 }
 const Comment:FC<CommentProps> = ({id, season, episode})=>{
     const [userComment, setUserComment] = useState<string>("");
+    const {toast} = useToast();
     const {isPending:submitting, mutate} = useMutation({
         mutationFn: async (comment:CommentSchemaType)=>{
             if(season){
@@ -30,9 +32,22 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                     body:JSON.stringify(comment)
                 });
             }
-        }
+            refetch();
+        },
+        throwOnError(error) {
+            if(error.message == "Unauthorized")
+            {
+                toast({
+                    title: "Error",
+                    description: "You need to login to comment",
+                    variant: "destructive"
+                })
+                //alert("You need to login to comment")
+            }
+            return false;
+        },
     })
-    const {isPending, data} = useQuery({
+    const {isPending, data, refetch} = useQuery({
         queryKey:["comments", id, season, episode],
         queryFn:async()=>{
             
@@ -55,8 +70,16 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                 movieId: "",
                 parentId: ""
             };
-            mutate(comment);
-        }
+        
+    }
+    else{
+        comment = {
+            content: userComment,
+            movieId: id.toString(),
+            parentId: ""
+        };
+    }
+        mutate(comment);
 
     }
     

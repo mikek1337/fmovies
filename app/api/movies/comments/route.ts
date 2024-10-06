@@ -6,18 +6,15 @@ export async function GET(req:Request){
     if(!id){
         return new Response('Bad Request', {status:400});
     }
-    const comments = db.movieComment.findMany({
+    const comments = await db.movieComment.findMany({
         where:{
-            movieId:id
+            movieId: id,
         },
         include:{
             comment:{
-                select:{
-                    parentId:true,
-                },
                 include:{
-                    user:true,
-                    replies:true
+                    replies:true,
+                    user:true
                 }
             }
         }

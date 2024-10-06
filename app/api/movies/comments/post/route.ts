@@ -1,4 +1,45 @@
+import { CommentSchema } from "@/app/types/commentschema";
+import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { nanoid } from "nanoid";
+
 export async function POST(req:Request){
-    const body = await req.json();
-   return new Response(JSON.stringify(body), {status:200});
+    const comment = CommentSchema.parse(await req.json());
+    const user = await getAuthSession();
+    if(!comment)
+    {
+        return new Response('Bad Request', {status:400});
+    }
+    if(!user?.user)
+    {
+        return new Response('Unauthorized', {status:401});
+    }
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    const userData = await db.user.findUnique({
+        where:{
+            email: user.user?.email || ""
+        }
+    });
+
+    if(!userData)
+    {
+        return new Response('User not found', {status:404});
+    }
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    const newComment = await db.comment.create({
+        data:{
+            id: nanoid(),
+            content: comment.content,
+            postId: comment.seriesId || "",
+            userId: userData.id,
+            MovieComment:{
+                create:{
+                    id: nanoid(),
+                    movieId: comment.movieId || "",  
+                }
+            }
+
+        }
+    });
+    return new Response(JSON.stringify(newComment), {status:200});
 }
