@@ -5,6 +5,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { db } from './db';
 import { compareSync } from 'bcrypt';
 import { nanoid } from 'nanoid';
+import { url } from 'inspector';
 export const AuthOptions:NextAuthOptions = {
     adapter: PrismaAdapter(db),
     session:{
@@ -46,6 +47,11 @@ export const AuthOptions:NextAuthOptions = {
             }
         
             return session;
+        },
+        redirect: async({url, baseUrl})=>{
+            if(url)
+                return baseUrl + url;
+            return baseUrl
         },
 
         async jwt({ token, user }) {
