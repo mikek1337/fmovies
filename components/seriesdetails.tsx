@@ -13,7 +13,7 @@ const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
                 </div>
             <div className="w-fit">
                 <span className="font-extrabold flex items-center gap-2 md:text-5xl text-3xl">{seriesDetails.name} 
-                <span className="text-xs md:text-base font-bold bg-indigo-600 text-white rounded-full px-3">Movie</span>
+                <span className="text-xs md:text-base font-bold bg-indigo-600 text-white rounded-full px-3">TV</span>
                 </span>
                 <p className="md:max-w-[700px] sm:max-w-[400px]  text-xs md:text-base ">{seriesDetails.overview}</p>
                 <div className="flex flex-col ">

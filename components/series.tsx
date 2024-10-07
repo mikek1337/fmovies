@@ -85,7 +85,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
                 </div>
             </div>
         <div className=" my-10 flex justify-center  border">
-            <div className="flex items-start justify-between w-full">
+            <div className="flex items-start  w-full">
                 {
                     loading && (<Loader className="w-5 h-5 animate-spin"/>)
                 }
