@@ -21,20 +21,43 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
     const {isPending:submitting, mutate} = useMutation({
         mutationFn: async (comment:CommentSchemaType)=>{
             if(season){
-                await fetch(`/api/series/comments/post?id=${id}&seasonId=${season}&episodeId=${episode}`,{
+                return await fetch(`/api/series/comments/post?id=${id}&seasonId=${season}&episodeId=${episode}`,{
                     method:"POST",
                     body:JSON.stringify(comment)
                 })
             } else {
                 
-                await fetch(`/api/movies/comments/post?id=${id}`,{
+                return await fetch(`/api/movies/comments/post?id=${id}`,{
                     method:"POST",
                     body:JSON.stringify(comment)
                 });
             }
             refetch();
         },
+        onSuccess: (data)=>{
+            if(data.status === 200)
+            {
+                setUserComment("");
+                refetch();
+            }
+            if(data.status === 401)
+            {
+                toast({
+                    title: "Error",
+                    description: "You need to login to comment",
+                    varient: "destructive"
+                })
+            }
+        },
+       onError: (error)=>{
+            toast({
+                title: "Error",
+                description: error.message,
+                variant: "destructive"
+            })
+       },
         throwOnError(error) {
+            
             if(error.message == "Unauthorized")
             {
                 toast({
