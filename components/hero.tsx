@@ -35,19 +35,19 @@ const Hero:FC<HeroProps> = ({movies})=>{
         setMovieIndex(index);
     }
     return(
-        <div className="flex justify-center broder border-y-emerald-700">
-        <div className='w-fit '>
-        <div className='w-fit rounded-2xl   '>
+        <div className="flex justify-center broder border-y-emerald-700 w-full ">
+        <div className='w-full'>
+        <div className=' rounded-2xl   '>
                 <BlurFade inView key={movie?.id}>
-                    <div  className={cn('relative  w-full justify-center ')}>
+                    <div  className={cn('relative  w-full justify-center md:flex ')}>
                         <div >
-                            <div className='absolute w-full h-full  bg-gradient-to-r from-indigo-500'>
+                            <div className='absolute md:relative w-full h-full  bg-gradient-to-r from-indigo-500'>
 
                                 <div className=' px-5 flex items-center w-full h-full'>
                                     <div className='flex flex-col gap-2 px-10'>
                                         <span className='text-5xl font-extrabold  text-white'>{movie?.media_type=="movie"?movie?.title:movie?.name}</span>
                                         <p className='text-sm max-w-[500px]  line-clamp-4 text-white'>{movie?.overview}</p>
-                                        <div className='flex items-center gap-5'>
+                                        <div className='flex items-center gap-5 md:flex-nowrap flex-wrap'>
                                             <Link className={cn(buttonVariants({variant:'default'}),'flex items-center gap-2 w-fit')} href={movie?.media_type=='movie'?`home/watch/movie/${movie?.id}`:`home/watch/series/${movie?.id}`}>
                                             <Play className='w-5 h-5 fill-white'/>
                                             Watch now
@@ -60,7 +60,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
                             </div>
                         </div>
                         <div className='border'>
-                            <Image src={`http://image.tmdb.org/t/p/original${movie?.backdrop_path}`} className='object-cover h-[600px]  rounded-md' width={1200} height={500} alt={movie?.title}/>
+                            <Image src={`http://image.tmdb.org/t/p/original${movie?.backdrop_path}`} className='object-cover md:h-[650px] w-full  rounded-md' width={1200} height={500} alt={movie?.title}/>
                         </div>
                     </div>
                     </BlurFade>
