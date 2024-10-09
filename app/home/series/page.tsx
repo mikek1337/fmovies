@@ -45,7 +45,7 @@ const Page = () =>{
     }
     return(
        <div>
-              <div className="flex justify-center items-center my-5 gap-2">
+              <div className="flex justify-center items-center my-5 gap-2 flex-wrap">
                 <Input type="text" placeholder="Search series" className="w-1/5 p-2 border-2 border-gray-200 rounded-lg" onChange={(e)=>setQuery(e.target.value)}/>
                 <SelectGener/>
                 <Button onClick={()=>search}>Search</Button>
