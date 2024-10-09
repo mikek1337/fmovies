@@ -7,7 +7,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from ".
 import { Gener } from "@/app/types/gener"
 
 const SelectGener = () =>{
-    const {data, isPending, refetch} = useQuery({
+    const {data} = useQuery({
         queryKey:["geners"],
         queryFn:async()=>{
             return await (await axios("/api/geners")).data;
@@ -23,6 +23,7 @@ const SelectGener = () =>{
                 <SelectValue placeholder="Select Gener"/>
             </SelectTrigger>
             <SelectContent >
+           
             {
                 data?.map((gener:Gener)=>(
                     <SelectItem key={gener.id} value={gener.id.toString()}>{gener.name}</SelectItem>
