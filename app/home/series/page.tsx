@@ -2,7 +2,9 @@
 'use client'
 
 import { MovieResponse } from "@/app/types/moviedbresponse";
+import Gener from "@/components/gener";
 import MovieList from "@/components/movielist";
+import SelectGener from "@/components/selectgener";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
@@ -42,8 +44,9 @@ const Page = () =>{
     }
     return(
        <div>
-              <div className="flex justify-center items-center">
-                <Input type="text" placeholder="Search series" className="w-1/2 p-2 border-2 border-gray-200 rounded-lg" onChange={(e)=>setQuery(e.target.value)}/>
+              <div className="flex justify-center items-center my-5 gap-2">
+                <Input type="text" placeholder="Search series" className="w-1/5 p-2 border-2 border-gray-200 rounded-lg" onChange={(e)=>setQuery(e.target.value)}/>
+                <SelectGener/>
                 <Button onClick={()=>search}>Search</Button>
               </div>
               <div className="my-10">
