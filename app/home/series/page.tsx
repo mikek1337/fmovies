@@ -2,7 +2,6 @@
 'use client'
 
 import { MovieResponse } from "@/app/types/moviedbresponse";
-import Gener from "@/components/gener";
 import MovieList from "@/components/movielist";
 import SelectGener from "@/components/selectgener";
 import { Button } from "@/components/ui/button";
