@@ -38,7 +38,7 @@ const Page = () => {
         Prev
         </Button>
         <span className="text-sm text-zinc-400">{page}</span>
-        <Button variant="ghost" className="flex items-center gap-2" onClick={()=>popularMovies?.total_pages >= page?setPage(prev=>prev + 1):page}>
+        <Button variant="ghost" className="flex items-center gap-2" onClick={()=>popularMovies && popularMovies?.total_pages >= page?setPage(prev=>prev + 1):page}>
         <ChevronRight className="w-5 h-5"/>
         Next
         </Button>
