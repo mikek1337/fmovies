@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import {  useState } from "react"
 import { ChevronDown } from "lucide-react"
 import { Gener } from "@/app/types/gener"
 
