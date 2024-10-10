@@ -48,12 +48,6 @@ export const AuthOptions:NextAuthOptions = {
         
             return session;
         },
-        redirect: async({url, baseUrl})=>{
-            if(url)
-                return baseUrl + url;
-            return baseUrl
-        },
-
         async jwt({ token, user }) {
             const dbUser = await db.user.findFirst({
                 where: {

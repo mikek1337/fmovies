@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { CommentSchemaType } from "@/app/types/commentschema";
 import { cn } from "@/lib/utils";
+import { MessageSquareText } from "lucide-react";
 
 interface CastReplyProps{
     commentId:string;
@@ -30,7 +31,10 @@ const CastReply:FC<CastReplyProps> = ({commentId})=>{
     }
     return(
         <div>
-            <span className="cursor-pointer hover:underline text-xs" aria-disabled={replying} onClick={()=>setReplying(prev=>!prev)}>Reply</span>
+            <span className="flex items-center gap-2 cursor-pointer hover:underline text-xs" aria-disabled={replying} onClick={()=>setReplying(prev=>!prev)}>
+                <MessageSquareText className="w-5 h-5 text-zinc-700"/>
+                Reply
+            </span>
             <div className={cn("flex items-center gap-2",{"hidden":!replying})}>
                 <Input placeholder="Reply to comment" onChange={(e)=>setComment(e.target.value)} className="w-full"/>
                 <Button variant="ghost"  onClick={()=>uploadComment()} className="w-fit" disabled={isPending}>Post</Button>

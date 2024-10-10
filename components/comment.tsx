@@ -87,9 +87,9 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
         <div className="w-full p-1 my-10 ">
             <h2 className="text-2xl font-extrabold">Comments</h2>
             {isPending && <Loader className="w-5 h-5 animate-spin mx-auto"/>}
-            <div className="max-w-[500px]">
+            <div className="">
                 
-                <div>
+                <div className="w-full ">
                     <div className="flex items-center gap-2  w-full">
                         <Input placeholder="Add a comment" className="w-full" onChange={(e)=>setUserComment(e.target.value)}/>
                         <Button onClick={()=>uploadComment()} disabled={submitting} className="w-fit">Post</Button>
@@ -98,8 +98,8 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                         {
                         /* eslint-disable @typescript-eslint/no-explicit-any */
                         data?.map((comment:any)=>(
-                            <div key={comment.id} className="shadow-md rounded-md p-2 ml-2">
-                                <div className="flex items-center gap-2">
+                            <div key={comment.id} className="rounded-md p-2 ml-2">
+                                <div className="flex items-start gap-2">
                                     <div className="flex items-center gap-2">
                                         <Avatar className="border">
                                             <AvatarImage src={comment.comment.user?.image} alt={comment.comment.user?.username}/>
@@ -108,21 +108,29 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                         
                                     </div>
                                     <div className="w-full">
-                                        <div className="flex items-center justify-between w-full">
-                                            <span className="font-semibold text-sm">{comment.comment.user?.username}</span>
-                                            <span className="text-xs text-zinc-400">{formatTimeToNow(comment.comment.createdAt)}</span>
+                                        <div className="flex items-center gap-2 w-full">
+                                            <span className="font-semibold ">{comment.comment.user?.username}</span>
+                                            <span className=" text-zinc-600">{formatTimeToNow(comment.comment.createdAt)}</span>
                                         </div>
                                         <div >
-                                            <div className="flex items-center gap-3 justify-between">
+                                            <div className="flex items-center gap-3 my-2">
                                                 <p className="text-sm max-w-500">{comment?.comment.content}</p>
-                                                <div className="flex items-center gap-1">
-                                                    <ThumbsUp className="w-3 h-3 fill-teal-500 text-teal-500"/>
-                                                    <ThumbsDown className="w-3 h-3 "/>
-                                                </div>
 
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <CastReply commentId={comment.id}/>
+                                                
+                                                    <CastReply commentId={comment.id}/>
+                                                
+                                                <div className="flex items-center gap-3 text-zinc-700">
+                                                    <div className="flex items-center gap-2">
+                                                        <ThumbsUp className="w-4 h-4 "/>
+                                                        <span className="text-sm">0</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <ThumbsDown className="w-4 h-4 "/>
+                                                        <span className="text-sm">0</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                             
                                         </div>

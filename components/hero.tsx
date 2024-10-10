@@ -23,7 +23,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
             }
             loadMovieSilde(index)
             index++;
-            if(index > 4)
+            if(index > 6)
             {
                 index = 0
             }
@@ -73,6 +73,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
                     <span className='p-2 rounded-full bg-indigo-300' onClick={()=>loadMovieSilde(1)}></span>
                     <span className='p-2 rounded-full bg-indigo-300' onClick={()=>loadMovieSilde(2)}></span>
                     <span className='p-2 rounded-full bg-indigo-300' onClick={()=>loadMovieSilde(3)}></span>
+                    <span className='p-2 rounded-full bg-indigo-300' onClick={()=>loadMovieSilde(4)}></span>
                 </div>
         </div>
     </div>
