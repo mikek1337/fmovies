@@ -43,7 +43,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
             setLoading(false);
         })
 
-    },[id, season])
+    },[id, season, series])
     return(
         <>
         <div className="relative  grid grid-cols-12 w-full h-fit  my-4 border px-5 ">

@@ -29,6 +29,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
             }
         }, 10000);
         return ()=>clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     const loadMovieSilde  = (index:number)=>{
         setMovie(movies.results[index]);
