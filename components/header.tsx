@@ -19,7 +19,7 @@ import Auth from "./auth";
 
 const Header: FC = () => {
   return (
-    <div className="flex items-center justify-between border p-3 w-screen md:w-auto">
+    <div className="flex items-center justify-between p-3 w-screen md:w-auto">
       <div className="flex items-center gap-4">
         <div className="flex items-center">
           <div className="block md:hidden">

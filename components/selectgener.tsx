@@ -2,13 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { FC, useState } from "react"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./ui/select"
-import { Gener } from "@/app/types/gener"
+import {  useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { Gener } from "@/app/types/gener"
 
 const SelectGener = () =>{
-  const[open, setOpen] = useState(false);
+  
     const {data} = useQuery({
         queryKey:["geners"],
         queryFn:async()=>{
@@ -27,8 +26,14 @@ const SelectGener = () =>{
         </div>
         <div className="flex items-center gap-5 flex-wrap">
           <div className="flex items-center gap-1">
-            <input type="checkbox"/>
-          Action
+            {
+                data?.map((gener:Gener)=>(
+                    <>
+                        <input type="checkbox" value={gener.id}/>
+                        {gener.name}
+                    </>
+                ))
+            }
           </div>
           </div>
 

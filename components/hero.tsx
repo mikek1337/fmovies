@@ -59,7 +59,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
                                 </div>
                             </div>
                         </div>
-                        <div className='border md:h-[400px] md:max-w-[700px]'>
+                        <div className='md:h-[400px] md:max-w-[700px]'>
                             <Image src={`http://image.tmdb.org/t/p/original${movie?.backdrop_path}`} className='object-cover md:max-h-[650px] w-full  rounded-md' width={1200} height={500} alt={movie?.title}/>
                         </div>
                     </div>

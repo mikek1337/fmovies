@@ -1,11 +1,10 @@
 'use client'
-import { MovieResponse } from '../types/moviedbresponse';
+
 import { latestMovies} from '@/lib/tmd';
 import Hero from '@/components/hero';
 import { Suspense } from 'react';
 import PopularMovies from '@/components/popularmovies';
 import PopularTvSeries from '@/components/populartvseries';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
 const Page = ()=>{
@@ -17,7 +16,7 @@ const Page = ()=>{
     })
     return(
         <div className='my-1 w-full'>
-            {data && <Hero movies={data}/>}
+            {!isPending && data && <Hero movies={data}/>}
             <Suspense fallback={<div>Loading...</div>}>
                 <PopularMovies/>
             </Suspense>
