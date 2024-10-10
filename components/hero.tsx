@@ -40,7 +40,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
         <div className='w-full'>
         <div className=' rounded-2xl   '>
                 <BlurFade inView key={movie?.id}>
-                    <div  className={cn('relative  w-full justify-center md:flex ')}>
+                    <div  className={cn('relative  w-full justify-center md:flex p-1 px-2')}>
                         <div >
                             <div className='absolute md:relative w-full h-full md:bg-none  bg-gradient-to-r from-indigo-500'>
 

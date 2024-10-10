@@ -44,14 +44,12 @@ const Page = () =>{
     }
     return(
        <div>
-              <div className="flex justify-center items-center my-5 gap-2 flex-wrap">
+              <div className="flex  items-center my-5 gap-2 flex-wrap">
                 <Input type="text" placeholder="Search series" className="w-1/5 p-2 border-2 border-gray-200 rounded-lg" onChange={(e)=>setQuery(e.target.value)}/>
                 <SelectGener/>
                 <Button onClick={()=>search}>Search</Button>
               </div>
-              <div className="my-10">
-                <h1 className="font-extrabold">Series</h1>
-              </div>
+              
               <hr className="my-5"/>
               <div className={cn("w-full px-3", {"min-h-screen":loading})}>
                 {
