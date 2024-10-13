@@ -38,7 +38,7 @@ const SelectGener = () => {
     }
   };
   return (
-    <div className="relative">
+  /*   <div className="relative">
       <div
         className="flex cursor-pointer w-fit justify-between items-center border rounded-lg p-2"
         onClick={() => setOpen(!open)}
@@ -66,20 +66,18 @@ const SelectGener = () => {
             </div>
           ))}
         </div>
-      </div>
-      <MultiSelect>
-        <MultiSelectTrigger>
-          <MultiSelectValue placeholder="Select Gener" />
-        </MultiSelectTrigger>
-        <MultiSelectContent>
+      </div> */
+      <MultiSelect onValueChange={(value)=>console.log(value)}>
+        <MultiSelectTrigger defaultText="Select Gener"/>
+        <MultiSelectContent >
           {data?.map((gener: Gener) => (
-            <MultiSelectOption value={gener.id.toString()} key={gener.id}>
-              {gener.name}
+           <MultiSelectOption key={gener.id} value={gener.id.toString()}>
+             {gener.name}
             </MultiSelectOption>
           ))}
         </MultiSelectContent>
       </MultiSelect>
-    </div>
+    /* </div> */
   );
 };
 

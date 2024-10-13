@@ -7,7 +7,7 @@ const Page = async({params}:{params:{id:string}})=>{
     const videoUrl = `https://vidsrc.icu/embed/movie/${params.id}`
     return(
         <>
-        <div className="">
+        <div className="px-5 h-fit">
             <VideoPlayer videoUrl={videoUrl}/>
         </div>
         <div className=" my-10 ">
