@@ -36,12 +36,12 @@ const Hero:FC<HeroProps> = ({movies})=>{
         setMovieIndex(index);
     }
     return(
-        <div className="flex justify-center broder border-y-emerald-700 w-full ">
+        <div className="flex justify-between broder border-y-emerald-700 w-full ">
         <div className='w-full'>
         <div className=' rounded-2xl   '>
                 <BlurFade inView key={movie?.id}>
                     <div  className={cn('relative  w-full justify-center md:flex  md:px-2')}>
-                        <div >
+                        <div className="w-full">
                             <div className='absolute   md:relative w-full h-full md:bg-none  bg-gradient-to-r from-indigo-500'>
 
                                 <div className=' px-5 flex items-center w-full h-full'>
@@ -60,7 +60,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
                                 </div>
                             </div>
                         </div>
-                        <div className='md:h-[400px] md:max-w-[700px]'>
+                        <div className='md:h-[400px] '>
                             <Image src={`http://image.tmdb.org/t/p/original${movie?.backdrop_path}`} className='object-cover md:max-h-[650px] w-full  rounded-md' width={1200} height={500} alt={movie?.title}/>
                         </div>
                     </div>

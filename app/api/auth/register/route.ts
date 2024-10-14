@@ -8,6 +8,17 @@ export async function POST(req: Request) {
   }
   const salt = await genSalt(10);
   const hashPassword = await hash(password, salt);
+  const userExists = await db.user.findFirst({
+    where:{
+      OR:[
+        {email},
+        {username}
+      ]
+    }
+  });
+  if(userExists){
+    return new Response('User already exists', {status: 400});
+  }
   const user = await db.user.create({
     data:{
         email: email,

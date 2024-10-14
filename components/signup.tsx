@@ -15,7 +15,7 @@ import { Loader2 } from "lucide-react";
 interface SignupProps{
     url?:string
 }
-const Signup: FC<SignupProps> = ({url}) => {
+const Signup: FC<SignupProps> = () => {
     const router = useRouter();
     const {register, handleSubmit, formState:{errors}} = useForm<SignupSchemaType>({resolver:zodResolver(SignupSchema)});
     const {isPending, mutate} = useMutation({
@@ -25,12 +25,7 @@ const Signup: FC<SignupProps> = ({url}) => {
             return await res.json();
         },
         onSuccess: ()=>{
-            if(url){
-                router.push('/api/auth/signin?url='+url);
-            }
-            else{
                 router.push('/api/auth/signin');
-            }
         },
         onError: (error)=>{
             console.log(error)

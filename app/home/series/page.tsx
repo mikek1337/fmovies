@@ -4,6 +4,7 @@
 import { MovieResponse } from "@/app/types/moviedbresponse";
 import MovieList from "@/components/movielist";
 import SelectGener from "@/components/selectgener";
+import SelectYear from "@/components/selectyear";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -14,9 +15,17 @@ import { useEffect, useState } from "react";
 const Page = () =>{
     const [page, setPage] = useState<number>(1);
     const [query, setQuery] = useState<string>('');
-    const [primaryReleaseYear] = useState<number>(2021);
+    const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string>("2021");
     const [movies, setMovies] = useState<MovieResponse>();
     const [loading, setLoading] = useState<boolean>(false);
+    const [gener, setGener] = useState<string[]>([]);
+    const getSelectedGener = (value:string[])=>{
+        setGener(value);
+        console.log(value);
+    }
+    const getSelectedYear = (value:string[])=>{
+        console.log(value);
+    }
     useEffect(()=>{
         setLoading(true);
         if(query === "" || !query){
@@ -46,7 +55,8 @@ const Page = () =>{
        <div>
               <div className="flex  items-center my-5 gap-2 flex-wrap">
                 <Input type="text" placeholder="Search series" className="w-1/5 p-2 border-2 border-gray-200 rounded-lg" onChange={(e)=>setQuery(e.target.value)}/>
-                <SelectGener/>
+                <SelectGener onValueChange={getSelectedGener}/>
+                <SelectYear onValueChange={getSelectedYear}/>
                 <Button onClick={()=>search}>Search</Button>
               </div>
               
