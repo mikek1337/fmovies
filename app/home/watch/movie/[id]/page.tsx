@@ -3,12 +3,20 @@ import Recommendation from "@/components/recommendation";
 import VideoPlayer from "@/components/videoplayer";
 import { Suspense } from "react";
 import Comment from "@/components/comment"
+import ServerControl from "@/components/servercontrol";
+
 const Page = async({params}:{params:{id:string}})=>{
-    const videoUrl = `https://vidsrc.icu/embed/movie/${params.id}`
+    let domain = "vidsrc.icu"
+    const selectServer = async (serverUrl:string)=>{
+        "use server"
+        domain = serverUrl
+    }
+    const videoUrl = `https://${domain}/embed/movie/${params.id}`
     return(
         <>
         <div className="px-5 h-fit">
             <VideoPlayer videoUrl={videoUrl}/>
+           <ServerControl selectServer={selectServer}/>
         </div>
         <div className=" my-10 ">
             
