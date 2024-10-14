@@ -6,7 +6,7 @@ import Comment from "@/components/comment"
 import ServerControl from "@/components/servercontrol";
 
 const Page = async({params}:{params:{id:string}})=>{
-    let domain = "vidsrc.icu"
+    var domain = "vidsrc.icu"
     const selectServer = async (serverUrl:string)=>{
         "use server"
         domain = serverUrl
@@ -20,18 +20,18 @@ const Page = async({params}:{params:{id:string}})=>{
         </div>
         <div className=" my-10 ">
             
-            <Suspense fallback={<div>Loading...</div>}>
+           
             <MovieDetails id={parseInt(params.id)}/>
-            </Suspense>
+            
             
         </div>
-      {  <div>
+      <div>
             <Comment id={parseInt(params.id)}/>
-        </div>}
+        </div>
         <div>
-            <Suspense fallback={<div>Loading...</div>}>
+            
             <Recommendation id={parseInt(params.id)}/>
-            </Suspense>
+       
         </div>
         </>
     )

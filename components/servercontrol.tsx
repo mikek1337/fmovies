@@ -14,7 +14,7 @@ const ServerControl:FC<ServerControlProps> = ({selectServer}) =>{
         selectServer(server)
     }
     return(
-        <div className="w-full flex flex-col items-center py-10">
+        <div className="w-full border flex flex-col items-center py-10">
         <h3 className="text-2xl font-semibold">Alternative Servers</h3>
         <div className="flex items-center gap-2">
             <Button variant="ghost" className={cn({"bg-indigo-500 text-white":selectedServer.includes(servers[0])})} onClick={()=>changeServer(servers[0])}>VidSrc</Button>

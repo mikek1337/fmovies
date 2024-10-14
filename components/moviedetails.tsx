@@ -9,7 +9,7 @@ import MediaOptions from "./mediaoptions"
 interface MovieDetailsProps{
     id:number,
 }
-const MovieDetails:FC<MovieDetailsProps> = async({id})=>{
+const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
     const {data:movieDetails, isLoading} = useQuery({
         queryKey:["movie", id],
         queryFn: async()=>{
