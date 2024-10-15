@@ -1,9 +1,12 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MultiSelect, MultiSelectOption } from '@/components/multiselect';
+import { MultiSelect, MultiSelectOption, MultiSelectTrigger } from '@/components/multiselect';
 
-test('renders MultiSelect component', () => {
+
+describe('renders MultiSelect component', () => {
+  it('renders MultiSelect component', () => {
   render(
     <MultiSelect>
+      <MultiSelectTrigger defaultText='Select an option' />
       <MultiSelectOption value="option1">Option 1</MultiSelectOption>
       <MultiSelectOption value="option2">Option 2</MultiSelectOption>
       <MultiSelectOption value="option3">Option 3</MultiSelectOption>
@@ -11,14 +14,16 @@ test('renders MultiSelect component', () => {
   );
 
   const trigger = screen.getByText('Select an option');
+  fireEvent.click(trigger);
+  expect(screen.getByText('Option 1')).toBeInTheDocument();
   expect(trigger).toBeInTheDocument();
 });
-
-test('selects options in MultiSelect', () => {
-  const handleValueChange = jest.fn();
+it('selects options in MultiSelect', () => {
+  const handleValueChange = jest.fn((value:string[]) => value);
 
   render(
     <MultiSelect onValueChange={handleValueChange}>
+      <MultiSelectTrigger defaultText='Select an option' />
       <MultiSelectOption value="option1">Option 1</MultiSelectOption>
       <MultiSelectOption value="option2">Option 2</MultiSelectOption>
       <MultiSelectOption value="option3">Option 3</MultiSelectOption>
@@ -35,3 +40,4 @@ test('selects options in MultiSelect', () => {
 
   expect(handleValueChange).toHaveBeenCalledWith(['option1', 'option2', 'option3']);
 });
+})
