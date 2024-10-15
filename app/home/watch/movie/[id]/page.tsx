@@ -1,23 +1,14 @@
+
 import MovieDetails from "@/components/moviedetails";
 import Recommendation from "@/components/recommendation";
-import VideoPlayer from "@/components/videoplayer";
-import { Suspense } from "react";
 import Comment from "@/components/comment"
-import ServerControl from "@/components/servercontrol";
+import VideoServerController from "@/components/videoservercontroller";
 
-const Page = async({params}:{params:{id:string}})=>{
-    var domain = "vidsrc.icu"
-    const selectServer = async (serverUrl:string)=>{
-        "use server"
-        domain = serverUrl
-    }
-    const videoUrl = `https://${domain}/embed/movie/${params.id}`
+const Page = ({params}:{params:{id:string}})=>{
+    
     return(
         <>
-        <div className="px-5 h-fit">
-            <VideoPlayer videoUrl={videoUrl}/>
-           <ServerControl selectServer={selectServer}/>
-        </div>
+        <VideoServerController mediaType="movie" additionalParams={params.id}/>
         <div className=" my-10 ">
             
            
