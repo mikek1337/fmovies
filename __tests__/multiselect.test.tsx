@@ -19,7 +19,7 @@ describe('renders MultiSelect component', () => {
   expect(trigger).toBeInTheDocument();
 });
 it('selects options in MultiSelect', () => {
-  const handleValueChange = jest.fn((value:string[]) => value);
+  const handleValueChange = jest.fn();
 
   render(
     <MultiSelect onValueChange={handleValueChange}>
@@ -30,10 +30,11 @@ it('selects options in MultiSelect', () => {
     </MultiSelect>
   );
 
-  const option1 = screen.getByText('Option 1');
-  const option2 = screen.getByText('Option 2');
-  const option3 = screen.getByText('Option 3');
-
+  const options = screen.getAllByRole('checkbox');
+  const option1 = options[0];
+  const option2 = options[1];
+  const option3 = options[2];
+  console.log(option1)
   fireEvent.click(option1);
   fireEvent.click(option2);
   fireEvent.click(option3);
