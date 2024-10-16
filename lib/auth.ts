@@ -43,6 +43,7 @@ export const AuthOptions:NextAuthOptions = {
                     name: token.name,
                     email: token.email,
                     image: token.picture,
+                    id: token.id,
                 };
             }
         
@@ -73,7 +74,7 @@ export const AuthOptions:NextAuthOptions = {
 
             return {
                 id: dbUser.id,
-                name: dbUser.name,
+                name: dbUser.username,
                 email: dbUser.email,
                 picture: dbUser.image,
                 username: dbUser.username,

@@ -60,6 +60,7 @@ const MultiSelectTrigger = ({defaultText,open, setOpen}:MultiSelectTriggerProps)
     <div
     className="flex cursor-pointer w-fit justify-between items-center border rounded-lg p-2"
     onClick={() => setOpen && setOpen(!open)}
+    
   >
     <span className="line-clamp-1 max-w-[100px]">
       {defaultText}
@@ -105,8 +106,7 @@ const MultiSelectOption = ({children, value, fn}:React.PropsWithChildren<MultiSe
     } else {
       checkValue = checkValue.filter((name) => name !== value);
     }
-    console.log(value);
-    console.log(checkValue)
+    
     if(fn){
       fn(checkValue)
     }
