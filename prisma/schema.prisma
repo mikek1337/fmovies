@@ -108,6 +108,8 @@ model RecentlyViewed{
   mediaId String
   MediaType String
   userId String
+  poster_path String
+  title String
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }

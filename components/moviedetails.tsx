@@ -1,15 +1,18 @@
 "use client"
 import { movieDetail } from "@/lib/tmd"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 import Image from "next/image"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { Button } from "./ui/button"
 import MediaOptions from "./mediaoptions"
+import { RecentlyViewedType } from "@/app/types/recentlyViewed"
+import axios from "axios"
 interface MovieDetailsProps{
     id:number,
 }
 const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
+    
     const {data:movieDetails, isLoading} = useQuery({
         queryKey:["movie", id],
         queryFn: async()=>{
@@ -17,6 +20,23 @@ const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
         },
         retry:true,
     });
+    const {mutate} = useMutation({
+        mutationKey:["moviemutate", id],
+        mutationFn: async(recentlyViewed:RecentlyViewedType)=>{
+            return (await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)).data;
+        },
+    })
+    useEffect(()=>{
+        if(movieDetails){
+            mutate({
+                id:movieDetails.id.toString(),
+                title:movieDetails.title,
+                media_type:"movie",
+                poster_path:movieDetails.poster_path,
+            })
+        }
+    },[movieDetails])
+
     if(isLoading && !movieDetails)
     {
         return(
@@ -25,7 +45,7 @@ const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
         </div>)
     }
     return(
-        <div className="flex shadow-md  p-2 md:flex-row flex-col">
+        <div className="flex shadow-md  p-2 md:flex-row flex-col" >
         <div className="flex md:flex-row flex-col gap-2 w-full max-w-[1200px]  px-1">
             <div className="md:w-fit md:h-fit border  ">
                     <Image src={`http://image.tmdb.org/t/p/w500${movieDetails?.poster_path}`} className='object-contain md:w-[200px] md:h-[300px]   rounded-md' width={500} height={500} alt={movieDetails?.name!}/>

@@ -3,8 +3,9 @@ import MovieDetails from "@/components/moviedetails";
 import Recommendation from "@/components/recommendation";
 import Comment from "@/components/comment"
 import VideoServerController from "@/components/videoservercontroller";
+import { db } from "@/lib/db";
 
-const Page = ({params}:{params:{id:string}})=>{
+const Page = async ({params}:{params:{id:string}})=>{
     
     return(
         <>

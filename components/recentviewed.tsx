@@ -7,13 +7,6 @@ interface RecentlyViewedProps  {
     
 }
 const RecentlyViewed:FC<RecentlyViewedProps> = ({recentlyViewed}) =>{
-    const data = recentlyViewed.map(async (viewed)=>{
-        if(viewed.MediaType == "tv"){
-            return (await seriesDetail(parseInt(viewed.mediaId))).data;
-        }
-        return (await movieDetail(parseInt(viewed.mediaId))).data;
-    })
-
     return(
         <div className="my-2">
             <h1 className="text-xl font-extrabold">Recently Viewed</h1>
@@ -22,8 +15,8 @@ const RecentlyViewed:FC<RecentlyViewedProps> = ({recentlyViewed}) =>{
                     recentlyViewed.length == 0 && <h1 className="text-center">No Recently Viewed</h1>
                 }
                 <Flip>
-                    {data.map(async (media)=>(
-                        <FlipFront title={(await media).title} image={`http://image.tmdb.org/t/p/w500${(await media).poster_path}`}/>
+                    {recentlyViewed.map((media)=>(
+                        <FlipFront title={media.title} image={`http://image.tmdb.org/t/p/w500${media.poster_path}`} key={media.id}/>
                     ))}
                    
                 </Flip>

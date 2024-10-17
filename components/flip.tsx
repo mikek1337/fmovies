@@ -23,7 +23,7 @@ interface FlipFrontProps {
 }
 const FlipFront: FC<FlipFrontProps> = ({image, title}) => {
   return (
-    <div className="relative w-[300px] h-[300px] skew-y-12 ">
+    <div className="relative w-[300px] h-[400px] hover:-skew-y-0 hover:z-10 hover:shadow-2xl hover:translate-z-10 transition-transform hover:skew-x-3 rounded-md ">
       <div className="w-full h-full">
         <div className="absolute w-full h-full shadow-lg">
             <Image src={image} alt={title} className="w-full h-full" width={500} height={500} />
