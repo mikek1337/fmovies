@@ -47,7 +47,7 @@ const UserSideMenu:FC = () =>{
                 </Link>
                 </li>
                 <li className=" h-[60px] w-full absolute bottom-0 group-hover:flex items-center gap-3 transition-all duration-200 ease-in-out text-indigo-500 p-2 hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                <Link href="/home" className="flex items-center gap-3">
+                <Link href="/home/user/account" className="flex items-center gap-3">
                     <UserCircle2 className="w-5 h-5"/>
                     <span className="text-sm hidden group-hover:block">Account</span>
                 </Link>

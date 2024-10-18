@@ -14,7 +14,7 @@ export default async function Page(){
         }
     })
     return(
-    <main>
+    <main className="w-full h-full">
         <UserDashboard userSession={userSession.user}>
             <RecentlyViewed recentlyViewed={recentlyViewed}/>
         </UserDashboard>
