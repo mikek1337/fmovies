@@ -2,9 +2,9 @@ import { FC } from "react";
 
 interface UserDashboardProps{
     userSession:{
-        name:string,
-        email:string,
-        image:string
+        name?:string | null | undefined,
+        email?:string | null | undefined,
+        image?:string | null | undefined
     },
     children:React.ReactNode
 }

@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 
 export const AuthOptions:NextAuthOptions = {
     adapter: PrismaAdapter(db),
+    
     session:{
         strategy: 'jwt',
     },
@@ -19,6 +20,7 @@ export const AuthOptions:NextAuthOptions = {
                 password: {  label: "Password", type: "password" }
             },
             async authorize(credentials){
+                
                 if(credentials){
                 const user = await db.user.findFirst({where:{username:credentials.username}});
                 if(user &&  user.password && compareSync(credentials.password, user.password)){
@@ -49,6 +51,7 @@ export const AuthOptions:NextAuthOptions = {
         
             return session;
         },
+
         async jwt({ token, user }) {
             const dbUser = await db.user.findFirst({
                 where: {

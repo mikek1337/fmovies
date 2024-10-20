@@ -4,15 +4,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-
+import { Session } from "next-auth";
+import {redirect} from "next/navigation";
 const Page = async () => {
     const session = await getAuthSession()
+    if(!session){
+        redirect('/login')
+        return;
+    }
     const user = await db.user.findFirst({
         where:{
-            id: session?.user?.id
+            email: session?.user?.email!
         }
     })
-    const updateUserWithId = updateUser.bind(null, user?.id!)
+    if(!user){
+        redirect('/login')
+        return
+    }
+    const updateUserWithId = async (formData: FormData)=>{
+        "use server"
+        updateUser(formData, user.id)
+    }
     return (
         <div className="border w-full">
             <h1 className="text-3xl font-extrabold">Account</h1>
@@ -20,11 +32,11 @@ const Page = async () => {
                 <form className="max-w-[500px]" action={updateUserWithId}>
                     <div>
                         <label htmlFor="email">Email</label>
-                        <Input type="email" id="email" name="email" disabled defaultValue={user?.email} />
+                        <Input type="email" id="email" name="email" disabled defaultValue={user?.email || ""} />
                     </div>
                     <div className="my-1">
                         <label htmlFor="username">Username</label>
-                        <Input type="text" id="username" name="username" defaultValue={user?.username}/>
+                        <Input type="text" id="username" name="username" defaultValue={user?.username || ""}/>
                     </div>
                     <div>
                         <label htmlFor="password">Password</label>
@@ -40,7 +52,7 @@ const Page = async () => {
                 </form>
                 <div className="">
                     <Avatar className="border w-[100px] h-[100px]">
-                        <AvatarImage src={user?.image} alt="user" />
+                        <AvatarImage src={user?.image || ""} alt="user" />
                         <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                 </div>

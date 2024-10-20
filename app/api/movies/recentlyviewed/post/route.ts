@@ -10,7 +10,9 @@ export async function POST(req: Request) {
     const { poster_path, title, id, media_type } = RecentlyViewedSchema.parse(await req.json());
     const existing = await db.recentlyViewed.findFirst({
         where: {
-            userId: session.user.id,
+            user: {
+                email: session.user.email
+            },
             mediaId: id
         }
     });
