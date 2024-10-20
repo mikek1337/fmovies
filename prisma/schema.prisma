@@ -66,8 +66,9 @@ model Rating{
   object String
   upVote Int?
   downVote Int?
-  userId String
+  userId String 
   user User @relation(fields: [userId], references: [id])
+  @@unique([object, userId])
 }
 
 model Comment {

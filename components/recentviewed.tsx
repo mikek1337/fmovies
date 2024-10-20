@@ -3,6 +3,7 @@ import type { RecentlyViewed } from "@prisma/client";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import GetMediaDetail from "./getmediadetail";
 interface RecentlyViewedProps  {
     recentlyViewed:RecentlyViewed[]
     
@@ -15,18 +16,18 @@ const RecentlyViewed:FC<RecentlyViewedProps> = ({recentlyViewed}) =>{
                 {
                     recentlyViewed.length == 0 && <h1 className="text-center">No Recently Viewed</h1>
                 }
-                <div className="">
-                    <Carousel>
+                <div className="max-w-[700px] mx-auto">
+                    <Carousel opts={{
+        align: "start",
+      }}
+     >
                         <CarouselContent>
                             {recentlyViewed.map((veiwed)=>(
-                                <CarouselItem key={veiwed.id}>
-                                    <div className="relative">
-                                        <div className=" ">
-                                            <h1 className="text-2xl font-extrabold text-white">{veiwed.title}</h1>
-                                            
-                                        </div>
+                                 <CarouselItem key={veiwed.id} >
+                                    <div className="flex justify-center  gap-2 max-w-[1200px]">
+                                        <GetMediaDetail id={veiwed.mediaId} media_type={veiwed.MediaType}/>
                                         <div className="">
-                                            <Image src={`http://image.tmdb.org/t/p/original${veiwed.poster_path}`} alt={veiwed.title} width={500} height={100}/>
+                                            <Image src={`http://image.tmdb.org/t/p/original${veiwed.poster_path}`} alt={veiwed.title} width={300} height={300}/>
                                         </div>
                                     </div>
                                 </CarouselItem>

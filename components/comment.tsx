@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { formatTimeToNow } from "@/lib/utils";
 import CastReply from "./castreply";
 import { useToast } from "@/hooks/use-toast";
+import Rating from "./rating";
 interface CommentProps{
     id:number;
     season?:number;
@@ -120,17 +121,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                             <div className="flex items-center gap-2">
                                                 
                                                     <CastReply commentId={comment.id}/>
-                                                
-                                                <div className="flex items-center gap-3 text-zinc-700">
-                                                    <div className="flex items-center gap-2">
-                                                        <ThumbsUp className="w-4 h-4 "/>
-                                                        <span className="text-sm">0</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <ThumbsDown className="w-4 h-4 "/>
-                                                        <span className="text-sm">0</span>
-                                                    </div>
-                                                </div>
+                                                    <Rating id={comment.id}/>
                                             </div>
                                             
                                         </div>
