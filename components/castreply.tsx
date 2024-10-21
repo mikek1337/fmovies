@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { CommentSchemaType } from "@/app/types/commentschema";
 import { cn } from "@/lib/utils";
 import { MessageSquareText } from "lucide-react";
+import axios from "axios";
 
 interface CastReplyProps{
     commentId:string;
@@ -13,21 +14,28 @@ interface CastReplyProps{
 const CastReply:FC<CastReplyProps> = ({commentId})=>{
     const [comment, setComment] = useState<string>("");
     const [replying, setReplying] = useState<boolean>(false);
+   
     const {isPending, mutate} = useMutation({
         mutationFn: async (comment:CommentSchemaType)=>{
-            await fetch(`/api/comments/reply?id=${commentId}`,{
+            return await fetch(`/api/comments/reply?id=${commentId}`,{
                 method:"POST",
                 body:JSON.stringify(comment)
             })
         }
     })
-    const uploadComment = async ()=>{
-        mutate({
+    const uploadComment = ()=>{
+        const commentContent: CommentSchemaType = {
             content: comment,
-            parentId: commentId
-
-        })
+            parentId: commentId,
+            episodeId:"",
+            movieId:"",
+            seasonId:"",
+            seriesId:""
+        }
+        console.log(commentContent);
+        mutate(commentContent);
         setReplying(false);
+        setComment("");
     }
     return(
         <div>
@@ -36,7 +44,7 @@ const CastReply:FC<CastReplyProps> = ({commentId})=>{
                 Reply
             </span>
             <div className={cn("flex items-center gap-2",{"hidden":!replying})}>
-                <Input placeholder="Reply to comment" onChange={(e)=>setComment(e.target.value)} className="w-full"/>
+                <Input placeholder="Reply to comment" onChange={(e)=>setComment(e.target.value)} className="w-full" value={comment}/>
                 <Button variant="ghost"  onClick={()=>uploadComment()} className="w-fit" disabled={isPending}>Post</Button>
             </div>
         </div>

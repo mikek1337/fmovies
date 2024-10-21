@@ -13,7 +13,11 @@ export async function GET(req:Request){
         include:{
             comment:{
                 include:{
-                    replies:true,
+                    replies:{
+                        include:{
+                            user:true
+                        }
+                    },
                     user:true
                 }
             }

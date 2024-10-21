@@ -59,6 +59,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
             
         },
     });
+    console.log(data);
 
     const uploadComment = async ()=>{
         let comment:CommentSchemaType
@@ -100,7 +101,8 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                         /* eslint-disable @typescript-eslint/no-explicit-any */
                         data?.map((comment:any)=>(
                             <div key={comment.id} className="rounded-md p-2 ml-2">
-                                <div className="flex items-start gap-2">
+                                
+                                <div className="flex items-start gap-2 max-w-[500px] shadow-md">
                                     <div className="flex items-center gap-2">
                                         <Avatar className="border">
                                             <AvatarImage src={comment.comment.user?.image} alt={comment.comment.user?.username}/>
@@ -120,10 +122,10 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 
-                                                    <CastReply commentId={comment.id}/>
-                                                    <Rating id={comment.id}/>
+                                                    <CastReply commentId={comment?.comment.id}/>
                                             </div>
                                             
+                                                    <Rating id={comment?.comment.id}/>
                                         </div>
                                     </div>
                                     
@@ -131,7 +133,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                 {
                                  /* eslint-disable @typescript-eslint/no-explicit-any */
                                 comment.comment.replies.map((reply:any)=>(
-                                    <div key={reply.id} className="ml-5">
+                                    <div key={reply.id} className="ml-7 my-3 max-w-[500px] shadow-md">
                                         <div className="flex items-center gap-2">
                                             <div className="flex items-center gap-2">
                                                 <Avatar>
@@ -140,14 +142,19 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                                 </Avatar>
                                                 
                                             </div>
-                                            <div>
-                                                <span className="font-semibold text-sm">{reply.user?.username}</span>
-                                                <p className="text-sm">{reply.content}</p>
-                                                <div className="flex items-center gap-2">
-                                                    
-                                                    <ThumbsUp className="w-4 h-4 fill-indigo-500"/>
-                                                    <ThumbsDown className="w-4 h-4 "/>
+                                            <div className="w-full">
+                                                <div className="flex justify-between">
+                                                    <div>
+                                                        <span className="font-semibold text-sm">{reply.user?.username}</span>
+                                                        <p className="text-sm">{reply.content}</p>
+                                                    </div>
+                                                    <div>
+                                                        <span className=" text-zinc-600">{formatTimeToNow(reply.createdAt)}</span>
+
+                                                    </div>
                                                 </div>
+                                               <CastReply commentId={reply.id}/>
+                                               <Rating id={reply.id}/>
                                             </div>
                                             
                                         </div>

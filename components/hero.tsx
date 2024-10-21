@@ -38,9 +38,9 @@ const Hero:FC<HeroProps> = ({movies})=>{
     return(
         <div className="flex justify-around broder border-y-emerald-700 w-full ">
         <div className='w-full'>
-        <div className=' rounded-2xl   '>
-                <BlurFade inView key={movie?.id}>
-                    <div  className={cn('relative  w-full justify-center md:flex  md:px-2')}>
+        <div className=' rounded-2xl'>
+                <BlurFade blur="true" inView key={movie?.id} className="w-full border">
+                    <div  className={cn('relative  w-full justify-center md:flex md:px-2')}>
                         <div className="w-full">
                             <div className='absolute   md:relative w-full h-full md:bg-none  bg-gradient-to-r from-indigo-500'>
 
@@ -60,14 +60,14 @@ const Hero:FC<HeroProps> = ({movies})=>{
                                 </div>
                             </div>
                         </div>
-                        <div className='md:h-[400px] '>
-                            <Image src={`http://image.tmdb.org/t/p/original${movie?.backdrop_path || movie.poster_path}`} className='object-cover md:max-h-[650px] w-full  rounded-md' width={1200} height={500} alt={movie?.title}/>
+                        <div className='  '>
+                            <Image src={`http://image.tmdb.org/t/p/original${movie?.backdrop_path || movie.poster_path}`} className='object-cover md:max-h-[650px]   rounded-md border' width={1200} height={300} alt={movie?.title}/>
                         </div>
                     </div>
                     </BlurFade>
              
         </div>
-        <div className='flex justify-center my-5'>
+        <div className='flex justify-center my-10'>
                 <div className='flex  gap-2'>
                     <span className='p-2 rounded-full bg-indigo-300' onClick={()=>loadMovieSilde(0)}></span>
                     <span className='p-2 rounded-full bg-indigo-300' onClick={()=>loadMovieSilde(1)}></span>

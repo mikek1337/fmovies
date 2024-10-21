@@ -16,6 +16,5 @@ export async function GET(req: Request){
             object:objectId
         }
     });
-    console.log(ratings);
     return new Response(JSON.stringify(ratings._sum), {status:200});
 }
