@@ -33,6 +33,8 @@ export async function updateUser(formData:FormData, userId:string){
     });
     revalidatePath('/api/auth/session');
     revalidatePath('/home/user/account');
-    return updatedUser;}
+    return updatedUser;
+}
+return {error:'Bad Request'};
 
 }
