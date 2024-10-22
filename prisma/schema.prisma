@@ -59,6 +59,7 @@ model User {
   Rating        Rating[]
   Comment      Comment[]
   RecentlyViewed RecentlyViewed[]
+  Favorite Favorite[]
 }
 
 model Rating{
@@ -85,6 +86,7 @@ model Comment {
   replies   Comment[] @relation("CommentReplies")
   MovieComment MovieComment[]
   SeriesComment SeriesComment[]
+
   @@index([postId])
 }
 
@@ -93,6 +95,15 @@ model MovieComment{
   movieId String
   commentId String
   comment Comment @relation(fields: [commentId], references: [id])
+}
+model Favorite{
+  id String @id
+  userId String
+  mediaId String
+  MediaType String
+  title String
+  poster_path String
+  user User @relation(fields: [userId], references: [id])
 }
 
 model SeriesComment{
