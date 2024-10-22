@@ -20,7 +20,7 @@ export default async function Home() {
                 movies.results.map((movie, index:number)=>(
                   <ToolTip text={movie.title} key={movie.id}>
                     <div className="flex items-center">
-                    <span  className=" line-clamp-1 text-sm text-zinc-300 max-w-[100px]  ">
+                    <span  className=" line-clamp-1 text-sm text-zinc-500 max-w-[100px]  ">
                       <Link href={`/home/watch/${movie.id}`} className="hover:text-indigo-500">
                         {movie.title}
                       </Link>
