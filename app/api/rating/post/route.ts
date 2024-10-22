@@ -17,24 +17,46 @@ export async function POST(req: Request){
     }
     if(userSession)
     {
-        const rating = await db.rating.upsert({
+        const rating = await db.rating.findFirst({
             where:{
-                object:objectId,
-                user:{
-                    email:userSession.user?.email
-                }
-            },
-            create:{
-                id: nanoid(), // Add the id property here
-                user:{
-                    connect:{
-                        email:userSession.user?.email!
+                AND:[
+                    {
+                        object: objectId
+                    },
+                    {
+                        user: {
+                            email: userSession.user?.email
+                        }
                     }
-                },
-        
-                ...body
+                ]
             }
         });
+        if(rating){
+             await db.rating.update({
+                where:{
+                    id: rating.id
+                },
+                data:{
+                    upVote: body.upVote,
+                    downVote: body.downVote
+                }
+            });
+        }
+        else{
+             await db.rating.create({
+                data:{
+                    id: nanoid(),
+                    object: objectId,
+                    user: {
+                        connect: {
+                            email: userSession.user?.email!
+                        }
+                    },
+                    upVote: body.upVote,
+                    downVote: body.downVote
+                }
+            });
+        }
         return new Response(JSON.stringify(rating), {status:200});
     }
     return new Response("Unauthorized", {status:401});
