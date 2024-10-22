@@ -46,7 +46,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                 toast({
                     title: "Error",
                     description: "You need to login to comment",
-                    varient: "destructive"
+                    variant: "destructive"
                 })
             }
         },
