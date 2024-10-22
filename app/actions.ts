@@ -21,6 +21,7 @@ export async function updateUser(formData:FormData, userId:string){
     }
     if(formData.get('newPassword') !== null){
         const hashPassword = await hashSync(formData.get('newPassword') as string, 10);
+        console.log(hashPassword);
         data = {
             ...data,
             
