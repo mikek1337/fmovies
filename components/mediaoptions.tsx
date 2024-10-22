@@ -1,7 +1,7 @@
 import { Heart, Loader2, PlayCircle } from "lucide-react";
 import { Button } from "./ui/button"
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { FC, useOptimistic } from "react";
+import { FC } from "react";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 import { FavoriteType } from "@/app/types/favoriteschema";
