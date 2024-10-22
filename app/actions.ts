@@ -23,7 +23,7 @@ export async function updateUser(formData:FormData, userId:string){
         const hashPassword = await hashSync(formData.get('newPassword') as string, 10);
         data = {
             ...data,
-            password:hashPassword
+            
         }
     }
     const updatedUser = await db.user.update({
