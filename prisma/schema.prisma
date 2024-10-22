@@ -58,6 +58,7 @@ model User {
   sessions      Session[]
   Rating        Rating[]
   Comment      Comment[]
+  RecentlyViewed RecentlyViewed[]
 }
 
 model Rating{
@@ -65,8 +66,9 @@ model Rating{
   object String
   upVote Int?
   downVote Int?
-  userId String
+  userId String 
   user User @relation(fields: [userId], references: [id])
+  @@unique([object, userId])
 }
 
 model Comment {
@@ -100,5 +102,16 @@ model SeriesComment{
   episodeId String
   commentId String
   comment Comment @relation(fields: [commentId], references: [id])
+}
+
+model RecentlyViewed{
+  id String @id
+  mediaId String
+  MediaType String
+  userId String
+  poster_path String
+  title String
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 

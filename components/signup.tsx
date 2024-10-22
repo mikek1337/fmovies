@@ -12,7 +12,10 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-const Signup: FC = () => {
+interface SignupProps{
+    url?:string
+}
+const Signup: FC<SignupProps> = () => {
     const router = useRouter();
     const {register, handleSubmit, formState:{errors}} = useForm<SignupSchemaType>({resolver:zodResolver(SignupSchema)});
     const {isPending, mutate} = useMutation({
@@ -22,7 +25,7 @@ const Signup: FC = () => {
             return await res.json();
         },
         onSuccess: ()=>{
-            router.push('/api/auth/signin');
+                router.push('/api/auth/signin');
         },
         onError: (error)=>{
             console.log(error)

@@ -11,7 +11,12 @@ export async function POST(req: Request) {
     }
     const user = await getAuthSession();
     if (user) {
+        
         const newComment = CommentSchema.parse(await req.json());
+        console.log(newComment);
+        
+        //const comments = await db.comment.findMany();
+        
         const comment = await db.comment.findUnique({
             where:{
                 id: id
@@ -23,6 +28,7 @@ export async function POST(req: Request) {
                 email: user?.user?.email!
             }
         });
+        console.log(comment);
         if(!userData){
             return new Response('User not found', {status: 404});
         }

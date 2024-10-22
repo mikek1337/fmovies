@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import Recommendation from "./recommendation"
 import Comment from "./comment"
+import { useMutation } from "@tanstack/react-query"
+import { RecentlyViewedType } from "@/app/types/recentlyViewed"
 interface SeriesProps{
     id:number
 }
@@ -35,6 +37,12 @@ const Series:FC<SeriesProps> = ({id}) =>{
         setLoading(true);
         axios.get<MovieDetail>(`/api/series/detail?id=${id}`).then((res)=>{
             setSeries(res.data);
+            mutate({
+                id: res.data.id.toString(),
+                title: res.data.name,
+                media_type: "tv",
+                poster_path: res.data.poster_path,
+            })
             setSeasonEpisodes(res.data.seasons.filter(seasonValue=>seasonValue.season_number ===season)[0].episode_count)
             console.log(series);
             setLoading(false);
@@ -43,7 +51,14 @@ const Series:FC<SeriesProps> = ({id}) =>{
             setLoading(false);
         })
 
-    },[id, season])
+    },[id, season, series]);
+    const {mutate} = useMutation({
+        mutationKey:["seriesmutate", id],
+        mutationFn: async(recentlyViewed:RecentlyViewedType)=>{
+            return (await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)).data;
+        },
+    });
+
     return(
         <>
         <div className="relative  grid grid-cols-12 w-full h-fit  my-4 border px-5 ">

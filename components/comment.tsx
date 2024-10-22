@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Loader } from "lucide-react";
 import { FC, useState } from "react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { formatTimeToNow } from "@/lib/utils";
 import CastReply from "./castreply";
 import { useToast } from "@/hooks/use-toast";
+import Rating from "./rating";
 interface CommentProps{
     id:number;
     season?:number;
@@ -81,6 +82,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
             
         },
     });
+    console.log(data);
 
     const uploadComment = async ()=>{
         let comment:CommentSchemaType
@@ -110,9 +112,9 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
         <div className="w-full p-1 my-10 ">
             <h2 className="text-2xl font-extrabold">Comments</h2>
             {isPending && <Loader className="w-5 h-5 animate-spin mx-auto"/>}
-            <div className="max-w-[500px]">
+            <div className="">
                 
-                <div>
+                <div className="w-full ">
                     <div className="flex items-center gap-2  w-full">
                         <Input placeholder="Add a comment" className="w-full" onChange={(e)=>setUserComment(e.target.value)}/>
                         <Button onClick={()=>uploadComment()} disabled={submitting} className="w-fit">Post</Button>
@@ -121,8 +123,9 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                         {
                         /* eslint-disable @typescript-eslint/no-explicit-any */
                         data?.map((comment:any)=>(
-                            <div key={comment.id} className="shadow-md rounded-md p-2 ml-2">
-                                <div className="flex items-center gap-2">
+                            <div key={comment.id} className="rounded-md p-2 ml-2">
+                                
+                                <div className="flex items-start gap-2 max-w-[500px] shadow-md">
                                     <div className="flex items-center gap-2">
                                         <Avatar className="border">
                                             <AvatarImage src={comment.comment.user?.image} alt={comment.comment.user?.username}/>
@@ -131,23 +134,21 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                         
                                     </div>
                                     <div className="w-full">
-                                        <div className="flex items-center justify-between w-full">
-                                            <span className="font-semibold text-sm">{comment.comment.user?.username}</span>
-                                            <span className="text-xs text-zinc-400">{formatTimeToNow(comment.comment.createdAt)}</span>
+                                        <div className="flex items-center gap-2 w-full">
+                                            <span className="font-semibold ">{comment.comment.user?.username}</span>
+                                            <span className=" text-zinc-600">{formatTimeToNow(comment.comment.createdAt)}</span>
                                         </div>
                                         <div >
-                                            <div className="flex items-center gap-3 justify-between">
+                                            <div className="flex items-center gap-3 my-2">
                                                 <p className="text-sm max-w-500">{comment?.comment.content}</p>
-                                                <div className="flex items-center gap-1">
-                                                    <ThumbsUp className="w-3 h-3 fill-teal-500 text-teal-500"/>
-                                                    <ThumbsDown className="w-3 h-3 "/>
-                                                </div>
 
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <CastReply commentId={comment.id}/>
+                                                
+                                                    <CastReply commentId={comment?.comment.id}/>
                                             </div>
                                             
+                                                    <Rating id={comment?.comment.id}/>
                                         </div>
                                     </div>
                                     
@@ -155,7 +156,7 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                 {
                                  /* eslint-disable @typescript-eslint/no-explicit-any */
                                 comment.comment.replies.map((reply:any)=>(
-                                    <div key={reply.id} className="ml-5">
+                                    <div key={reply.id} className="ml-7 my-3 max-w-[500px] shadow-md">
                                         <div className="flex items-center gap-2">
                                             <div className="flex items-center gap-2">
                                                 <Avatar>
@@ -164,14 +165,19 @@ const Comment:FC<CommentProps> = ({id, season, episode})=>{
                                                 </Avatar>
                                                 
                                             </div>
-                                            <div>
-                                                <span className="font-semibold text-sm">{reply.user?.username}</span>
-                                                <p className="text-sm">{reply.content}</p>
-                                                <div className="flex items-center gap-2">
-                                                    
-                                                    <ThumbsUp className="w-4 h-4 fill-indigo-500"/>
-                                                    <ThumbsDown className="w-4 h-4 "/>
+                                            <div className="w-full">
+                                                <div className="flex justify-between">
+                                                    <div>
+                                                        <span className="font-semibold text-sm">{reply.user?.username}</span>
+                                                        <p className="text-sm">{reply.content}</p>
+                                                    </div>
+                                                    <div>
+                                                        <span className=" text-zinc-600">{formatTimeToNow(reply.createdAt)}</span>
+
+                                                    </div>
                                                 </div>
+                                               <CastReply commentId={reply.id}/>
+                                               <Rating id={reply.id}/>
                                             </div>
                                             
                                         </div>

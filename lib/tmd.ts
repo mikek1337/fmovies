@@ -4,7 +4,7 @@ import { GenerResponse } from '@/app/types/gener';
 
 
 export const latestMovies = async ()=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/movie/day?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
+    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/movie/week?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
         headers:{
             "Content-Type": "application/json",
             
@@ -27,6 +27,14 @@ export const popularMovies = async () =>{
         }
     }
     )
+}
+
+export const getPopularMovies = async (page:number) => {
+  return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/popular?language=en-US&page=${page}&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
+    headers:{
+      "Content-Type":"application/json"
+    }
+  });
 }
 
 export const newSeries = () =>{

@@ -1,4 +1,6 @@
+import { transform } from "next/dist/build/swc"
 import type { Config } from "tailwindcss"
+import plugin from "tailwindcss"
 
 const config = {
   darkMode: ["class"],

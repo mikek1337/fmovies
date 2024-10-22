@@ -4,6 +4,10 @@
  */
 
 import type {Config} from 'jest';
+import nextJest from 'next/jest';
+const createJestConfig = nextJest({
+  dir:'./'
+})
 
 const config: Config = {
   // All imported modules in your tests should be mocked automatically
@@ -20,6 +24,7 @@ const config: Config = {
 
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: true,
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: undefined,
@@ -93,7 +98,7 @@ const config: Config = {
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
   },
-
+  preset: 'ts-jest',
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -199,4 +204,4 @@ const config: Config = {
   // watchman: true,
 };
 
-export default config;
+export default createJestConfig(config);

@@ -5,8 +5,10 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { db } from './db';
 import { compareSync } from 'bcrypt';
 import { nanoid } from 'nanoid';
+
 export const AuthOptions:NextAuthOptions = {
     adapter: PrismaAdapter(db),
+    
     session:{
         strategy: 'jwt',
     },
@@ -18,6 +20,7 @@ export const AuthOptions:NextAuthOptions = {
                 password: {  label: "Password", type: "password" }
             },
             async authorize(credentials){
+                
                 if(credentials){
                 const user = await db.user.findFirst({where:{username:credentials.username}});
                 if(user &&  user.password && compareSync(credentials.password, user.password)){
@@ -30,18 +33,20 @@ export const AuthOptions:NextAuthOptions = {
         }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-            
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        
         }),
     ],
     callbacks: {
         async session({ token, session }) {
+
             if (token) {
                 session.user = {
                     ...session.user,
                     name: token.name,
                     email: token.email,
                     image: token.picture,
+                   
                 };
             }
         
@@ -73,7 +78,7 @@ export const AuthOptions:NextAuthOptions = {
 
             return {
                 id: dbUser.id,
-                name: dbUser.name,
+                name: dbUser.username,
                 email: dbUser.email,
                 picture: dbUser.image,
                 username: dbUser.username,
