@@ -5,15 +5,12 @@ import { Input } from "./ui/input"
 import { Icons } from "./icons"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
-import {redirect, useRouter, useSearchParams} from "next/navigation"
+import {redirect, useRouter} from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 
 const SignIn = () =>{
     const toast = useToast();
     const router = useRouter();
-    const searchParam = useSearchParams();
-    const error = searchParam.get("error");
-    console.log(error)
     const [csrfToken, setCsrfToken] = useState<string | null>(null);
     getCsrfToken().then((token)=>{
         if(token)
