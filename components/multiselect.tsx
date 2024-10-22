@@ -26,7 +26,7 @@ const MultiSelect = ({children, onValueChange, ...props}:MultiSelectProps)=>{
     }
   }
   );
-  
+  const document = typeof window !== "undefined" ? window.document : null;
   document?.addEventListener("mousedown", (e)=>{
     if(open){
      if(e.target && ref.current && !ref.current.contains(e.target as Node) ){
