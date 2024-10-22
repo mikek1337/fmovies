@@ -9,8 +9,9 @@ export async function updateUser(formData:FormData, userId:string){
             id:userId
         }
     });
+    if(user){
     if(formData){
-    const compare = compareSync(formData.get('password') as string, user?.password!);
+    const compare = compareSync(formData.get('password') as string, user.password!);
     let data = {
         email:formData.get('email') as string,
         username:formData.get('username') as string,
@@ -34,6 +35,7 @@ export async function updateUser(formData:FormData, userId:string){
     revalidatePath('/api/auth/session');
     revalidatePath('/home/user/account');
     return updatedUser;
+}
 }
 return {error:'Bad Request'};
 
