@@ -23,7 +23,11 @@ export async function POST(req: Request) {
                 poster_path: poster_path,
                 title: title,
                 mediaId: id,
-                userId: session.user.id,
+                user:{
+                    connect:{
+                        email:session.user.email!
+                    }
+                },
                 MediaType: media_type,
                 createdAt: new Date()
             }
