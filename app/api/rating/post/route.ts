@@ -15,7 +15,7 @@ export async function POST(req: Request){
     if(objectId == null){
         return new Response("Bad Request", {status:400});
     }
-    if(userSession)
+    if(userSession && userSession.user)
     {
         const rating = await db.rating.findFirst({
             where:{
@@ -25,7 +25,7 @@ export async function POST(req: Request){
                     },
                     {
                         user: {
-                            email: userSession.user?.email
+                            email: userSession.user.email
                         }
                     }
                 ]
@@ -49,7 +49,7 @@ export async function POST(req: Request){
                     object: objectId,
                     user: {
                         connect: {
-                            email: userSession.user?.email!
+                            email: userSession.user.email!
                         }
                     },
                     upVote: body.upVote,

@@ -11,9 +11,15 @@ const Page = async () => {
         redirect('/login')
         return;
     }
+
+    if(!session.user){
+        redirect('/login')
+        return;
+    }
+    
     const user = await db.user.findFirst({
         where:{
-            email: session?.user?.email!
+            email: session.user.email!
         }
     })
     if(!user){
@@ -31,11 +37,11 @@ const Page = async () => {
                 <form className="max-w-[500px]" action={updateUserWithId}>
                     <div>
                         <label htmlFor="email">Email</label>
-                        <Input type="email" id="email" name="email" disabled defaultValue={user?.email || ""} />
+                        <Input type="email" id="email" name="email" disabled defaultValue={user.email || ""} />
                     </div>
                     <div className="my-1">
                         <label htmlFor="username">Username</label>
-                        <Input type="text" id="username" name="username" defaultValue={user?.username || ""}/>
+                        <Input type="text" id="username" name="username" defaultValue={user.username || ""}/>
                     </div>
                     <div>
                         <label htmlFor="password">Password</label>
