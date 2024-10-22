@@ -19,6 +19,7 @@ const SignIn = () =>{
         if(token)
             setCsrfToken(token)
     }).catch((error)=>{
+        console.log(error)
         toast.toast({
             title:"Something went wrong",
             description:"Please try again later",

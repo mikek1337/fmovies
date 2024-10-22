@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 const Page = () =>{
     const [page, setPage] = useState<number>(1);
     const [query, setQuery] = useState<string>('');
-    const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string>("2021");
+    const [primaryReleaseYear, setPrimaryReleaseYear] = useState<string[]>();
     const [movies, setMovies] = useState<MovieResponse>();
     const [loading, setLoading] = useState<boolean>(false);
     const [gener, setGener] = useState<string[]>([]);
@@ -24,7 +24,7 @@ const Page = () =>{
         console.log(value);
     }
     const getSelectedYear = (value:string[])=>{
-        console.log(value);
+        setPrimaryReleaseYear(value);
     }
     useEffect(()=>{
         setLoading(true);
@@ -39,6 +39,7 @@ const Page = () =>{
         }
     },[query, page])
     const search = ()=>{
+        console.log(gener)
         if(query){
             setLoading(true);
             // search movies

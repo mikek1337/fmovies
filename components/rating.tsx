@@ -14,7 +14,7 @@ const Rating:FC<RatingProps> = ({id})=>{
             return await (await axios.get(`/api/rating?objectId=${id}`)).data
         },
     });
-    const {data: userRating, isLoading: userRatingLoading, refetch:userRatingRefetch} = useQuery({
+    const {data: userRating, refetch:userRatingRefetch} = useQuery({
         queryKey:["userRating", id],
         queryFn: async()=>{
             return await (await axios.get(`/api/rating/user?objectId=${id}`)).data

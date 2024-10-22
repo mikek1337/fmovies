@@ -6,7 +6,6 @@ import { useMutation } from "@tanstack/react-query";
 import { CommentSchemaType } from "@/app/types/commentschema";
 import { cn } from "@/lib/utils";
 import { MessageSquareText } from "lucide-react";
-import axios from "axios";
 
 interface CastReplyProps{
     commentId:string;

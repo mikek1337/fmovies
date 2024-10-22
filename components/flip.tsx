@@ -1,7 +1,7 @@
 'use client'
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import React, { Children, cloneElement, FC, isValidElement, ReactElement, useEffect, useState } from "react";
+import React, { Children, cloneElement, FC, isValidElement, useEffect, useState } from "react";
 interface FlipProps {
   children: React.ReactNode;
 }

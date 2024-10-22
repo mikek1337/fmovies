@@ -1,5 +1,5 @@
 "use client"
-import { Clock, Film, History, Home, Play, Search, Settings, Settings2, Tv, UserCircle2 } from "lucide-react";
+import { Clock, Film, History, Home, Settings, Tv, UserCircle2 } from "lucide-react";
 import Link from "next/link";
 import { FC } from "react"
 

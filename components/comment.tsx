@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Loader } from "lucide-react";
 import { FC, useState } from "react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";

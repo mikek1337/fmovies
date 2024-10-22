@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Session } from "next-auth";
 import {redirect} from "next/navigation";
 const Page = async () => {
     const session = await getAuthSession()

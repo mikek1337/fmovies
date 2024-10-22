@@ -2,7 +2,6 @@ import { FC } from "react";
 import type { RecentlyViewed } from "@prisma/client";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 import Image from "next/image";
-import { Button } from "./ui/button";
 import GetMediaDetail from "./getmediadetail";
 interface RecentlyViewedProps  {
     recentlyViewed:RecentlyViewed[]
