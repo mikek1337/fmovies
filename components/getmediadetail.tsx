@@ -24,7 +24,7 @@ const GetMediaDetail:FC<GetMediaDetailProps> = async({id, media_type})=>{
                     <span className='md:text-5xl text-2xl font-extrabold md:text-black  text-white'>{media_type=="movie"?movie?.title:movie?.name}</span>
                     <p className='text-sm max-w-[500px]  md:line-clamp-4 line-clamp-2  md:text-black  text-white'>{movie?.overview}</p>
                     <div className='flex items-center gap-5 md:flex-nowrap flex-wrap'>
-                        <Link className={cn(buttonVariants({variant:'default'}),'flex items-center gap-2 w-fit')} href={media_type=='movie'?`home/watch/movie/${movie?.id}`:`home/watch/series/${movie?.id}`}>
+                        <Link className={cn(buttonVariants({variant:'default'}),'flex items-center gap-2 w-fit')} href={media_type=='movie'?`/home/watch/movie/${movie?.id}`:`/home/watch/series/${movie?.id}`}>
                         <Play className='w-5 h-5 fill-white'/>
                         Watch now
                         </Link>

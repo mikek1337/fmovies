@@ -3,7 +3,7 @@ import { Loader } from "lucide-react"
 import VideoPlayer from "./videoplayer"
 import { FC, useEffect, useState } from "react"
 import { MovieDetail } from "@/app/types/moviedbresponse"
-import axios from "axios"
+import axios, { Axios, AxiosError } from "axios"
 import SeriesDetails from "./seriesdetails"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
@@ -37,12 +37,12 @@ const Series:FC<SeriesProps> = ({id}) =>{
         setLoading(true);
         axios.get<MovieDetail>(`/api/series/detail?id=${id}`).then((res)=>{
             setSeries(res.data);
-            mutate({
+           /*  mutate({
                 id: res.data.id.toString(),
                 title: res.data.name,
                 media_type: "tv",
                 poster_path: res.data.poster_path,
-            })
+            }) */
             setSeasonEpisodes(res.data.seasons.filter(seasonValue=>seasonValue.season_number ===season)[0].episode_count)
             console.log(series);
             setLoading(false);
@@ -57,6 +57,13 @@ const Series:FC<SeriesProps> = ({id}) =>{
         mutationFn: async(recentlyViewed:RecentlyViewedType)=>{
             return (await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)).data;
         },
+        onError: (error)=>{
+            if(error instanceof AxiosError){
+                if(error.status === 500){
+                    console.log("Internal Server Error");
+                }
+            }
+        }
     });
 
     return(
@@ -99,7 +106,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
                 
                 </div>
             </div>
-        <div className=" my-10 flex justify-center  border">
+        <div className=" my-10 border">
             <div className="flex items-start  w-full">
                 {
                     loading && (<Loader className="w-5 h-5 animate-spin"/>)

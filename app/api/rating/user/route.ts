@@ -17,8 +17,9 @@ export async function GET(req: Request){
                 }
             }
         })
-        console.log(ratings);
+       
         return new Response(JSON.stringify(ratings), {status:200});
     }
+    return new Response("Unauthorized", {status:401});
     
 }
