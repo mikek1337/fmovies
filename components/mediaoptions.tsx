@@ -1,7 +1,7 @@
 import { Heart, Loader2, PlayCircle } from "lucide-react";
 import { Button } from "./ui/button"
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { FC } from "react";
+import { FC, useOptimistic } from "react";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 import { FavoriteType } from "@/app/types/favoriteschema";
@@ -17,7 +17,6 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
         queryKey:["favorite", mediaId],
         queryFn: async()=>{
             const data = (await axios.get(`/api/favorite?mediaId=${mediaId}`)).data;
-            
             return data
         },
     })
@@ -41,7 +40,7 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
                     variant: "default"
                 })
             }
-            refetch();
+            //refetch();
         },
         onError: (error)=>{
             toast({
@@ -58,26 +57,20 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
             MediaType: mediaType,
             title:title
         });
-        /* if(isFav){
-            addFav(false);
-        }
-        else{
-            addFav(true);
-        } */
     }
-/*     const [isFav, addFav] = useOptimistic(data?.favorite, (state, fav:boolean)=>{
-        mutate({
+    const [isFav, addFav] = useOptimistic(data?.favorite, (state, fav:boolean)=>{
+       /*  mutate({
             mediaId:mediaId.toString(),
             poster_url:poster_url,
             MediaType: mediaType,
             title:title
-        })
+        }) */
         return fav;
-    }) */
+    })
     return(
         <div className="flex flex-col gap-3 md:my-0 my-10">
             <Button variant={"ghost"} className="text-indigo-600 flex items-center gap-2 border md:border-0" onClick={addFavorite}>
-                <Heart className={cn("w-5 h-5", {"text-indigo-600 fill-indigo-600":data?.favorite})}/>
+                <Heart className={cn("w-5 h-5", {"text-indigo-600 fill-indigo-600":isFav})}/>
                 Add to Watchlist
                 {(isLoading || isPending) && <Loader2 className="w-5 h-5 animate-spin"/>}
             </Button>

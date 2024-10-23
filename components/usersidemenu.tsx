@@ -17,7 +17,7 @@ const UserSideMenu:FC = () =>{
                     </Link>
                 </li>
                 <li className=" h-[60px] group-hover:flex items-center gap-3 text-indigo-500 p-2 transition-all duration-200 ease-in-out  hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                    <Link href="/home" className="flex items-center gap-3">
+                    <Link href="/home/user/movies" className="flex items-center gap-3">
                         <Film className="w-5 h-5"/>
                         <span className="text-sm hidden group-hover:block">Movies</span>
                     </Link>
