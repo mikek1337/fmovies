@@ -1,12 +1,12 @@
 import { Heart, Loader2, PlayCircle } from "lucide-react";
 import { Button } from "./ui/button"
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { FC, useOptimistic, useState } from "react";
-import axios, { AxiosError } from "axios";
+import { FC, useState } from "react";
+import axios from "axios";
 import { cn } from "@/lib/utils";
 import { FavoriteType } from "@/app/types/favoriteschema";
 import { toast } from "@/hooks/use-toast";
-import { set } from "date-fns";
+
 interface MediaOptionsProps{
     mediaId:number;
     title:string;
@@ -23,12 +23,12 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
             setIsFav(data?.favorite);
             return data
         },
-        retryDelay(failureCount, error) {
+        retryDelay(failureCount) {
             return Math.min(1000 * 2 ** failureCount, 30000);
         },
       retry: false
     })
-    const {mutate, isPending} = useMutation({
+    const {mutate} = useMutation({
         mutationKey:["favorite", mediaId],
         mutationFn: async(fav:FavoriteType)=>{
             return (await axios.post(`/api/favorite/post`, fav)).data
