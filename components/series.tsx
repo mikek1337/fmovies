@@ -3,7 +3,7 @@ import { Loader } from "lucide-react"
 import VideoPlayer from "./videoplayer"
 import { FC, useEffect, useState } from "react"
 import { MovieDetail } from "@/app/types/moviedbresponse"
-import axios, { Axios, AxiosError } from "axios"
+import axios, { AxiosError } from "axios"
 import SeriesDetails from "./seriesdetails"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
@@ -37,12 +37,12 @@ const Series:FC<SeriesProps> = ({id}) =>{
         setLoading(true);
         axios.get<MovieDetail>(`/api/series/detail?id=${id}`).then((res)=>{
             setSeries(res.data);
-           /*  mutate({
+            mutate({
                 id: res.data.id.toString(),
                 title: res.data.name,
                 media_type: "tv",
                 poster_path: res.data.poster_path,
-            }) */
+            })
             setSeasonEpisodes(res.data.seasons.filter(seasonValue=>seasonValue.season_number ===season)[0].episode_count)
             console.log(series);
             setLoading(false);
