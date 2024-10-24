@@ -110,7 +110,7 @@ const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
                 </div>
             </div>
         </div>
-        <MediaOptions mediaId={movieDetails.id} mediaType="movie" poster_url={movieDetails.poster_path} title={movieDetails.title}/>
+        <MediaOptions mediaId={movieDetails.id} mediaType="movie" poster_url={movieDetails.backdrop_path} title={movieDetails.title}/>
         </div>
     )
 }

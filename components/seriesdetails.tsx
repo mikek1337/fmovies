@@ -66,7 +66,7 @@ const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
                 </div>
             </div>
         </div>
-        <MediaOptions mediaId={seriesDetails.id} mediaType="tv" poster_url={seriesDetails.poster_path} title={seriesDetails.title}/>
+        <MediaOptions mediaId={seriesDetails.id} mediaType="tv" poster_url={seriesDetails.backdrop_path} title={seriesDetails.title}/>
         </div>
     )
 }

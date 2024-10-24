@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MovieDetail, MovieResponse } from '../app/types/moviedbresponse';
+import { MovieCast, MovieDetail, MovieResponse } from '../app/types/moviedbresponse';
 import { GenerResponse } from '@/app/types/gener';
 
 
@@ -92,6 +92,22 @@ export const searchSeries = (queries:string)=>{
             "Content-Type":"application/json"
         }
     })
+}
+
+export const getMovieCredits = (id:number)=>{
+    return axios.get<MovieCast>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/${id}/credits?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    })
+}
+
+export const getSeriesCredits = (id:number)=>{
+    return axios.get<MovieCast>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}tv/${id}/credits?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    });
 }
 
 export const seriesDetail = (id:number)=>{
