@@ -1,7 +1,4 @@
-import { NextResponse } from "next/server";
-import type {NextRequest } from "next/server";
-import { getAuthSession } from "./lib/auth";
-export async function middleware(req:NextRequest){
-    return NextResponse.next();
+export { default } from "next-auth/middleware"
+export const config = {
+    matcher:["/home/user/"]
 }
-
