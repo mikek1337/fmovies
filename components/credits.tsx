@@ -22,20 +22,16 @@ const Credits:FC<CreditsProps> = ({mediaId, mediaType}) =>{
     })
    
     return (
-        <div className="h-[50%] overflow-auto">
+        <div className="h-[70%] max-w-[700px] border">
             <div className="my-2">
                 <h1 className="text-xl font-extrabold">Casts</h1>
             </div>
-            <Carousel  opts={{
-                align: "start",
-            }}
-            className="w-full ">
-                <CarouselContent>
-            <div className="w-full flex  max-h-full ">
+           
+            <div className="w-fit grid grid-cols-3 gap-1  max-h-full ">
                 {
                     data?.cast?.map((castMember)=>(
-                        <CarouselItem key={castMember.id} className="md:basis-1/2 basis-1/3">
-                        <div >
+                       
+                        <div key={castMember.id}>
                             <div className="flex items-center gap-2 w-full shadow-md rounded-md p-2">
                                 <Avatar>
                                     <AvatarImage src={`http://image.tmdb.org/t/p/original${castMember.profile_path}`} className="object-contain"/>
@@ -47,15 +43,11 @@ const Credits:FC<CreditsProps> = ({mediaId, mediaType}) =>{
                                 </div>
                             </div>
                         </div>
-                        </CarouselItem>
+                        
                     ))
 
                 }
             </div>
-            <CarouselNext/>
-            <CarouselPrevious/>
-            </CarouselContent>
-        </Carousel>
         </div>
     )
 

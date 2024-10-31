@@ -17,7 +17,7 @@ const Page = ()=>{
     })
     
     return(
-        <div className="w-full   border">
+        <div className="max-w-[95%] border">
             {
                 data && (
 
