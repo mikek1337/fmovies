@@ -34,5 +34,5 @@ export async function POST(req: Request) {
         });
         return new Response(JSON.stringify(recentlyViewed), { status: 200 });
     }
-    return new Response("Already exists", { status: 200 });
+    return new Response("Already exists", { status: 400 });
 }

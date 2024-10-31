@@ -59,7 +59,8 @@ export interface MovieDetail{
     vote_count: number
     seasons:SeasonDetails[],
     type:string,
-    first_air_date:string
+    first_air_date:string,
+    original_name:string
 }
 
 export interface SeasonDetails{

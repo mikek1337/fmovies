@@ -1,12 +1,38 @@
+'use client'
 import { MovieDetail } from "@/app/types/moviedbresponse"
 import Image from "next/image"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import MediaOptions from "./mediaoptions"
+import { useMutation } from "@tanstack/react-query"
+import { RecentlyViewedType } from "@/app/types/recentlyViewed"
+import axios, {AxiosError} from "axios"
 interface MovieDetailsProps{
     seriesDetails:MovieDetail,
 }
 const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
- 
+    const {mutate} = useMutation({
+        mutationKey:["seriesmutate", seriesDetails.id],
+        mutationFn: async(recentlyViewed:RecentlyViewedType)=>{
+            return (await axios.post('/api/movies/recentlyviewed/post', recentlyViewed));
+        },
+        onError: (error)=>{
+            if(error instanceof AxiosError){
+                if(error.status === 500){
+                    console.log("Internal Server Error");
+                }
+            }
+        }
+    });
+
+    useEffect(()=>{
+        mutate({
+            id: seriesDetails.id.toString(),
+            media_type: "tv",
+            poster_path: seriesDetails.backdrop_path,
+            title: seriesDetails.original_name
+        });
+    }, [])
+
     return(
         <div className="flex shadow-md  p-2 md:flex-row flex-col" >
         <div className="flex md:flex-row flex-col gap-2 w-full max-w-[1200px]  px-1">
@@ -15,8 +41,8 @@ const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
                     <Image src={`http://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`} className='object-contain md:w-[200px] md:h-[300px]   rounded-md' width={500} height={500} alt={seriesDetails.name!}/>
                 </div>
             <div className="w-fit">
-                <span className="font-extrabold flex items-center gap-2 md:text-5xl text-3xl">{seriesDetails.title} 
-                <span className="text-xs md:text-base font-bold bg-indigo-600 text-white rounded-full px-3">Movie</span>
+                <span className="font-extrabold flex items-center gap-2 md:text-5xl text-3xl">{seriesDetails.original_name} 
+                <span className="text-xs md:text-base font-bold bg-indigo-600 text-white rounded-full px-3">TV</span>
                 </span>
                 <p className="md:max-w-[700px] sm:max-w-[400px]  text-xs md:text-base ">{seriesDetails.overview}</p>
                 <div className="flex flex-col ">
@@ -46,14 +72,14 @@ const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
                         <div className="flex items-center ">
                         <span>Release Date:</span>
                         <span className="text-start">
-                        {new Date(seriesDetails.release_date!).toDateString()}
+                        {new Date(seriesDetails.first_air_date!).toDateString()}
                         </span> 
 
                         </div>
                         <div className="flex items-center ">
                             <span>Runtime:</span>
                             <span className="text-start">
-                            {`${seriesDetails.runtime} min`}
+                            {`40 min`}
                             </span>
                         </div>
                         <div className="flex items-center ">
