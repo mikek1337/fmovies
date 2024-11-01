@@ -36,7 +36,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
         setMovieIndex(index);
     }
     return(
-        <div className="flex justify-around broder border-y-emerald-700 w-full ">
+        <div className="flex justify-around   w-full ">
         <div className='w-full'>
         <div className=' rounded-2xl'>
                 <BlurFade blur="true" inView key={movie?.id} className="w-full border">

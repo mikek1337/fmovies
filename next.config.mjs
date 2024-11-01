@@ -10,6 +10,10 @@ const nextConfig = {
                 {
                     protocol: "http",
                     hostname: "image.tmdb.org"
+                },
+                {
+                    protocol: "https",
+                    hostname: "sea1.ingest.uploadthing.com"
                 }
             ]
         }

@@ -7,13 +7,16 @@ import { XIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner";
+import { UploadButton } from "@/lib/uploadthings";
+
 
 interface UserFormProps{
-    userUpdate: (formData: FormData)=>Promise<any>,
+    userUpdate: (formData: FormData)=>Promise<User>,
     user: User
 }
 const UserForm:FC<UserFormProps> = ({userUpdate, user})=>{
     const [openPassword, setOpenPassword] = useState(false)
+    const [userImage, setUserImage] = useState<string>(user.image || "")
     const update = async(formData:FormData)=>{
         const response = await userUpdate(formData);
         if(response){
@@ -27,9 +30,10 @@ const UserForm:FC<UserFormProps> = ({userUpdate, user})=>{
                     <label htmlFor="id">ID</label>
                     <Input type="hidden" id="id" name="id" defaultValue={user.id || ""}/>
                 </div>
+                
                 <div className="hidden">
                     <label htmlFor="image">Image</label>
-                    <Input type="hidden" id="image" name="image" defaultValue={user.image || ""}/>
+                    <Input type="hidden" id="image" name="image" defaultValue={userImage}/>
                 </div>
 
                     <div  className="w-full">
@@ -81,6 +85,18 @@ const UserForm:FC<UserFormProps> = ({userUpdate, user})=>{
                      <AvatarImage src={user?.image || ""} alt="user" />
                      <AvatarFallback>U</AvatarFallback>
                  </Avatar>
+                 <UploadButton endpoint="imageUploader"
+                 className="border"
+                 appearance={{button: {content: "Upload Image"}}}
+                 onClientUploadComplete={(res)=>{
+                    console.log(res);
+                    setUserImage(res[0].url)
+                 }}
+                 onUploadError={(error)=>{
+                    toast("oops, something went wrong, please try again")
+                 }}
+                 />
+                        
              </div>
              </>
     )

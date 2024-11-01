@@ -22,19 +22,19 @@ const Credits:FC<CreditsProps> = ({mediaId, mediaType}) =>{
     })
    
     return (
-        <div className="h-[70%] max-w-[700px] border">
+        <div className="h-[70%] max-w-full border my-3">
             <div className="my-2">
-                <h1 className="text-xl font-extrabold">Casts</h1>
+                <h1 className="text-4xl font-extrabold">Casts</h1>
             </div>
            
-            <div className="w-fit grid grid-cols-3 gap-1  max-h-full ">
+            <div className="w-fit grid grid-cols-3 gap-1  max-h-[300px] overflow-y-auto ">
                 {
                     data?.cast?.map((castMember)=>(
                        
                         <div key={castMember.id}>
                             <div className="flex items-center gap-2 w-full shadow-md rounded-md p-2">
                                 <Avatar>
-                                    <AvatarImage src={`http://image.tmdb.org/t/p/original${castMember.profile_path}`} className="object-contain"/>
+                                    <AvatarImage src={`http://image.tmdb.org/t/p/original${castMember.profile_path}`} className="object-cover bg-center" width={500} height={500}/>
                                     <AvatarFallback>{castMember.name}</AvatarFallback>
                                 </Avatar>
                                 <div>
