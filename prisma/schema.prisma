@@ -53,6 +53,7 @@ model User {
   RecentlyViewed RecentlyViewed[]
   sessions       Session[]
   WatchTogether  WatchTogether[]
+  Chat           Chat[]
 }
 
 model Rating {
@@ -128,4 +129,13 @@ model WatchTogether {
   noOfParticipant Int
   MediaType       String
   User            User   @relation(fields: [userId], references: [id])
+}
+
+model Chat{
+  id       String   @id
+  userId   String
+  roomId   String
+  message  String
+  createdAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id])
 }
