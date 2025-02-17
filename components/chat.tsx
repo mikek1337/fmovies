@@ -1,36 +1,62 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import { FC, useEffect, useState } from "react"
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { FC, useOptimistic, useState } from "react"
 import { Input } from "./ui/input";
 import type { Chat as ChatMessage } from "@prisma/client";
+import { nanoid } from "nanoid";
+import { useSession } from "next-auth/react";
 
 type ChatProps = {
     room:string
 }
 const Chat:FC<ChatProps> = ({room})=>{
-    const {isPending, data} = useQuery({
+    const {data} = useSession();
+    const [message, setMessage] = useState('');
+    const {isPending, data:oldMessage} = useQuery({
         queryKey: ['chat', room],
         queryFn: async ()=>{
             const res = await fetch(`/api/movies/chat?room=${room}`);
             return await res.json();
         },
+    });
+    const {mutate} = useMutation({
+        mutationFn: async (message:ChatMessage)=>{
+            const res = await fetch(`/api/movies/chat`,{
+                method: 'POST',
+                body: JSON.stringify(message),
+            });
+            return await res.json();
+        }
     })
-    const [messages, setMessages] = useState<ChatMessage[]>(data);
+    const [optimisticState, addOptimistic] = useOptimistic<ChatMessage[]>(oldMessage,(state, message:ChatMessage)=>{
+        return [...state, message];
+    });
+    const sendMessage = async (message:string)=>{
+        const newChat:ChatMessage ={
+            id: nanoid(),
+            message: message,
+            roomId: room,
+            userId: data?.user?.id,
+            createdAt: new Date(),
+        }      
+        addOptimistic(newChat);
+        mutate(newChat);
+    }
     return(
-    <div className="shadow-md rounded-md w-full ">
+    <div className="shadow-md rounded-md w-full relative h-full">
         <div className="w-full h-full">
-            {messages.length > 0 && messages.map((message)=>(
+            {optimisticState?.length > 0 && optimisticState?.map((message)=>(
                 <div key={message.id} className="">
-                    <div>
-                        <span>{message.userId}</span>
-                        <span>{message.createdAt.toDateString()}</span>
+                    <div className="flex items-center gap-10">
+                        <span className="font-semibold italic">{message.userId}</span>
+                        <span className="text-sm text-slate-500">{message.createdAt.toDateString()}</span>
                     </div>
-                    <span className="bg-blue-600 text-white">{message.message}</span>
+                    <span className="bg-blue-600 text-white italic">{message.message}</span>
                 </div>
             ))}
         </div>
-        <div>
-            <Input placeholder="Type a message" className="w-full"/>
+        <div className="p-2 bottom-0 absolute w-full">
+            <Input placeholder="Type a message" className="w-full" onKeyDown={(e)=>e.code == "Enter"?sendMessage(message):null} onChange={(e)=>setMessage(e.target.value)}/>
         </div>
     </div>
     )

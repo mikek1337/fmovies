@@ -2,6 +2,8 @@
 
 import { db } from "@/lib/db"
 import { compareSync, hashSync } from "bcrypt";
+import { nanoid } from "nanoid";
+import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 export async function updateUser(formData:FormData, userId:string){
     const user = await db.user.findFirst({
@@ -40,4 +42,26 @@ export async function updateUser(formData:FormData, userId:string){
 }
 return {error:'Bad Request'};
 
+}
+
+export const sendMessage = async (roomId:string, message:string)=>{
+    const session = await getServerSession();
+    if(session?.user){
+        const chat = await db.chat.create({
+            data:{
+                user:{
+                    connect:{
+                        email: session.user.email!
+                    },
+                },
+                roomId: roomId,
+                message:message,
+                createdAt: new Date(),
+                id:nanoid()
+            }
+        });
+        if(chat) return true;
+        return false;
+        
+    }
 }

@@ -1,11 +1,13 @@
 import { Heart, Loader2, PlayCircle } from "lucide-react";
-import { Button } from "./ui/button"
+import { Button, buttonVariants } from "./ui/button"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FC } from "react";
 import axios from "axios";
 import { cn } from "@/lib/utils";
 import { FavoriteType } from "@/app/types/favoriteschema";
 import { toast } from "@/hooks/use-toast";
+import Link from "next/link";
+import { nanoid } from "nanoid";
 interface MediaOptionsProps{
     mediaId:number;
     title:string;
@@ -81,10 +83,10 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
                 Add to Watchlist
                 {(isLoading || isPending) && <Loader2 className="w-5 h-5 animate-spin"/>}
             </Button>
-            <Button className="bg-indigo-600 text-white flex items-center gap-2">
+            <Link className={cn(buttonVariants({variant:'default'}),"bg-indigo-600 text-white flex items-center gap-2")} href={mediaType=="movie"?`${mediaId}/together/${nanoid()}`:''} >
                 <PlayCircle className="w-5 h-5"/>
                 Watch Together
-            </Button>
+            </Link>
         </div>
     )
 }

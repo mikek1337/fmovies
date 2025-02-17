@@ -1,16 +1,16 @@
 import Chat from "@/components/chat";
-import VideoPlayer from "@/components/videoplayer";
+import VideoServerController from "@/components/videoservercontroller";
 
-const Page = ({params}:{params:{room:string, id:string}})=>{
+const Page = async ({params}:{params:{room:string, id:string}})=>{
     const {room, id} = params;
     if(!id || !room) return <></>;
-
     return(
-       <div className="flex gap-2 w-full">
-        <div>
-            <VideoPlayer videoUrl=""/>
+       <div className="flex gap-1 w-full px-10">
+        <div className="w-full">
+        <VideoServerController mediaType="movie" additionalParams={id}/>
+
         </div>
-        <div>
+        <div className="w-[30%]">
             <Chat room={room}/>
         </div>
        </div>

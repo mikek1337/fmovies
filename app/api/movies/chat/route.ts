@@ -20,3 +20,11 @@ export async function GET(req:Request){
     return new Response(JSON.stringify(chat), {status: 200});
 
 }
+
+export async function POST(req:Request){
+    const body = await req.json();
+    const chat = await db.chat.create({
+        data: body
+    });
+    return new Response(JSON.stringify(chat), {status: 200});
+}
