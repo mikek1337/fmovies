@@ -2,9 +2,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FC, useOptimistic, useState } from "react"
 import { Input } from "./ui/input";
-import type { Chat as ChatMessage } from "@prisma/client";
+import type { Chat, Chat as ChatMessage } from "@prisma/client";
 import { nanoid } from "nanoid";
 import { useSession } from "next-auth/react";
+import socket from "@/lib/socket";
 
 type ChatProps = {
     room:string
@@ -31,6 +32,11 @@ const Chat:FC<ChatProps> = ({room})=>{
     const [optimisticState, addOptimistic] = useOptimistic<ChatMessage[]>(oldMessage,(state, message:ChatMessage)=>{
         return [...state, message];
     });
+
+    
+
+    
+
     const sendMessage = async (message:string)=>{
         const newChat:ChatMessage ={
             id: nanoid(),
@@ -38,7 +44,11 @@ const Chat:FC<ChatProps> = ({room})=>{
             roomId: room,
             userId: data?.user?.id,
             createdAt: new Date(),
-        }      
+        }
+        socket.on(newChat.roomId, (data:Chat)=>{
+            if(data.userId == newChat.userId) return;
+            addOptimistic(data);
+        })   
         addOptimistic(newChat);
         mutate(newChat);
     }

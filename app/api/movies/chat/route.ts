@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-
+import socket from '@/lib/socket';
 export async function GET(req:Request){
     const url = new URL(req.url);
     const id = url.searchParams.get('room');
@@ -26,5 +26,7 @@ export async function POST(req:Request){
     const chat = await db.chat.create({
         data: body
     });
+    socket.emit('chatmessage', chat);
+
     return new Response(JSON.stringify(chat), {status: 200});
 }
