@@ -1,5 +1,7 @@
+import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import socket from '@/lib/socket';
+import { Chat } from "@prisma/client";
 export async function GET(req:Request){
     const url = new URL(req.url);
     const id = url.searchParams.get('room');
@@ -22,9 +24,22 @@ export async function GET(req:Request){
 }
 
 export async function POST(req:Request){
-    const body = await req.json();
+    const session = await getAuthSession();
+    if(!session?.user)
+        return new Response('Unauthorized', {status: 401});
+    const body = await req.json() as Chat;
+    const {roomId, message, id} = body;
     const chat = await db.chat.create({
-        data: body
+        data: {
+            message: message,
+            id: id,
+            roomId: roomId,
+            user:{
+                connect:{
+                    email: session.user.email!
+                }
+            }
+        }
     });
     socket.emit('chatmessage', chat);
 

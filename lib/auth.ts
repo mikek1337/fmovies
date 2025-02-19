@@ -43,6 +43,7 @@ export const AuthOptions:NextAuthOptions = {
             if (token) {
                 session.user = {
                     ...session.user,
+                    id: token.id,
                     name: token.name,
                     email: token.email,
                     image: token.picture,
