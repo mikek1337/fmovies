@@ -1,6 +1,5 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import socket from '@/lib/socket';
 import { Chat } from "@prisma/client";
 export async function GET(req:Request){
     const url = new URL(req.url);
@@ -29,19 +28,32 @@ export async function POST(req:Request){
         return new Response('Unauthorized', {status: 401});
     const body = await req.json() as Chat;
     const {roomId, message, id} = body;
-    const chat = await db.chat.create({
-        data: {
-            message: message,
-            id: id,
-            roomId: roomId,
-            user:{
-                connect:{
-                    email: session.user.email!
+    try{
+        const chat = await db.chat.create({
+            data: {
+                message: message,
+                id: id,
+                roomId: roomId,
+                user:{
+                    connect:{
+                        email: session.user.email!
+                    }
                 }
             }
-        }
-    });
-    socket.emit('chatmessage', chat);
+        });
+        return new Response(JSON.stringify(chat), {status: 200});
+    }
+    catch(e:unknown){
+        console.log(e);
+        if(e instanceof Error)
+            return new Response(e.message, {status: 500});
+        else
+            return new Response('Internal Server Error', {status: 500});
 
-    return new Response(JSON.stringify(chat), {status: 200});
+        //return new Response(e, {status: 500});
+    }
+    
+    
+
+    //return new Response(JSON.stringify(chat), {status: 200});
 }

@@ -121,14 +121,24 @@ model RecentlyViewed {
   user        User     @relation(fields: [userId], references: [id])
 }
 
+
+enum WatchTogetherStatus{
+  STARTED
+  INPROGRESS
+  CLOSED
+  ENDED
+}
+
 model WatchTogether {
   id              String @id
   userId          String
   mediaId         String
   roomId          String
   noOfParticipant Int
+  status          WatchTogetherStatus 
   MediaType       String
   User            User   @relation(fields: [userId], references: [id])
+  @@unique([mediaId, roomId])
 }
 
 model Chat{
@@ -136,6 +146,6 @@ model Chat{
   userId   String
   roomId   String
   message  String
-  createdAt DateTime @default(now())
+  createdAt  DateTime @default(now())
   user     User     @relation(fields: [userId], references: [id])
 }

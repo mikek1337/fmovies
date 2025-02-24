@@ -10,9 +10,15 @@ const nextConfig = {
                 {
                     protocol: "http",
                     hostname: "image.tmdb.org"
+                },
+                {
+                    protocol: 'http',
+                    hostname: 'localhost',
+                    port: "3001"
                 }
             ]
-        }
+        },
+        
     
 };
 
