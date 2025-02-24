@@ -95,7 +95,7 @@ export const endRoom = async (roomId:string, mediaId: string)=>{
 export const updateRoomParticipant = async (roomId:string, mediaId: string)=>{
     const session = await getAuthSession();
     const cookieStore = await cookies();
-    if(session?.user && !cookieStore.get('clientId')){
+    if(session?.user){
         const watchTogether = await db.watchTogether.update({
             where:{
                 mediaId_roomId:{
@@ -113,5 +113,29 @@ export const updateRoomParticipant = async (roomId:string, mediaId: string)=>{
             }
         });
         cookieStore.set('clientId', watchTogether.id);
+    }
+}
+
+export const leaveRoom = async (roomId:string, mediaId: string)=>{
+    const session = await getAuthSession();
+    const cookieStore = await cookies();
+    if(cookieStore.get('clientId') && session?.user){
+        db.watchTogether.update({
+            where:{
+                mediaId_roomId:{
+                    roomId: roomId,
+                    mediaId: mediaId
+                },
+                status:{
+                    not: 'ENDED'
+                }
+            },
+            data:{
+                noOfParticipant:{
+                    decrement: 1
+                }
+            }
+        });
+        cookieStore.delete('clientId');
     }
 }

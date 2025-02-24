@@ -10,12 +10,14 @@ import {  ChatResponseWithoutCreatedAt } from "@/app/types/chat";
 import { socket } from "@/app/socket";
 import { nanoid } from "nanoid";
 import { useToast } from "@/hooks/use-toast";
+import { leaveRoom, updateRoomParticipant } from "@/app/actions";
 type ChatProps = {
     room:string
-    oldMessages: ChatResponseWithoutCreatedAt[]
+    oldMessages: ChatResponseWithoutCreatedAt[],
+    mediaId: string
 }
 
-const Chat:FC<ChatProps> = ({room , oldMessages})=>{
+const Chat:FC<ChatProps> = ({room , oldMessages, mediaId})=>{
     const {data:session} = useSession();
     const {toast} = useToast();
     const [message, setMessage] = useState('');
@@ -37,6 +39,14 @@ const Chat:FC<ChatProps> = ({room , oldMessages})=>{
     })
    useEffect(()=>{
     socket.emit('join', room);
+    socket.on('userdisconnect',(id:string)=>{
+        toast({
+            title:'User disconnected',
+            description: 'User has left the room',
+            variant: 'default'
+        })
+        leaveRoom(room, mediaId);
+    })
     socket.on('sendmessage',(data)=>{
         toast({
             title:'New message',
@@ -86,7 +96,7 @@ const Chat:FC<ChatProps> = ({room , oldMessages})=>{
                             <AvatarImage src={message?.user?.image} alt={message?.user?.name} />
                             <AvatarFallback>{message?.user?.name}</AvatarFallback>
                         </Avatar>
-                    <div className="rounded-md  h-fit flex gap-3 overflow-hidden">
+                    <div className="rounded-md  h-fit flex gap-3 overflow-hidden items-center">
                         <span className={cn("font-bold text-sm text-zinc-600 h-fit p-2 rounded-md", {"text-purple-500":message?.userId == session?.user.id})}>{message?.user?.name}</span>
                         <span className="text-sm break-words text-neutral-800 w-[300px] ">{message?.message}</span>
                     </div>

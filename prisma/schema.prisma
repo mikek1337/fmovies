@@ -139,6 +139,7 @@ model WatchTogether {
   MediaType       String
   User            User   @relation(fields: [userId], references: [id])
   @@unique([mediaId, roomId])
+  @@unique([roomId])
 }
 
 model Chat{
