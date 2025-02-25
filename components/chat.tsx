@@ -48,15 +48,11 @@ const Chat:FC<ChatProps> = ({room , oldMessages, mediaId})=>{
         leaveRoom(room, mediaId);
     })
     socket.on('sendmessage',(data)=>{
-        toast({
-            title:'New message',
-            description: data.message,
-            variant: 'default'
-        })
-        if(data.user.email !== session?.user?.email)
-            setMessageCollection((prev)=>[...prev, data]);
+        console.log(data, 'new message');
+        setMessageCollection((prev)=>[...prev, data]);
     })
-   },[room])
+    return ()=> socket.off('sendmessage');
+   },[])
    
 
     const send = async ()=>{
@@ -75,9 +71,9 @@ const Chat:FC<ChatProps> = ({room , oldMessages, mediaId})=>{
          console.log(chatMessage);
             // adding optimistic update
             mutate(chatMessage);
-            socket.emit('message',chatMessage);
-            console.log(messageCollection)
             setMessageCollection((prev)=>[...prev, chatMessage]);
+            socket.emit('message',chatMessage);
+            console.log(messageCollection);
             
             //sendMessageing(room, message);
         
