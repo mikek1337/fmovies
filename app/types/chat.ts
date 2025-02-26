@@ -2,7 +2,7 @@ import type {Chat} from "@prisma/client";
 
 export type ChatResponse = Chat &{
     user:{
-        name:string,
+        username:string,
         email:string,
         image:string,
     }

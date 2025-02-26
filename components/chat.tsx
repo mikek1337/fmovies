@@ -46,12 +46,20 @@ const Chat:FC<ChatProps> = ({room , oldMessages, mediaId})=>{
             variant: 'default'
         })
         leaveRoom(room, mediaId);
+    });
+    socket.on('joined', ()=>{
+        toast({
+            title:'User disconnected',
+            description: 'User has left the room',
+            variant: 'default'
+        })
+        updateRoomParticipant(room, mediaId);
     })
     socket.on('sendmessage',(data)=>{
         console.log(data, 'new message');
         setMessageCollection((prev)=>[...prev, data]);
     })
-    return ()=> socket.off('sendmessage');
+    return ()=> {socket.off('sendmessage')};
    },[])
    
 
@@ -65,17 +73,14 @@ const Chat:FC<ChatProps> = ({room , oldMessages, mediaId})=>{
             user:{
                 email: session?.user?.email || 'test',
                 image: session?.user?.image || 'test',
-                name: session?.user?.name || 'test',
+                username: session?.user?.name || 'test',
             }
          }
-         console.log(chatMessage);
+         
             // adding optimistic update
             mutate(chatMessage);
             setMessageCollection((prev)=>[...prev, chatMessage]);
-            socket.emit('message',chatMessage);
-            console.log(messageCollection);
-            
-            //sendMessageing(room, message);
+            socket.emit('message',chatMessage);            
         
         setMessage('');
         //addOptimistic([...optimisticState || [], newChat]);
@@ -89,11 +94,11 @@ const Chat:FC<ChatProps> = ({room , oldMessages, mediaId})=>{
                 <div key={nanoid()} className="p-5 h-10 ">
                     <div className="flex items-start gap-4">
                         <Avatar className="border w-8 h-8">
-                            <AvatarImage src={message?.user?.image} alt={message?.user?.name} />
-                            <AvatarFallback>{message?.user?.name}</AvatarFallback>
+                            <AvatarImage src={message?.user?.image} alt={message?.user?.username} />
+                            <AvatarFallback>{message?.user?.username}</AvatarFallback>
                         </Avatar>
                     <div className="rounded-md  h-fit flex gap-3 overflow-hidden items-center">
-                        <span className={cn("font-bold text-sm text-zinc-600 h-fit p-2 rounded-md", {"text-purple-500":message?.userId == session?.user.id})}>{message?.user?.name}</span>
+                        <span className={cn("font-bold text-sm text-zinc-600 h-fit p-2 rounded-md", {"text-purple-500":message?.userId == session?.user.id})}>{message?.user?.username}</span>
                         <span className="text-sm break-words text-neutral-800 w-[300px] ">{message?.message}</span>
                     </div>
                     </div>

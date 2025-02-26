@@ -6,9 +6,12 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
 import {socket} from '@/app/socket';
+import { redirect } from "next/navigation";
 const Page = async ({ params }: { params: { room: string; id: string } }) => {
   const { room, id } = params;
   const user = await getAuthSession();
+  if(!user?.user)
+      redirect(`/home/watch/movie/${id}`);
   const watchTogether = await db.watchTogether.upsert({
     where: {
       mediaId_roomId: {
@@ -28,7 +31,7 @@ const Page = async ({ params }: { params: { room: string; id: string } }) => {
       status: "STARTED",
       User: {
         connect: {
-          email: user?.user?.email!,
+          email: user?.user?.email || 'test',
         },
       },
     },
@@ -50,7 +53,7 @@ const Page = async ({ params }: { params: { room: string; id: string } }) => {
           id: true,
           email: true,
           image: true,
-          name: true,
+          username: true,
         },
       },
     },

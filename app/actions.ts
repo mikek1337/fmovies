@@ -75,7 +75,7 @@ export const sendMessageing = async (roomId:string, message:string)=>{
 export const endRoom = async (roomId:string, mediaId: string)=>{
     const session = await getAuthSession();
     if(session?.user){
-        const watchTogether = await db.watchTogether.update({
+        await db.watchTogether.update({
             where:{
                 mediaId_roomId:{
                     roomId: roomId,
@@ -94,9 +94,8 @@ export const endRoom = async (roomId:string, mediaId: string)=>{
 
 export const updateRoomParticipant = async (roomId:string, mediaId: string)=>{
     const session = await getAuthSession();
-    const cookieStore = await cookies();
     if(session?.user){
-        const watchTogether = await db.watchTogether.update({
+      await db.watchTogether.update({
             where:{
                 mediaId_roomId:{
                     roomId: roomId,
@@ -112,14 +111,11 @@ export const updateRoomParticipant = async (roomId:string, mediaId: string)=>{
                 }
             }
         });
-        cookieStore.set('clientId', watchTogether.id);
+       
     }
 }
 
 export const leaveRoom = async (roomId:string, mediaId: string)=>{
-    const session = await getAuthSession();
-    const cookieStore = await cookies();
-    if(cookieStore.get('clientId') && session?.user){
         db.watchTogether.update({
             where:{
                 mediaId_roomId:{
@@ -136,6 +132,5 @@ export const leaveRoom = async (roomId:string, mediaId: string)=>{
                 }
             }
         });
-        cookieStore.delete('clientId');
-    }
+    
 }
