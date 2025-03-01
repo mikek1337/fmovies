@@ -87,11 +87,13 @@ export const popularSeries = (page:number)=>{
 }
 
 export const searchSeries = (queries:string)=>{
+    console.log(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/tv?${queries}api_key=${process.env.NEXT_PUBLIC_API_KEY}`);
     return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/tv?${queries}api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
         headers:{
             "Content-Type":"application/json"
         }
-    })
+    });
+    
 }
 
 export const getMovieCredits = (id:number)=>{

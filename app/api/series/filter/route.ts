@@ -5,7 +5,7 @@ export async function GET(req: Request){
     const queries = url.searchParams;
     
     if(queries){
-        const queryString = `${queries.get("query")?"query="+queries.get("query")+"&":""}${queries.get("page")?"page="+queries.get("page")+"&":""}${queries.get("primary_released_date")?queries.get("primary_released_date")+"&":""}`;
+        const queryString = `include_adult=true&language=en-US&${queries.get("query")?"query="+queries.get("query")+"&":""}${queries.get("page")?"page="+queries.get("page")+"&":""}${queries.get("primary_released_date")?queries.get("primary_released_date")+"&":""}`;
         try{
             const filterResult = await searchSeries(queryString);
             return new Response(JSON.stringify(filterResult.data),{status:200});

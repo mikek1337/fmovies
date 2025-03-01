@@ -40,9 +40,10 @@ const Page = () =>{
     },[query, page])
     const search = ()=>{
         console.log(gener)
-        if(query){
+       
             setLoading(true);
             // search movies
+            console.log(primaryReleaseYear)
             axios.get<MovieResponse>(`/api/series/filter?query=${query}&page=${page}&primaryReleaseYear=${primaryReleaseYear}`).then((res)=>{
                 setMovies(res.data);
                 setLoading(false);
@@ -50,7 +51,7 @@ const Page = () =>{
                 console.log(err);
                 setLoading(false);
             })
-        }
+        
     }
     return(
        <div>
@@ -58,7 +59,7 @@ const Page = () =>{
                 <Input type="text" placeholder="Search series" className="w-1/5 p-2 border-2 border-gray-200 rounded-lg" onChange={(e)=>setQuery(e.target.value)}/>
                 <SelectGener onValueChange={getSelectedGener}/>
                 <SelectYear onValueChange={getSelectedYear}/>
-                <Button onClick={()=>search}>Search</Button>
+                <Button onClick={search}>Search</Button>
               </div>
               
               <hr className="my-5"/>
