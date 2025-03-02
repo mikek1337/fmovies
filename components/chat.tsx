@@ -86,7 +86,7 @@ const Chat:FC<ChatProps> = ({room , oldMessages, mediaId})=>{
         //addOptimistic([...optimisticState || [], newChat]);
     }
     return(
-    <div className="shadow-lg rounded-md w-full relative h-full border">
+    <div className="shadow-lg rounded-md w-full relative h-full border ">
        
         <div className="w-full h-[700px] overflow-y-auto">
             {messageCollection && messageCollection?.length == 0 && <div className="text-zinc-500 text-center">No messages</div>}

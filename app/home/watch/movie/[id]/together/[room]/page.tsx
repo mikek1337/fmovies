@@ -5,7 +5,6 @@ import VideoServerController from "@/components/videoservercontroller";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
-import {socket} from '@/app/socket';
 import { redirect } from "next/navigation";
 const Page = async ({ params }: { params: { room: string; id: string } }) => {
   const { room, id } = params;
@@ -61,11 +60,14 @@ const Page = async ({ params }: { params: { room: string; id: string } }) => {
       createdAt: "asc",
     },
   });
+  const test = await (await fetch('http://localhost:8080/video/'+id)).json();
   if (!id || !room) return <></>;
   return (
-    <div className="flex gap-1 w-full px-10">
+    <div className="relative flex gap-1 w-full px-10">
       <div className="w-full">
-        <VideoServerController mediaType="movie" additionalParams={id} />
+       
+          <VideoServerController mediaType="movie" additionalParams={id} url={test.url}   />
+       
       </div>
       <div className="w-[30%]">
         <div className="flex w-full justify-between py-1 items-center">
