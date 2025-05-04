@@ -13,24 +13,7 @@ export const AuthOptions:NextAuthOptions = {
         strategy: 'jwt',
     },
     providers:[
-        Credentials({
-            name: "Credentials",
-            credentials: {
-                username: { label: "Username", type: "text" },
-                password: {  label: "Password", type: "password" }
-            },
-            async authorize(credentials){
-                
-                if(credentials){
-                const user = await db.user.findFirst({where:{username:credentials.username}});
-                if(user &&  user.password && compareSync(credentials.password, user.password)){
-                    return user;
-                }
-            }
-                return null
-            },
-            
-        }),
+       
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,

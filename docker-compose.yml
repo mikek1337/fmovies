@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  mongo1:
+    container_name: mongo1
+    image: mongo:latest     
+    command: mongod --replSet rs0 --bind_ip_all # --auth will be added later
+    volumes:
+      - ./mongo-replicaSet.sh:/mongo-replicaSet.sh
+      - mongo1-data:/data/db
+    ports:
+      - "27017:27017" # Expose port only for easy access/initiation from host
+    networks:
+      - mongodb-net
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo2:
+    container_name: mongo2
+    image: mongo:latest # Or a specific version like mongo:6.0
+    command: mongod --replSet rs0 --bind_ip_all # --auth will be added later
+    volumes:
+      - mongo2-data:/data/db
+    ports:
+      - "27018:27017"
+    networks:
+      - mongodb-net
+    # No port mapping needed unless you need direct host access
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo3:
+    container_name: mongo3
+    image: mongo:latest # Or a specific version like mongo:6.0
+    command: mongod --replSet rs0 --bind_ip_all # --auth will be added later
+    volumes:
+      - mongo3-data:/data/db
+    ports:
+      - "27019:27017"
+    networks:
+      - mongodb-net
+    # No port mapping needed unless you need direct host access
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongo1-data:
+  mongo2-data:
+  mongo3-data:
+
+networks:
+  mongodb-net:
+    driver: bridge

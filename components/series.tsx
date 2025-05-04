@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import Recommendation from "./recommendation"
 import Comment from "./comment"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { RecentlyViewedType } from "@/app/types/recentlyViewed"
 interface SeriesProps{
     id:number
@@ -19,8 +19,6 @@ const Series:FC<SeriesProps> = ({id}) =>{
     const [season,setSeason] = useState(1)
     const [episode, setEpisode] = useState(1)
     const [videoUrl, setVideoUrl] = useState(`https://vidsrc.icu/embed/tv/${id}/${season}/${episode}`);
-    const [series, setSeries] = useState<MovieDetail>();
-    const [loading, setLoading] = useState<boolean>(false);
     const [seasonEpisodes, setSeasonEpisodes] = useState<number>(0);
     const changeSeason = (newSeason:number)=>{
         
@@ -33,30 +31,33 @@ const Series:FC<SeriesProps> = ({id}) =>{
         setEpisode(newEpisode);
         setVideoUrl(`https://vidsrc.icu/embed/tv/${id}/${season}/${newEpisode}`);
     }
-    useEffect(()=>{
-        setLoading(true);
-        axios.get<MovieDetail>(`/api/series/detail?id=${id}`).then((res)=>{
-            setSeries(res.data);
-            mutate({
-                id: res.data.id.toString(),
-                title: res.data.name,
-                media_type: "tv",
-                poster_path: res.data.poster_path,
-            })
+    const {data:series, isLoading} = useQuery({
+        queryKey:['series'+id],
+        queryFn: async ()=>{
+            const res = await axios.get<MovieDetail>(`/api/series/detail?id=${id}`)
             setSeasonEpisodes(res.data.seasons.filter(seasonValue=>seasonValue.season_number ===season)[0].episode_count)
-            console.log(series);
-            setLoading(false);
-        }).catch(err=>{
-            console.log(err);
-            setLoading(false);
-        })
+            return res.data as MovieDetail;
+        }
+    })
+    useEffect(()=>{
+       
+        if(series){
+            mutate({
+                id: series?.id.toString(),
+                title: series?.name,
+                media_type: "tv",
+                poster_path: series?.poster_path,
+            })
+            
+        }
 
-    },[id, season, series]);
+    },[series]);
     const {mutate} = useMutation({
-        mutationKey:["seriesmutate", id],
         mutationFn: async(recentlyViewed:RecentlyViewedType)=>{
-            return (await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)).data;
+            const res = await axios.post('/api/movies/recentlyviewed/post', recentlyViewed) 
+            return res.data;
         },
+       
     });
 
     return(
@@ -102,10 +103,10 @@ const Series:FC<SeriesProps> = ({id}) =>{
         <div className=" my-10 flex justify-center  border">
             <div className="flex items-start  w-full">
                 {
-                    loading && (<Loader className="w-5 h-5 animate-spin"/>)
+                    isLoading && (<Loader className="w-5 h-5 animate-spin"/>)
                 }
                 {
-                    !loading && series && (
+                    !isLoading && series && (
                         <SeriesDetails seriesDetails={series}/>
                     )
                 }

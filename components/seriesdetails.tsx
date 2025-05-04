@@ -8,7 +8,7 @@ const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
  
     return(
         <div className="flex md:flex-row flex-col gap-2 w-full border px-1">
-            <div className="w-fit h-fit border mx-auto ">
+            <div className="w-fit h-fit border  ">
                     <Image src={`http://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`} className='object-contain w-[200px] md:h-[300px]   rounded-md' width={500} height={500} alt={seriesDetails.name}/>
                 </div>
             <div className="w-fit">
