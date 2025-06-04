@@ -1,9 +1,7 @@
 import{getServerSession, type NextAuthOptions} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { db } from './db';
-import { compareSync } from 'bcrypt';
 import { nanoid } from 'nanoid';
 
 export const AuthOptions:NextAuthOptions = {
