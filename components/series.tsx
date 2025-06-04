@@ -12,12 +12,20 @@ import Recommendation from "./recommendation"
 import Comment from "./comment"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { RecentlyViewedType } from "@/app/types/recentlyViewed"
+import { useSession } from "next-auth/react"
+type prevView = {
+    id:number,
+    season:number,
+    episode:number
+}
 interface SeriesProps{
     id:number
 }
 const Series:FC<SeriesProps> = ({id}) =>{
+    const session = useSession()
     const [season,setSeason] = useState(1)
     const [episode, setEpisode] = useState(1)
+   
     const [videoUrl, setVideoUrl] = useState(`https://vidsrc.icu/embed/tv/${id}/${season}/${episode}`);
     const [seasonEpisodes, setSeasonEpisodes] = useState<number>(0);
     const changeSeason = (newSeason:number)=>{
@@ -25,10 +33,12 @@ const Series:FC<SeriesProps> = ({id}) =>{
         setSeason(newSeason);
         console.log(newSeason);
         setEpisode(1);
+        seriesReminder(newSeason, 1);
         setVideoUrl(`https://vidsrc.icu/embed/tv/${id}/${newSeason}/${episode}`);
     }
     const changeEpisode = (newEpisode:number)=>{
         setEpisode(newEpisode);
+        seriesReminder(season, newEpisode);
         setVideoUrl(`https://vidsrc.icu/embed/tv/${id}/${season}/${newEpisode}`);
     }
     const {data:series, isLoading} = useQuery({
@@ -40,18 +50,49 @@ const Series:FC<SeriesProps> = ({id}) =>{
         }
     })
     useEffect(()=>{
-       
-        if(series){
-            mutate({
-                id: series?.id.toString(),
-                title: series?.name,
-                media_type: "tv",
-                poster_path: series?.poster_path,
-            })
-            
-        }
+       if(session.data?.user){
+           if(series){
+               mutate({
+                   id: series?.id.toString(),
+                   title: series?.name,
+                   media_type: "tv",
+                   poster_path: series?.poster_path,
+               })
+               
+           }
 
-    },[series]);
+       }
+
+    },[series, session.data?.user]);
+    useEffect(()=>{
+        const pervPlay = JSON.parse(localStorage.getItem('previous') || '[]') as prevView[];
+        const currentSeries = pervPlay.filter((prev:prevView)=>prev.id===id);
+        if(currentSeries && currentSeries.length > 0){
+            console.log(currentSeries, 'clear')
+            changeSeason(currentSeries[0].season);
+            changeEpisode(currentSeries[0].episode)
+        }
+    },[])
+    const seriesReminder = (season:number, episode:number)=>{
+        const pervPlay = JSON.parse(localStorage.getItem('previous') || '[]') as prevView[];
+        console.log(pervPlay, 'pervplay')
+        const currentSeries = pervPlay.filter((prev:prevView)=>prev.id===id);
+        if(currentSeries.length > 0){
+            currentSeries[0].episode = episode;
+            currentSeries[0].season = season;
+            const newPlay = pervPlay.filter((prev:prevView)=> prev.id !== id)
+            newPlay.push(currentSeries[0])
+            localStorage.setItem('previous', JSON.stringify(newPlay));
+        }else{
+            const play:prevView = {
+                id,
+                episode,
+                season
+            }
+            pervPlay.push(play)
+            localStorage.setItem('previous', JSON.stringify(pervPlay))
+        }
+    }
     const {mutate} = useMutation({
         mutationFn: async(recentlyViewed:RecentlyViewedType)=>{
             const res = await axios.post('/api/movies/recentlyviewed/post', recentlyViewed) 
