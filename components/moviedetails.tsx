@@ -75,7 +75,7 @@ const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
                             <span className="col-span-1">Production:</span>
                             <div className="flex flex-wrap gap-2  items-center">
                             {movieDetails.production_companies.map(prod=>(
-                            <span className="rounded-full w-fit   px-2" key={prod.id}>{prod.name}</span>
+                            <span className="bg-zinc-200 rounded-full px-2" key={prod.id}>{prod.name}</span>
                         ))}</div>
 
                             </div>
