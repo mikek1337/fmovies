@@ -14,7 +14,7 @@ interface MediaOptionsProps{
 }
 const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaType}) =>{
     const {data, isLoading, refetch} = useQuery({
-        queryKey:["favorite", mediaId],
+        queryKey:["favorite"],
         queryFn: async()=>{
             const data = (await axios.get(`/api/favorite?mediaId=${mediaId}`)).data;
             
@@ -44,11 +44,20 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
             refetch();
         },
         onError: (error)=>{
-            toast({
-                title: "Error",
-                description: error.message,
-                variant: "destructive"
-            })
+            
+            if(error.cause === "unauthenticated"){
+                toast({
+                    title: "Error",
+                    description: "Please login to add to watchlist",
+                    variant: "destructive"
+                })
+            } else{
+                toast({
+                    title: "Error",
+                    description: "Something went wrong, please try again later.",
+                    variant: "destructive"
+                })
+            }
         }
     })
     const addFavorite = ()=>{
@@ -58,22 +67,7 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
             MediaType: mediaType,
             title:title
         });
-        /* if(isFav){
-            addFav(false);
-        }
-        else{
-            addFav(true);
-        } */
     }
-/*     const [isFav, addFav] = useOptimistic(data?.favorite, (state, fav:boolean)=>{
-        mutate({
-            mediaId:mediaId.toString(),
-            poster_url:poster_url,
-            MediaType: mediaType,
-            title:title
-        })
-        return fav;
-    }) */
     return(
         <div className="flex flex-col gap-3 md:my-0 my-10">
             <Button variant={"ghost"} className="text-indigo-600 flex items-center gap-2 border md:border-0" onClick={addFavorite}>
