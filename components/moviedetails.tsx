@@ -54,9 +54,8 @@ const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
     return(
         <div className="flex shadow-md  p-2 md:flex-row flex-col" >
         <div className="flex md:flex-row flex-col gap-2 w-full max-w-[1200px]  px-1">
-            <div className="md:w-fit md:h-fit border  ">
-                
-                    <Image src={`http://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} className='object-contain md:w-[200px] md:h-[300px]   rounded-md' width={500} height={500} alt={movieDetails.name!}/>
+            <div className="md:w-fit md:h-fit border  mx-auto md:mx-0">
+                    <Image src={`http://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} className='object-contain w-[200px] h-[300px]   rounded-md' width={500} height={500} alt={movieDetails.name!}/>
                 </div>
             <div className="w-fit">
                 <span className="font-extrabold flex items-center gap-2 md:text-5xl text-3xl">{movieDetails.title} 
