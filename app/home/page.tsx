@@ -7,6 +7,7 @@ import PopularMovies from '@/components/popularmovies';
 import PopularTvSeries from '@/components/populartvseries';
 import { useQuery } from '@tanstack/react-query';
 
+
 const Page = ()=>{
     const {data, isPending} = useQuery({
         queryKey:["latest"],

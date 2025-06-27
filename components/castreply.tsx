@@ -9,8 +9,9 @@ import { Textarea } from "./ui/textarea";
 interface CastReplyProps{
     commentId:string;
     castReply?:boolean;
+    castReplyFor?:string; 
 }
-const CastReply:FC<CastReplyProps> = ({commentId, castReply})=>{
+const CastReply:FC<CastReplyProps> = ({commentId, castReply, castReplyFor})=>{
     const [comment, setComment] = useState<string>("");
     
     console.log(castReply)
@@ -36,7 +37,7 @@ const CastReply:FC<CastReplyProps> = ({commentId, castReply})=>{
         
         setComment("");
     }
-    if(castReply)
+    if(castReply && castReplyFor == commentId)
     return(
         <div className="my-5">
             

@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import Rating from "./rating";
 import { Textarea } from "./ui/textarea";
 import { useSession } from "next-auth/react";
+import Comments from "./comments";
 interface CommentProps {
     id: number;
     season?: number;
@@ -20,7 +21,6 @@ interface CommentProps {
 const Comment: FC<CommentProps> = ({ id, season, episode }) => {
     const [userComment, setUserComment] = useState<string>("");
     const { toast } = useToast();
-    const [replying, setReplying] = useState<boolean>(false);
     const session = useSession();
     const { isPending: submitting, mutate } = useMutation({
         mutationFn: async (comment: CommentSchemaType) => {
@@ -112,7 +112,7 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
             };
         }
         mutate(comment);
-
+        refetch();
     }
 
     return (
@@ -151,50 +151,10 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
                         /* eslint-disable @typescript-eslint/no-explicit-any */
                         data?.map((comment: any) => (
                             <>
-                                <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200" key={comment.id}>
-                                    <div className="flex items-center mb-2">
-                                        <div className="w-9 h-9 bg-green-200 rounded-full flex items-center justify-center text-green-800 font-bold mr-3 text-sm">
-                                            <Avatar className="border">
-                                                <AvatarImage src={comment.comment.user?.image} alt={comment.comment.user?.username} />
-                                                <AvatarFallback>{comment.comment.user?.username[0]}</AvatarFallback>
-                                            </Avatar>
-                                        </div>
-                                        <span className="font-semibold text-gray-800">{comment.comment.user?.username}</span>
-                                        <span className="text-gray-500 text-xs ml-3">{formatTimeToNow(comment.comment.createdAt)}</span>
-                                    </div>
-                                    <p className="text-gray-700 leading-relaxed">{comment?.comment.content}</p>
-                                    <div className="flex items-center text-gray-500 mt-3 space-x-4 text-sm">
-                                        <Rating id={comment?.comment.id} />
-                                        <span className="flex items-center gap-2 cursor-pointer hover:underline text-sm" aria-disabled={replying} onClick={() => setReplying(prev => !prev)}>
-                                            <Reply className="w-5 h-5 text-zinc-700" />
-                                            Reply
-                                        </span>
-                                    </div>
-                                    <CastReply commentId={comment?.comment.id} castReply={replying} />
-                                </div>
+                                <Comments comment={comment.comment} id={comment.id}/>
                                 {
                                     comment.comment.replies.map((replay: any) => (
-                                        <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-200 ml-[10%]" key={replay.id}>
-                                            <div className="flex items-center mb-2">
-                                                <div className="w-9 h-9 bg-green-200 rounded-full flex items-center justify-center text-green-800 font-bold mr-3 text-sm">
-                                                    <Avatar className="border">
-                                                        <AvatarImage src={replay.user?.image} alt={comment.comment.user?.username} />
-                                                        <AvatarFallback>{replay.user?.username[0]}</AvatarFallback>
-                                                    </Avatar>
-                                                </div>
-                                                <span className="font-semibold text-gray-800">{replay.user?.username}</span>
-                                                <span className="text-gray-500 text-xs ml-3">{formatTimeToNow(replay.createdAt)}</span>
-                                            </div>
-                                            <p className="text-gray-700 leading-relaxed">{replay.content}</p>
-                                            <div className="flex items-center text-gray-500 mt-3 space-x-4 text-sm">
-                                                <Rating id={replay.id} />
-                                                <span className="flex items-center gap-2 cursor-pointer hover:underline text-sm" aria-disabled={replying} onClick={() => setReplying(prev => !prev)}>
-                                                    <Reply className="w-5 h-5 text-zinc-700" />
-                                                    Reply
-                                                </span>
-                                            </div>
-                                            <CastReply commentId={replay.id} castReply={replying} />
-                                        </div>
+                                        <Comments comment={replay} id={replay.id} isReply={true}/>
                                     ))
                                 }
                             </>
