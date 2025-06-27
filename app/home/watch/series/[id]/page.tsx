@@ -1,10 +1,10 @@
 import Series from "@/components/series";
-const Page = ({params}:{params:{id:string}})=>{
+const Page = ({ params }: { params: { id: string } }) => {
 
-    return(        
-    <>
-        <Series id={parseInt(params.id)}/>
-        
+    return (
+        <>
+            <Series id={parseInt(params.id)} />
+
         </>)
 }
 

@@ -1,4 +1,4 @@
-import { Heart, Loader2, PlayCircle } from "lucide-react";
+import { Bookmark, Heart, Loader2, PlayCircle } from "lucide-react";
 import { Button } from "./ui/button"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FC } from "react";
@@ -69,13 +69,13 @@ const MediaOptions:FC<MediaOptionsProps> = ({mediaId, title, poster_url, mediaTy
         });
     }
     return(
-        <div className="flex flex-col gap-3 md:my-0 my-10">
-            <Button variant={"ghost"} className="text-indigo-600 flex items-center gap-2 border md:border-0" onClick={addFavorite}>
-                <Heart className={cn("w-5 h-5", {"text-indigo-600 fill-indigo-600":data?.favorite})}/>
+        <div className="grid grid-cols-2 gap-3 md:my-0 my-10">
+            <Button variant={"outline"} className="text-indigo-600 flex items-center gap-2 border md:border-0 font-medium" onClick={addFavorite}>
+                <Bookmark className={cn("w-5 h-5", {"text-indigo-600 fill-indigo-600":data?.favorite})}/>
                 Add to Watchlist
                 {(isLoading || isPending) && <Loader2 className="w-5 h-5 animate-spin"/>}
             </Button>
-            <Button className="bg-indigo-600 text-white flex items-center gap-2">
+            <Button className="bg-indigo-600 text-white flex items-center gap-2 font-medium">
                 <PlayCircle className="w-5 h-5"/>
                 Watch Together
             </Button>

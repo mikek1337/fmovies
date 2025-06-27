@@ -17,7 +17,7 @@ const Auth = () => {
                 />
                 <AvatarFallback>{session.data.user?.name}</AvatarFallback>
               </Avatar>
-              <span>{session.data.user?.name}</span>
+            
             </Link>
 
     );
