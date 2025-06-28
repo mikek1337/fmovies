@@ -20,9 +20,13 @@ const VideoServerController:FC<VideoServerControllerProps> = ({mediaType, additi
         videoUrl += `/movie/${additionalParams}`;
     }
     return(
-        <div className="px-5 h-fit">
-            <VideoPlayer videoUrl={videoUrl}/>
-            <ServerControl selectServer={selectServer}/>
+        <div>
+            <div className=" rounded-md h-fit">
+                <h2 className="text-3xl font-bold text-indigo-900 mb-4">Watch Now</h2>
+                <VideoPlayer videoUrl={videoUrl}/>
+            </div>
+                <ServerControl selectServer={selectServer}/>
+
         </div>
     )
 }

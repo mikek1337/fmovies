@@ -7,7 +7,7 @@ interface HomeLayoutProps {
 }
 export default function HomeLayout({ children }: HomeLayoutProps) {
   return (
-    <main className="h-screen">
+    <main className="h-fit bg-gray-50">
       <Header />
 
       {children}

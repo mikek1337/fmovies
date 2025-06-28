@@ -1,18 +1,14 @@
 "use client"
-import { Loader } from "lucide-react"
-import VideoPlayer from "./videoplayer"
 import { FC, useEffect, useState } from "react"
 import { MovieDetail } from "@/app/types/moviedbresponse"
 import axios from "axios"
 import SeriesDetails from "./seriesdetails"
-import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import Recommendation from "./recommendation"
-import Comment from "./comment"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { RecentlyViewedType } from "@/app/types/recentlyViewed"
 import { useSession } from "next-auth/react"
+import VideoServerController from "./videoservercontroller"
 type prevView = {
     id:number,
     season:number,
@@ -26,20 +22,16 @@ const Series:FC<SeriesProps> = ({id}) =>{
     const [season,setSeason] = useState(1)
     const [episode, setEpisode] = useState(1)
    
-    const [videoUrl, setVideoUrl] = useState(`https://vidsrc.icu/embed/tv/${id}/${season}/${episode}`);
     const [seasonEpisodes, setSeasonEpisodes] = useState<number>(0);
     const changeSeason = (newSeason:number)=>{
-        
         setSeason(newSeason);
         console.log(newSeason);
         setEpisode(1);
         seriesReminder(newSeason, 1);
-        setVideoUrl(`https://vidsrc.icu/embed/tv/${id}/${newSeason}/${episode}`);
     }
     const changeEpisode = (newEpisode:number)=>{
         setEpisode(newEpisode);
         seriesReminder(season, newEpisode);
-        setVideoUrl(`https://vidsrc.icu/embed/tv/${id}/${season}/${newEpisode}`);
     }
     const {data:series, isLoading} = useQuery({
         queryKey:['series'+id],
@@ -69,8 +61,8 @@ const Series:FC<SeriesProps> = ({id}) =>{
         const currentSeries = pervPlay.filter((prev:prevView)=>prev.id===id);
         if(currentSeries && currentSeries.length > 0){
             console.log(currentSeries, 'clear')
-            changeSeason(currentSeries[0].season);
-            changeEpisode(currentSeries[0].episode)
+            setSeason(currentSeries[0].season);
+            setEpisode(currentSeries[0].episode)
         }
     },[])
     const seriesReminder = (season:number, episode:number)=>{
@@ -102,75 +94,60 @@ const Series:FC<SeriesProps> = ({id}) =>{
     });
 
     return(
-        <>
-        <div className="relative  grid grid-cols-12 w-full h-fit  my-4 border px-5 ">
-            <div className="md:relative hidden md:block absolute md:col-span-2 md:w-auto w-5/12  overflow-auto bg-white h-full">
-                <span className="font-bold flex justify-center w-full my-10">{series?.seasons.filter(seasonValue=>seasonValue.season_number ===season).map((res)=>(
-                    res.name
-                ))}</span>
-                <div className="h-[300px]">
-                    {
-                        Array.from({length: seasonEpisodes}).fill(0).map((_,index)=>(
-                            <div className={cn("px-1 py-2 border cursor-pointer", {"font-extrabold":(index + 1)===episode})} onClick={()=>{changeEpisode(index + 1)}} key={`ep${index}`}>
-                                <span>{`Episode ${index + 1}`}</span>
-                            </div>
-                        ))
-                    }
-
-                
-                </div>
-            </div>
-
-            <div className="md:col-span-10 col-span-12 ">
-            <VideoPlayer videoUrl={videoUrl}/>
-            </div>
-        </div>
-        <div className="md:hidden my-10 px-1">
-                <span className="font-bold text-lg">{series?.seasons.filter(seasonValue=>season===seasonValue.season_number).map(res=>(
-                    res.name
-                ))}</span>
-            <div className="grid grid-cols-8 ">
-                    {
-                        Array.from({length: seasonEpisodes}).fill(0).map((_,index)=>(
-                            <div className={cn("px-1 py-2  cursor-pointer w-8 h-8 flex items-center justify-center", {"bg-indigo-700 text-white rounded-md font-semibold":(index + 1)===episode})} onClick={()=>{changeEpisode(index + 1)}} key={`ep${index}`}>
-                                <span>{`${index + 1}`}</span>
-                            </div>
-                        ))
-                    }
-
-                
-                </div>
-            </div>
-        <div className=" my-10 flex justify-center  border">
-            <div className="flex items-start  w-full">
-                {
-                    isLoading && (<Loader className="w-5 h-5 animate-spin"/>)
-                }
+        <div className="md:max-w-[80%] mx-auto p-10">
+            <section className="mt-10">
                 {
                     !isLoading && series && (
                         <SeriesDetails seriesDetails={series}/>
                     )
                 }
-            </div>            
-            
-        </div>
-        <ScrollArea className="whitespace-nowrap rounded-md border w-fit">
-        <div className="md:flex grid grid-flow-row-dense items-center gap-3 mx-5 w-full border">
-            {
-                series?.seasons.map(seasonValue=>(
-                <div className={cn("flex  justify-center items-center relative rounded-lg border  cursor-pointer bg-black/30 bg-blend-darken", {"border-indigo-600 border-2":seasonValue.season_number===season})} key={seasonValue.id} onClick={()=>changeSeason(seasonValue.season_number)}>
-                    <span className={cn("absolute text-2xl text-white font-extrabold p-1 z-10  ",{"text-indigo-300":season===seasonValue.season_number})}>{seasonValue.name}</span>
-                    <Image src={`http://image.tmdb.org/t/p/w500${seasonValue.poster_path}`} alt="" width={500} height={500} className="object-cover w-[300px] h-[200px]"/>
-                    <div className="absolute bg-blend-darken w-full h-full bg-black/50 top-0"></div>
+            </section>
+            <section>
+                <VideoServerController mediaType="tv" additionalParams={`${id}/${season}/${episode}`}/>
+            </section>
+               <section className="mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-indigo-800 mb-4">Seasons & Episodes</h2>
+            <div className="bg-gray-100 rounded-xl shadow-lg p-6 md:p-8">
+
+                <div className="mb-6 flex flex-wrap gap-3">
+                    {
+                        series?.seasons.map((seasonValue)=>(
+                            <button className={cn(" font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 hover:text-white transition duration-300",{"bg-indigo-600 text-white":season===seasonValue.season_number})} key={seasonValue.id} onClick={()=>changeSeason(seasonValue.season_number)}>Season {seasonValue.season_number}</button>
+                        ))
+                    }
+                    
                 </div>
-                ))
-            }
+
+                <div className="space-y-4 overflow-auto max-h-96">
+                    {
+                        Array.from({ length: seasonEpisodes}).map((_, index)=>(
+                        <div className={cn("flex items-center bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer",{"bg-indigo-300":episode===index+1})} key={`epis${index}`} onClick={()=>changeEpisode(index+1)}>
+                            <div className="flex-shrink-0 w-24 h-16 rounded-md overflow-hidden mr-4">
+                                <img src={`https://placehold.co/150x100/e5e7eb/6366f1?text=S${season}E${index+1}`} alt="Episode 1 Thumbnail" className="w-full h-full object-cover"/>
+                            </div>
+                            <div className="flex-grow">
+                                <h3 className="font-semibold text-lg text-indigo-700">Episode: {index+1}</h3>
+                                <p className="text-gray-600 text-sm">{series?.seasons[season!==0?season - 1:season].overview}</p>
+                                <p className="text-gray-500 text-xs mt-1">Runtime: {series?.last_episode_to_air.runtime} min | Aired: {new Date(series?.first_air_date || '').toDateString()}</p>
+                            </div>
+                            <button className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-full transition duration-300 ml-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        ))
+                    }
+
+                    
+                </div>
+            </div>
+        </section>
+        <section>
+            <Recommendation mediaType="tv" id={id}/>
+        </section>
         </div>
-        <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-        <Comment id={id} season={season} episode={episode}/>
-        <Recommendation id={id} mediaType="tv"/>
-        </>
     )
 }
 

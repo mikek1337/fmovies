@@ -28,9 +28,8 @@ const Recommendation:FC<RecommendationProps> = ({id, mediaType})=>{
     }
     }, [id, mediaType])
     return(
-        <div className="px-2 my-20">
-            <h1 className="font-extrabold my-3 md:text-5xl text-3xl">Recommendations</h1>
-            <hr className="my-10"/>
+        <div className="px-2 space-y-7 ">
+            <h1 className="font-semibold  md:text-4xl text-3xl text-indigo-700">More like this</h1>
             {
                 loading && <Loader className="w-5 h-5 animate-spin mx-auto"/>
             }

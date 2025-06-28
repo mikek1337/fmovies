@@ -7,6 +7,7 @@ import PopularMovies from '@/components/popularmovies';
 import PopularTvSeries from '@/components/populartvseries';
 import { useQuery } from '@tanstack/react-query';
 
+
 const Page = ()=>{
     const {data, isPending} = useQuery({
         queryKey:["latest"],
@@ -15,7 +16,7 @@ const Page = ()=>{
         }
     })
     return(
-        <div className='my-1 w-full'>
+        <div className='my-1 w-[80%] mx-auto '>
             {!isPending && data && <Hero movies={data}/>}
             <Suspense fallback={<div>Loading...</div>}>
                 <PopularMovies/>
