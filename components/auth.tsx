@@ -1,7 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { buttonVariants } from "./ui/button";
 import { signIn, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 

@@ -148,11 +148,11 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
                         /* eslint-disable @typescript-eslint/no-explicit-any */
                         data?.map((comment: any) => (
                             <>
-                                <Comments comment={comment.comment} id={comment.id}/>
+                                <Comments comment={comment.comment} id={comment.id} key={comment.id}/>
                                 {
                                     /* eslint-disable @typescript-eslint/no-explicit-any */
                                     comment.comment.replies.map((replay: any) => (
-                                        <Comments comment={replay} id={replay.id} isReply={true}/>
+                                        <Comments comment={replay} id={replay.id} isReply={true} key={replay.id}/>
                                     ))
                                 }
                             </>

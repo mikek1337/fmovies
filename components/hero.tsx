@@ -66,7 +66,7 @@ const Hero:FC<HeroProps> = ({movies})=>{
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
                 {
                     Array.from({length: 7}).map((_,index)=>(
-                        <span className={cn("h-3 w-3 bg-indigo-300 rounded-full", {"bg-indigo-600":movieIndex == index})} onClick={()=>loadMovieSilde(index)}></span>
+                        <span className={cn("h-3 w-3 bg-indigo-300 rounded-full", {"bg-indigo-600":movieIndex == index})} key={`top${index}`} onClick={()=>loadMovieSilde(index)}></span>
                         
                     ))
                 }

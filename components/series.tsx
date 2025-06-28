@@ -112,7 +112,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
                 <div className="mb-6 flex flex-wrap gap-3">
                     {
                         series?.seasons.map((seasonValue)=>(
-                            <button className={cn(" font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 hover:text-white transition duration-300",{"bg-indigo-600 text-white":season===seasonValue.season_number})} onClick={()=>changeSeason(seasonValue.season_number)}>Season {seasonValue.season_number}</button>
+                            <button className={cn(" font-semibold px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 hover:text-white transition duration-300",{"bg-indigo-600 text-white":season===seasonValue.season_number})} key={seasonValue.id} onClick={()=>changeSeason(seasonValue.season_number)}>Season {seasonValue.season_number}</button>
                         ))
                     }
                     
@@ -121,7 +121,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
                 <div className="space-y-4 overflow-auto max-h-96">
                     {
                         Array.from({ length: seasonEpisodes}).map((_, index)=>(
-                        <div className={cn("flex items-center bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer",{"bg-indigo-300":episode===index+1})} onClick={()=>changeEpisode(index+1)}>
+                        <div className={cn("flex items-center bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition duration-300 cursor-pointer",{"bg-indigo-300":episode===index+1})} key={`epis${index}`} onClick={()=>changeEpisode(index+1)}>
                             <div className="flex-shrink-0 w-24 h-16 rounded-md overflow-hidden mr-4">
                                 <img src={`https://placehold.co/150x100/e5e7eb/6366f1?text=S${season}E${index+1}`} alt="Episode 1 Thumbnail" className="w-full h-full object-cover"/>
                             </div>
