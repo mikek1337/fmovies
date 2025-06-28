@@ -27,20 +27,16 @@ const Series:FC<SeriesProps> = ({id}) =>{
     const [season,setSeason] = useState(1)
     const [episode, setEpisode] = useState(1)
    
-    const [videoUrl, setVideoUrl] = useState(`https://vidsrc.icu/embed/tv/${id}/${season}/${episode}`);
     const [seasonEpisodes, setSeasonEpisodes] = useState<number>(0);
     const changeSeason = (newSeason:number)=>{
-        
         setSeason(newSeason);
         console.log(newSeason);
         setEpisode(1);
         seriesReminder(newSeason, 1);
-        setVideoUrl(`https://vidsrc.icu/embed/tv/${id}/${newSeason}/${episode}`);
     }
     const changeEpisode = (newEpisode:number)=>{
         setEpisode(newEpisode);
         seriesReminder(season, newEpisode);
-        setVideoUrl(`https://vidsrc.icu/embed/tv/${id}/${season}/${newEpisode}`);
     }
     const {data:series, isLoading} = useQuery({
         queryKey:['series'+id],
@@ -70,8 +66,8 @@ const Series:FC<SeriesProps> = ({id}) =>{
         const currentSeries = pervPlay.filter((prev:prevView)=>prev.id===id);
         if(currentSeries && currentSeries.length > 0){
             console.log(currentSeries, 'clear')
-            changeSeason(currentSeries[0].season);
-            changeEpisode(currentSeries[0].episode)
+            setSeason(currentSeries[0].season);
+            setEpisode(currentSeries[0].episode)
         }
     },[])
     const seriesReminder = (season:number, episode:number)=>{
