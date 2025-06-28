@@ -19,7 +19,7 @@ const MovieList:FC<MovieListProps> = ({movies, mediaType}) => {
                         <span className={cn("absolute top-2 left-2 bg-indigo-500 text-white text-xs font-semibold px-2 py-1 rounded-full ",{'capitalize':mediaType==='movie'})}>{mediaType==="tv"?"TV Show":movie.media_type}</span>
                     </div>
                     <div className="p-4">
-                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition duration-300">{mediaType==='movie'?movie?.title:movie.name}</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition duration-300">{mediaType==='tv'?movie?.name:movie.title}</h3>
                         <p className="text-sm text-gray-600 mt-1">{movie?.geners?.join(',')}</p>
                     </div>
                 </div>
