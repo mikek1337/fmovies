@@ -16,7 +16,7 @@ const Page = ()=>{
         }
     })
     return(
-        <div className='my-1 w-full'>
+        <div className='my-1 w-[80%] mx-auto '>
             {!isPending && data && <Hero movies={data}/>}
             <Suspense fallback={<div>Loading...</div>}>
                 <PopularMovies/>

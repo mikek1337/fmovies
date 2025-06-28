@@ -18,6 +18,7 @@ export interface Movie{
     id: number,
     original_title: string,
     overview: string,
+    geners: Gener[],
     poster_path: string,
     name:string,
     original_name:string,
@@ -60,6 +61,9 @@ export interface MovieDetail{
     seasons:SeasonDetails[],
     type:string,
     first_air_date:string
+    last_episode_to_air:{
+        runtime:number
+    }
 }
 
 export interface SeasonDetails{

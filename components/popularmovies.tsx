@@ -5,7 +5,7 @@ const PopularMovies = async ()=>{
     const popular:MovieResponse = await (await latestMovies()).data
     return(
         <div className='px-10 my-10'>
-            <div className="text-4xl font-semibold my-10">Popular Movies</div>
+            <h2 className="text-3xl md:text-4xl font-bold text-indigo-600 mb-6 drop-shadow-md">Popular Movies</h2>
             <MovieList movies={popular}/>
         </div>
     )

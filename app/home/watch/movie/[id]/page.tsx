@@ -20,10 +20,10 @@ export async function generateMetadata(params:props):Promise<Metadata> {
     }
     const movie = await movieDetail(parseInt(params.params.id));
     return{
-        title: movie.data.title,
+        title: `${movie.data.title} - Watch Movie`,
         description: movie.data.overview,
         openGraph:{
-            title: movie.data.title,
+            title: `${movie.data.title} - Watch Movie`,
             description: movie.data.overview,
             images: [
                 {
