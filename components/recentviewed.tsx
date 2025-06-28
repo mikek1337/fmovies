@@ -3,7 +3,6 @@ import type { RecentlyViewed } from "@prisma/client";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 import Image from "next/image";
 import GetMediaDetail from "./getmediadetail";
-import CircularGallery from "./reactbit/ciculargallery";
 interface RecentlyViewedProps {
     recentlyViewed: RecentlyViewed[]
 

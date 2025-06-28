@@ -19,7 +19,7 @@ type CommentType = {
     };
     isReply?: boolean;
 };
-const Comments: FC<CommentType> = ({comment, isReply, id}) =>{
+const Comments: FC<CommentType> = ({comment, isReply}) =>{
     const [replying, setReplying] = useState<boolean>(false);
     const [replyingFor, setReplyingFor] = useState<string>("");
 
@@ -32,7 +32,7 @@ const Comments: FC<CommentType> = ({comment, isReply, id}) =>{
                                     <div className="flex items-center mb-2">
                                         <div className="w-9 h-9 bg-green-200 rounded-full flex items-center justify-center text-green-800 font-bold mr-3 text-sm">
                                             <Avatar className="border">
-                                                <AvatarImage src={comment.user?.image} alt={comment.user?.username} />
+                                                <AvatarImage src={comment.user?.image || ''} alt={comment.user?.username} />
                                                 <AvatarFallback>{comment.user?.username[0]}</AvatarFallback>
                                             </Avatar>
                                         </div>

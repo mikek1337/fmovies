@@ -1,15 +1,12 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader, Lock, Reply } from "lucide-react";
+import { Loader, Lock } from "lucide-react";
 import { FC, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import type { Comment } from "@prisma/client";
 import { CommentSchemaType } from "@/app/types/commentschema";
 import { Button } from "./ui/button";
-import { formatTimeToNow } from "@/lib/utils";
-import CastReply from "./castreply";
 import { useToast } from "@/hooks/use-toast";
-import Rating from "./rating";
 import { Textarea } from "./ui/textarea";
 import { useSession } from "next-auth/react";
 import Comments from "./comments";
@@ -153,6 +150,7 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
                             <>
                                 <Comments comment={comment.comment} id={comment.id}/>
                                 {
+                                    /* eslint-disable @typescript-eslint/no-explicit-any */
                                     comment.comment.replies.map((replay: any) => (
                                         <Comments comment={replay} id={replay.id} isReply={true}/>
                                     ))

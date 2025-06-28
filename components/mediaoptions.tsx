@@ -1,4 +1,4 @@
-import { Bookmark, Heart, Loader2, PlayCircle } from "lucide-react";
+import { Bookmark, Loader2, PlayCircle } from "lucide-react";
 import { Button } from "./ui/button"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FC } from "react";

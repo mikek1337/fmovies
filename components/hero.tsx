@@ -1,12 +1,8 @@
 'use client'
 import { MovieResponse } from "@/app/types/moviedbresponse";
 import { cn } from "@/lib/utils";
-import { Play, Stars } from "lucide-react";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
-import { buttonVariants } from "./ui/button";
-import Image from "next/image";
-import BlurFade from "./magicui/blur-fade";
 interface HeroProps{
     movies: MovieResponse
 }

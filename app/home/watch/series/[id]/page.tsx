@@ -1,7 +1,5 @@
-import { MovieDetail } from "@/app/types/moviedbresponse";
 import Series from "@/components/series";
 import { seriesDetail } from "@/lib/tmd";
-import axios from "axios";
 import { Metadata } from "next";
 type props={
     params:{
