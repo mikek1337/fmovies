@@ -2,7 +2,6 @@
 
 import { MovieResponse } from "@/app/types/moviedbresponse";
 import CustomCard from "@/components/customcard";
-import MovieList from "@/components/movielist";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";

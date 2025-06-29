@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { MultiSelect, MultiSelectContent, MultiSelectOption, MultiSelectTrigger } from "./multiselect"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { cn } from "@/lib/utils";
 

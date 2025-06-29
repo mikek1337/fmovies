@@ -3,12 +3,10 @@
 
 import { MovieResponse } from "@/app/types/moviedbresponse";
 import CustomCard from "@/components/customcard";
-import MovieList from "@/components/movielist";
 import SelectGener from "@/components/selectgener";
 import SelectYear from "@/components/selectyear";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { Loader, Search } from "lucide-react";
