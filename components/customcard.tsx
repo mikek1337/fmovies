@@ -10,7 +10,7 @@ type CustomCardProps = {
 }
 const CustomCard:FC<CustomCardProps> = ({ title, overview, image, id, mediaType})=>{
     return(
-        <div className="group bg-white rounded-xl shadow-md overflow-hidden card-hover-effect movie-card hover:scale-105 transition-transform duration-300">
+        <div className="group bg-white rounded-xl shadow-md overflow-hidden card-hover-effect movie-card hover:scale-105 transition-transform duration-300" key={`copy${id}`}>
                 <div className="relative">
                     <Image src={image} alt={title} className="w-full h-36  object-cover" width={500} height={100} />
                     <span className="absolute top-3 left-3 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded-md opacity-90 uppercase">{mediaType}</span>
