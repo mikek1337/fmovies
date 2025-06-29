@@ -14,7 +14,7 @@ import { useState } from "react";
 const Page = () => {
   //const [movies, setMovies] = useState<MovieResponse>();
   const [page, setPage] = useState(1);
-  const {isPending:isLoading, data:popularMovies} = useQuery({
+  const { data:popularMovies} = useQuery({
     queryKey: ['movies', page],
     queryFn: async ()=>{
       return await (await axios.get<MovieResponse>(`/api/movies/popular?page=${page}`)).data; 
