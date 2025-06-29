@@ -10,34 +10,30 @@ import {
   MultiSelectOption,
   MultiSelectTrigger,
 } from "./multiselect";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { SelectItem } from "@radix-ui/react-select";
+import { cn } from "@/lib/utils";
 interface SelectGenerProps {
-  onValueChange?: (value: string[]) => void;
+  onValueChange?: (value: string) => void;
+  value?: string;
+  className?: string;
 }
-const SelectGener:FC<SelectGenerProps> = ({onValueChange}) => {
-  const { data } = useQuery({
-    queryKey: ["geners"],
-    queryFn: async () => {
-      return await (
-        await axios("/api/geners")
-      ).data;
-    },
-    retry: (failureCount, error) => {
-      if (error.cause === 404) return false;
-      return failureCount < 3;
-    },
-  });
-
+const SelectGener:FC<SelectGenerProps> = ({onValueChange,className}) => {
   return (
-      <MultiSelect onValueChange={onValueChange}>
-        <MultiSelectTrigger defaultText="Select Gener"/>
-        <MultiSelectContent >
-          {data?.map((gener: Gener) => (
-           <MultiSelectOption key={gener.id} value={gener.id.toString()}>
-             {gener.name}
-            </MultiSelectOption>
-          ))}
-        </MultiSelectContent>
-      </MultiSelect>
+        <Select onValueChange={(value) => onValueChange?.(value)} >
+                    <SelectTrigger className={cn("w-1/5 p-5 bg-gray-100", className)}>
+                        <SelectValue placeholder="Adult" className="w-1/5" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        
+                          <SelectItem value='true'>
+                            True
+                          </SelectItem>
+                          <SelectItem value='false'>
+                            False
+                          </SelectItem>
+                    </SelectContent>
+                </Select>
     /* </div> */
   );
 };
