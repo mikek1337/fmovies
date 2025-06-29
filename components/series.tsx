@@ -127,7 +127,7 @@ const Series:FC<SeriesProps> = ({id}) =>{
                             </div>
                             <div className="flex-grow">
                                 <h3 className="font-semibold text-lg text-indigo-700">Episode: {index+1}</h3>
-                                <p className="text-gray-600 text-sm">{series?.seasons[season!==0?season - 1:season].overview}</p>
+                                <p className="text-gray-600 text-sm line-clamp-2">{series?.seasons[season!==0?season - 1:season].overview}</p>
                                 <p className="text-gray-500 text-xs mt-1">Runtime: {series?.last_episode_to_air.runtime} min | Aired: {new Date(series?.first_air_date || '').toDateString()}</p>
                             </div>
                             <button className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-full transition duration-300 ml-4">
