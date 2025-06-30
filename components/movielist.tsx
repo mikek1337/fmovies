@@ -9,7 +9,7 @@ interface MovieListProps{
 }
 const MovieList:FC<MovieListProps> = ({movies, mediaType}) => {
     return(
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
             {movies.results?.map((movie)=>(
                 <Link href={`/home/watch/${mediaType==='tv'?'series':'movie'}/${movie.id}`} key={movie.id}>
