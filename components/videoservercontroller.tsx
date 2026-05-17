@@ -7,7 +7,7 @@ interface VideoServerControllerProps{
     additionalParams?: string,
 }
 const VideoServerController:FC<VideoServerControllerProps> = ({mediaType, additionalParams})=>{
-    const [domain, setDomain] = useState<string>("vidsrc.icu");
+    const [domain, setDomain] = useState<string>("vsembed.ru");
     const selectServer = (serverUrl:string)=>{
         setDomain(serverUrl);
         
