@@ -2,80 +2,96 @@ import { MovieDetail } from "@/app/types/moviedbresponse"
 import Image from "next/image"
 import { FC } from "react"
 import MediaOptions from "./mediaoptions"
-import { Star } from "lucide-react"
-interface MovieDetailsProps{
-    seriesDetails:MovieDetail,
+import { Star, Clock, Calendar, MapPin, Tv } from "lucide-react"
+
+interface MovieDetailsProps {
+    seriesDetails: MovieDetail,
 }
-const SeriesDetails:FC<MovieDetailsProps> = ({seriesDetails})=>{
- 
-    return(
-        <div className="flex md:flex-row flex-col rounded-md bg-white mb-6 p-10">
-            <div className=" border  mx-auto md:mx-0 relative bg-gray-600 rounded-md max-h-[600px]">
-                    <span className="text-white bg-indigo-500 absolute px-2 rounded-full left-1 text-sm top-1">{seriesDetails.genres[0].name}</span>
-                    <Image src={`http://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`} className=' h-full rounded-md object-cover' width={400} height={400} alt={seriesDetails.name!}/>
+
+const SeriesDetails: FC<MovieDetailsProps> = ({ seriesDetails }) => {
+    return (
+        <div className="grid md:grid-cols-[300px_1fr] gap-8">
+            <div className="relative aspect-[2/3] rounded-xl overflow-hidden formovies-card">
+                <Image
+                    src={`https://image.tmdb.org/t/p/w500${seriesDetails.poster_path}`}
+                    alt={seriesDetails.name || ""}
+                    fill
+                    className="object-cover"
+                    sizes="300px"
+                />
+                <div className="absolute top-3 left-3">
+                    <span className="px-3 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-formovies-gold/20 text-formovies-gold border border-formovies-gold/30 backdrop-blur-sm">
+                        {seriesDetails.genres[0]?.name || "Series"}
+                    </span>
+                </div>
             </div>
-            <div className="flex flex-col gap-2  md:px-4 md:max-w-[60%] ">
-                <div className="flex items-center justify-between flex-wrap">
-                    <div className="flex flex-col gap-2">
-                        <span className="text-4xl font-bold text-gray-900 leading-tight">{seriesDetails.name}</span>
-                        <span className="text-sm  font-semibold bg-indigo-100 text-indigo-600 rounded-full px-3 w-fit">TV Show</span>
-                    </div>
-                        <MediaOptions mediaId={seriesDetails.id} mediaType="movie" poster_url={seriesDetails.poster_path} title={seriesDetails.title}/>
-                </div>
-                <div className="flex flex-col  ">
-                <div className="mb-10">
-                    <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">{seriesDetails.overview}</p>
-                </div>
-                    <div className="grid  md:grid-cols-2 text-gray-600 ">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex w-fit items-center space-x-2">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Gener:</span>
-                                <div className="space-x-2  items-center">
-                                {seriesDetails.genres.map((gener)=>(
-                                <span className="bg-gray-200 text-gray-700 rounded-full px-2 text-xs font-medium " key={gener.id}>{gener.name}</span>
-                            ))}</div></div>
-                            <div className="flex  w-full items-center space-x-2">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Country:</span>
-                                <div className="flex flex-wrap space-x-2  items-center">
-                                {seriesDetails.production_countries.map(country=>(
-                                <span className="rounded-full px-2 text-xs" key={country.iso_3166_1}>{country.name}</span>
-                            ))}</div></div>
-                            <div className="flex items-center space-x-2">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Runtime:</span>
-                                <span className="text-start text-xs">
-                                {`${seriesDetails.last_episode_to_air.runtime!} min`}
-                                </span>
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex  w-full items-center space-x-2 ">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Production:</span>
-                                <div className="flex flex-wrap gap-2  items-center">
-                                {seriesDetails.production_companies.map(prod=>(
-                                <span className=" px-2 text-xs" key={prod.id}>{prod.name}</span>
-                            ))}</div>
 
-                                </div>
-
-                                <div className="flex items-center space-x-2">
-                            <span className="font-semibold text-gray-800 text-sm md:text-base">Release Date:</span>
-                            <span className="text-start text-xs">
-                            {new Date(seriesDetails.first_air_date!).toDateString()}
-                            </span> 
-
-                            </div>
-                            
-                            <div className="flex items-center space-x-2">
-                                <span className="font-semibold text-gray-800">Rating:</span> 
-                                <span className="flex items-center gap-1 text-xs">
-                                    <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+            <div className="flex flex-col gap-5">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div className="flex-1 min-w-[200px]">
+                        <h1 className="font-display text-4xl md:text-5xl tracking-wide text-white leading-tight">
+                            {seriesDetails.name}
+                        </h1>
+                        <div className="flex items-center gap-2 mt-2">
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-white/10 text-white/70 border border-white/10">
+                                <Tv className="size-3 inline mr-1" />
+                                TV Series
+                            </span>
+                            <span className="flex items-center gap-1 text-xs text-white/40">
+                                <Star className="size-3.5 text-formovies-gold fill-formovies-gold" />
                                 {seriesDetails.vote_average.toFixed(1)}/10
-                                </span>
-                            </div>
-                            
+                            </span>
                         </div>
-
                     </div>
+                    <MediaOptions mediaId={seriesDetails.id} mediaType="tv" poster_url={seriesDetails.poster_path} title={seriesDetails.title} />
+                </div>
+
+                <p className="text-white/60 text-sm leading-relaxed">
+                    {seriesDetails.overview}
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5">
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Genres</p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {seriesDetails.genres.map((gen) => (
+                                <span key={gen.id} className="px-2 py-0.5 rounded-md text-xs text-white/60 bg-white/5">
+                                    {gen.name}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Runtime</p>
+                        <p className="flex items-center gap-1.5 text-xs text-white/60">
+                            <Clock className="size-3 text-white/30" />
+                            {seriesDetails.last_episode_to_air?.runtime || "N/A"} min
+                        </p>
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">First Aired</p>
+                        <p className="flex items-center gap-1.5 text-xs text-white/60">
+                            <Calendar className="size-3 text-white/30" />
+                            {seriesDetails.first_air_date ? new Date(seriesDetails.first_air_date).toDateString() : "N/A"}
+                        </p>
+                    </div>
+                    {seriesDetails.production_countries?.length > 0 && (
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Country</p>
+                            <p className="flex items-center gap-1.5 text-xs text-white/60">
+                                <MapPin className="size-3 text-white/30" />
+                                {seriesDetails.production_countries.map(c => c.name).join(", ")}
+                            </p>
+                        </div>
+                    )}
+                    {seriesDetails.production_companies?.length > 0 && (
+                        <div className="col-span-2">
+                            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Production</p>
+                            <p className="text-xs text-white/60">
+                                {seriesDetails.production_companies.map(p => p.name).join(", ")}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -38,7 +38,9 @@ export async function POST(req:Request){
                         poster_path: body.poster_url,
                         mediaId: body.mediaId,
                         MediaType: body.MediaType,
-                        title: body.title
+                        title: body.title,
+                        season: body.season ?? null,
+                        episode: body.episode ?? null,
                     }
                 });
                 return new Response(JSON.stringify({favorite:true}), {status:200});

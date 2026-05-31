@@ -1,70 +1,62 @@
-import{getServerSession, type NextAuthOptions} from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { db } from './db';
-import { nanoid } from 'nanoid';
+import { betterAuth } from "better-auth"
+import { prismaAdapter } from "better-auth/adapters/prisma"
+import { db } from "./db"
+import { nextCookies } from "better-auth/next-js"
+import { headers } from "next/headers"
 
-export const AuthOptions:NextAuthOptions = {
-    adapter: PrismaAdapter(db),
-    
-    session:{
-        strategy: 'jwt',
+export const auth = betterAuth({
+  database: prismaAdapter(db, {
+    provider: "postgresql",
+  }),
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: true,
+  },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
-    providers:[
-       
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        
-        }),
-    ],
-    callbacks: {
-        async session({ token, session }) {
+  },
+  user: {
+    additionalFields: {
+      username: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+      about: {
+        type: "string",
+        required: false,
+        input: false,
+      },
+      location: {
+        type: "string",
+        required: false,
+        input: false,
+      },
+      github: {
+        type: "string",
+        required: false,
+        input: false,
+      },
+      twitter: {
+        type: "string",
+        required: false,
+        input: false,
+      },
+      linkden: {
+        type: "string",
+        required: false,
+        input: false,
+      },
+    },
+  },
+  plugins: [nextCookies()],
+})
 
-            if (token) {
-                session.user = {
-                    ...session.user,
-                    name: token.name,
-                    email: token.email,
-                    image: token.picture,
-                   
-                };
-            }
-        
-            return session;
-        },
-
-        async jwt({ token, user }) {
-            const dbUser = await db.user.findFirst({
-                where: {
-                    email: token.email,
-                },
-            })
-
-            if (!dbUser) {
-                token.id = user!.id
-                return token
-            }
-
-            if (!dbUser.username) {
-                await db.user.update({
-                    where: {
-                        id: dbUser.id,
-                    },
-                    data: {
-                        username: nanoid(10),
-                    },
-                })
-            }
-
-            return {
-                id: dbUser.id,
-                name: dbUser.username,
-                email: dbUser.email,
-                picture: dbUser.image,
-                username: dbUser.username,
-            }
-        }
-        },
+export const getAuthSession = async () => {
+  return auth.api.getSession({
+    headers: await headers(),
+  })
 }
-export const getAuthSession = () => getServerSession(AuthOptions)

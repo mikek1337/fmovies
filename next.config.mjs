@@ -8,12 +8,11 @@ const nextConfig = {
 
                 },
                 {
-                    protocol: "http",
+                    protocol: "https",
                     hostname: "image.tmdb.org"
                 }
             ]
-        }
-    
+        },
 };
 
 export default nextConfig;

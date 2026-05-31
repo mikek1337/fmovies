@@ -1,29 +1,25 @@
 import Series from "@/components/series";
 import { seriesDetail } from "@/lib/tmd";
 import { Metadata } from "next";
-type props={
-    params:{
-        id:string
-    }
-}
-export async function generateMetadata(params:props):Promise<Metadata> {
-    
-    if(!params.params.id) {
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    if (!id) {
         return {
-            title: "Movie Not Found",
-            description: "The movie you are looking for does not exist.",
+            title: "Series Not Found",
+            description: "The series you are looking for does not exist.",
         };
     }
-    const movie = await await seriesDetail(parseInt(params.params.id));
-    return{
+    const movie = await seriesDetail(parseInt(id));
+    return {
         title: `${movie.data.name} - Watch Series`,
         description: movie.data.overview,
-        openGraph:{
+        openGraph: {
             title: `${movie.data.name} - Watch Series`,
             description: movie.data.overview,
             images: [
                 {
-                    url: `http://image.tmdb.org/t/p/w500${movie.data.poster_path}`,
+                    url: `https://image.tmdb.org/t/p/w500${movie.data.poster_path}`,
                     width: 800,
                     height: 600,
                     alt: movie.data.name,
@@ -31,16 +27,15 @@ export async function generateMetadata(params:props):Promise<Metadata> {
             ],
         }
     }
-
-
 }
-const Page = ({ params }: { params: { id: string } }) => {
 
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params;
     return (
-        <>
-            <Series id={parseInt(params.id)} />
-
-        </>)
+        <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-8">
+            <Series id={parseInt(id)} />
+        </div>
+    )
 }
 
 export default Page;

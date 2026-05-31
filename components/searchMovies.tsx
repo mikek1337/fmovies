@@ -50,7 +50,7 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
                     {movies?.results.map((movie)=>(
                         <CommandItem key={movie?.id}>
                             <Link href={`/home/watch/${movie.media_type==='tv'?'series':'movie'}/${movie.id}`} className="flex gap-2">
-                            <Image src={`http://image.tmdb.org/t/p/w500${movie?.poster_path}`} className="w-[50px] h-[50px] rounded-lg" width={500} height={500} alt={movie?.title}/>
+                            <Image src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`} className="w-[50px] h-[50px] rounded-lg" width={500} height={500} alt={movie?.title}/>
                             <div className="flex flex-col gap-2">
                                 <span className="text-xs font-semibold">{movie?.media_type=="tv"?movie?.name:movie?.title}</span>
                                 <div className="flex items-center gap-4">

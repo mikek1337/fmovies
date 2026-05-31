@@ -4,30 +4,50 @@ import { cn } from "@/lib/utils";
 import { Server } from "lucide-react";
 import { FC, useState } from "react";
 
-interface ServerControlProps{
-    selectServer:(serverUrl:string)=>void,
+interface ServerControlProps {
+    selectServer: (serverUrl: string) => void,
 }
-const ServerControl:FC<ServerControlProps> = ({selectServer}) =>{
-    const servers = ["vidsrc.icu", "2embed.org"]
-    const[selectedServer, setSelectedServer] = useState<string>(servers[0])
-    const changeServer = (server:string)=>{
+
+const ServerControl: FC<ServerControlProps> = ({ selectServer }) => {
+    const servers = ["vidsrc.ru", "vidlink.pro", "vidsrc.icu", "2embed.org"]
+    const [selectedServer, setSelectedServer] = useState<string>(servers[0])
+
+    const changeServer = (server: string) => {
         setSelectedServer(server)
         selectServer(server)
     }
-    return(
-        <div className="w-full  flex gap-2  py-10">
-        <h3 className="text-lg font-semibold text-gray-800 mr-2">Alternative Streams:</h3>
-        <div className="flex items-center gap-2">
-            <Button variant="ghost" className={cn({"bg-indigo-500 text-white font-medium":selectedServer.includes(servers[0])})} onClick={()=>changeServer(servers[0])}>
-                <Server className="w-5 h-5 mr-2" />
-                VidSrc
-            </Button>
-            <Button variant="outline" className={cn({"bg-indigo-500 text-white":selectedServer.includes(servers[1])})} onClick={()=>changeServer(servers[1])}>
-                <Server className="w-5 h-5 mr-2" />
-                2Embed
-                </Button>
+
+    const serverLabels: Record<string, string> = {
+        "vidsrc.ru": "VidSrc",
+        "vidlink.pro": "VidLink",
+        "vidsrc.icu": "VidSrc Alt",
+        "2embed.org": "2Embed",
+    }
+
+    return (
+        <div className="flex flex-wrap items-center gap-3">
+            <Server className="size-4 text-white/40" />
+            <span className="text-xs font-medium text-white/40 uppercase tracking-wider">Servers:</span>
+            <div className="flex flex-wrap gap-2">
+                {servers.map((server) => (
+                    <Button
+                        key={server}
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                            "text-xs font-medium transition-all duration-200",
+                            selectedServer === server
+                                ? "bg-formovies-gold/20 text-formovies-gold border border-formovies-gold/30"
+                                : "text-white/50 hover:text-white hover:bg-white/5 border border-transparent"
+                        )}
+                        onClick={() => changeServer(server)}
+                    >
+                        {serverLabels[server] || server}
+                    </Button>
+                ))}
+            </div>
         </div>
-    </div>
     )
 }
+
 export default ServerControl;

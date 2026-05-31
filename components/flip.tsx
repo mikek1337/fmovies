@@ -11,18 +11,13 @@ const Flip: FC<FlipProps> = ({ children }) => {
     const [current, setCurrent] = useState(0);
     const totalChildren = filpChildren.length;
     useEffect(()=>{
-        filpChildren.map((child:React.ReactNode, index) => {
-            if(isValidElement(child)){
-                let newChild
-            if (index == current) {
-                newChild = cloneElement(child, { className: "scale-125", ...child.props });
+        filpChildren.forEach((child, index) => {
+            if(isValidElement<{className?: string}>(child)){
+                const newChild = index === current
+                    ? cloneElement(child, { className: "scale-125" })
+                    : cloneElement(child, { className: "scale-50" });
+                setNewChildren((prev)=>[...prev, newChild]);
             }
-            else{
-                 newChild = cloneElement(child, { className: "scale-50", ...child.props });
-            }
-            setNewChildren((prev)=>[...prev, newChild]);
-            console.log(newChildren );
-        }
         })
     },[current])
     const handleNext = () => {

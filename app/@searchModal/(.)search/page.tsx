@@ -63,7 +63,7 @@ const Page = () => {
                     <div className="flex items-center w-full border gap-2">
                       <div className="">
                         <Image
-                          src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                           className="w-[50px] h-[100px] object-contain"
                           width={500}
                           height={500}

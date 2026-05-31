@@ -101,3 +101,11 @@ export const seriesDetail = (id:number)=>{
         }
     })
 }
+
+export const Trending = ()=>{
+    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/all/week?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
+        headers:{
+            "Content-Type": "application/json"
+        }
+    })
+}

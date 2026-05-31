@@ -1,7 +1,7 @@
-import type { Comment, User } from "@prisma/client"
+import type { Comment, user } from "@prisma/client"
 import { z } from "zod"
 export interface Comments extends Comment{
-    user:User,
+    user:user,
     replies:Comments[],
 }
 
