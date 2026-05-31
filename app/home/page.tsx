@@ -1,24 +1,22 @@
-'use client'
-
 import { latestMovies} from '@/lib/tmd';
 import Hero from '@/components/hero';
 import { Suspense } from 'react';
 import PopularMovies from '@/components/popularmovies';
 import PopularTvSeries from '@/components/populartvseries';
-import { useQuery } from '@tanstack/react-query';
 import { Compass } from 'lucide-react';
 
-const Page = () => {
-    const { data, isPending } = useQuery({
-        queryKey: ["latest"],
-        queryFn: async () => {
-            return await (await latestMovies()).data;
-        }
-    });
+const Page = async () => {
+    let heroData = null;
+    try {
+        const res = await latestMovies();
+        heroData = res.data;
+    } catch {
+        // loading handled by Hero
+    }
 
     return (
         <div className="max-w-[1600px] mx-auto px-4 md:px-8">
-            {!isPending && data && <Hero movies={data} />}
+            {heroData && <Hero movies={heroData} />}
 
             <div className="flex items-center gap-3 mb-8">
                 <Compass className="size-5 text-formovies-gold" />

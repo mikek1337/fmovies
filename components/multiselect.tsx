@@ -17,11 +17,11 @@ const MultiSelect = ({children, onValueChange, ...props}:MultiSelectProps)=>{
   const ref = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line prefer-const
   let contentChildren:ReactElement[] = [];
-  const selectTrigger = Children.toArray(children).find((child)=>isValidElement(child) && child.type === MultiSelectTrigger) as React.ReactElement;
-  const selectContent = Children.toArray(children).find((child)=>isValidElement(child) && child.type === MultiSelectContent) as React.ReactElement;
+  const selectTrigger = Children.toArray(children).find((child)=>isValidElement(child) && child.type === MultiSelectTrigger) as React.ReactElement<MultiSelectTriggerProps>;
+  const selectContent = Children.toArray(children).find((child)=>isValidElement(child) && child.type === MultiSelectContent) as React.ReactElement<MultiSelectContentProps>;
   const selectOption = Children.map(selectContent?.props.children, (child:React.ReactNode)=>{
-    if(isValidElement(child) && child.type === MultiSelectOption){
-     const newOption = cloneElement(child, {...child.props, fn:onValueChange});
+    if(isValidElement<{fn?: (value: string[]) => void}>(child) && child.type === MultiSelectOption){
+     const newOption = cloneElement(child, {fn:onValueChange});
       contentChildren.push(newOption);
     }
   }
