@@ -1,4 +1,4 @@
-import { Film, MenuIcon, Tv } from "lucide-react"
+import { Clapperboard, Menu, Tv } from "lucide-react"
 import { Button } from "./ui/button"
 import {
     DropdownMenu,
@@ -15,40 +15,42 @@ import {
 import Link from "next/link"
 import Gener from "./gener"
 
-const MobileHeaderMenu = ()=>{
-    return(
+const MobileHeaderMenu = () => {
+    return (
         <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-            <MenuIcon className="w-6 h-6"/>
+        <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/5">
+            <Menu className="size-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuGroup>         
-          <DropdownMenuItem>
-            <Link href="/home/series" passHref>
-            <Tv className="mr-2 h-4 w-4" />
+      <DropdownMenuContent className="w-56 bg-formovies-surface border-white/10 text-white">
+        <DropdownMenuGroup>
+          <DropdownMenuItem className="hover:bg-white/5 focus:bg-white/5">
+            <Link href="/home/series" className="flex items-center gap-2 w-full">
+              <Tv className="size-4 text-formovies-gold" />
+              <span>TV Series</span>
             </Link>
-            <span>TV</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Film className="mr-2 h-4 w-4" />
-            <span>Movie</span>
+          <DropdownMenuItem className="hover:bg-white/5 focus:bg-white/5">
+            <Link href="/home/movies" className="flex items-center gap-2 w-full">
+              <Clapperboard className="size-4 text-formovies-gold" />
+              <span>Movies</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="bg-white/10" />
         <DropdownMenuGroup>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <span>Gener</span>
+            <DropdownMenuSubTrigger className="hover:bg-white/5 focus:bg-white/5 data-[state=open]:bg-white/5">
+              <span>Genres</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <Gener/>
+              <DropdownMenuSubContent className="bg-formovies-surface border-white/10 text-white">
+                <Gener />
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-          </DropdownMenuGroup>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
     )

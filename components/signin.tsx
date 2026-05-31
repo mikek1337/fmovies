@@ -1,71 +1,119 @@
-'use client'
-import { getCsrfToken, signIn } from "next-auth/react"
-import { Button, buttonVariants } from "./ui/button"
+"use client"
+import { signIn } from "@/lib/auth-client"
+import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Icons } from "./icons"
-import { cn } from "@/lib/utils"
 import { useState } from "react"
-import {redirect, useRouter} from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
+import { Loader2, Clapperboard } from "lucide-react"
+import Link from "next/link"
 
-const SignIn = () =>{
-    const toast = useToast();
-    const router = useRouter();
-    const [csrfToken, setCsrfToken] = useState<string | null>(null);
-    getCsrfToken().then((token)=>{
-        if(token)
-            setCsrfToken(token)
-    }).catch((error)=>{
-        console.log(error)
-        toast.toast({
-            title:"Something went wrong",
-            description:"Please try again later",
-            variant: "destructive"
-        });
-        redirect('/home');
-    });
-    return(
-        <div className="flex items-center justify-center w-full h-screen bg-indigo-100">
-            <div className="max-w-[900px] w-[500px] shadow-md rounded-md bg-white">
-                <h3 className="text-2xl font-extrabold text-center my-5 ">SignUp</h3>
+const SignIn = () => {
+  const { toast } = useToast()
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
-                <form  className="p-3" method="post" action="/api/auth/callback/credentials">
-                    <div>
-                        <input name="csrfToken" type="hidden" defaultValue={csrfToken || ""}/>
-                    </div>
-                    <div className="my-2">
-                        <Input type="text" placeholder="Username" name="username" />
-                        
-                    </div>
-                    <div className="my-2">
-                        <Input type="password" placeholder="Password"  name="password"/>
-                        
-                    </div>
-                    
-                    <div className="my-1">
-                        <Button variant="outline" type="submit" className="w-full">
-                            Signup With Email
-                        </Button>
-                    </div>
-                </form>
-                <div className="w-full mx-auto my-1 flex items-center justify-center">
-                    <span className="text-zinc-300 text-center text-sm">OR</span>
-                </div>
-                <div className="my-1 p-1">
-                    <Button variant="ghost" onClick={()=>signIn("google")} className="flex items-center gap-2 w-full">
-                        <Icons.google className="w-5 h-5"/>
-                        Signup with Google
-                        
-                    </Button>
-                </div>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    const { error } = await signIn.email({
+      email,
+      password,
+    })
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Invalid credentials",
+        variant: "destructive",
+      })
+      setLoading(false)
+    } else {
+      router.push("/home/user")
+    }
+  }
 
-                <div className="my-2">
-                    <p className="text-center text-xs">Already have an account? <span  className={cn(buttonVariants({variant:"link"}),"text-indigo-700 font-semibold cursor-pointer")} onClick={()=>router.push('/signup')}>Signup</span></p>
-                </div>
-               
-            </div>
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-formovies-dark px-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Clapperboard className="size-8 text-formovies-gold" />
+            <span className="font-display text-3xl tracking-widest text-white">ForMovies</span>
+          </div>
+          <h1 className="font-display text-4xl tracking-wider text-white">Welcome Back</h1>
+          <p className="text-white/40 text-sm mt-1">Sign in to continue watching</p>
         </div>
-    )
+
+        <div className="formovies-card !bg-white/[0.03] !border-white/10 !backdrop-blur-sm p-6 md:p-8">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label htmlFor="email" className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+                Email
+              </label>
+              <Input
+                type="email"
+                id="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-formovies-gold/50"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+                Password
+              </label>
+              <Input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-formovies-gold/50"
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-formovies-gold text-formovies-dark hover:bg-formovies-amber font-semibold"
+              disabled={loading}
+            >
+              {loading && <Loader2 className="size-4 animate-spin" />}
+              Sign In With Email
+            </Button>
+          </form>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/5" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-formovies-dark px-4 text-white/30">OR</span>
+            </div>
+          </div>
+
+          <Button
+            variant="outline"
+            onClick={() => signIn.social({ provider: "google" })}
+            className="w-full border-white/10 text-white/70 hover:bg-white/5 hover:text-white"
+          >
+            <Icons.google className="size-4" />
+            Sign in with Google
+          </Button>
+
+          <p className="text-center text-sm text-white/40 mt-6">
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="text-formovies-gold hover:text-formovies-amber font-semibold">
+              Sign Up
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default SignIn;
+export default SignIn

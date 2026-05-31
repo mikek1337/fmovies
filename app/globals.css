@@ -1,51 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
-  ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #e5e7eb; /* Light grey track */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #6366f1; /* Indigo thumb */
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4f46e5; /* Darker indigo on hover */
-        }
-
-  .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -65,11 +25,29 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --radius: 0.5rem;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
   }
 }
 
@@ -78,6 +56,72 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-formovies-dark text-white font-body;
   }
+}
+
+.user-dashboard {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.section-title {
+  @apply font-display text-3xl tracking-wider text-white/90 mb-6 uppercase;
+}
+
+.formovies-card {
+  @apply relative overflow-hidden rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm transition-all duration-500;
+}
+
+.formovies-card:hover {
+  @apply border-formovies-gold/30 bg-white/[0.08];
+  box-shadow: 0 0 30px rgba(245, 166, 35, 0.08);
+}
+
+.formovies-card::after {
+  content: '';
+  @apply absolute inset-0 opacity-0 transition-opacity duration-500;
+  background: linear-gradient(180deg, transparent 0%, rgba(245, 166, 35, 0.03) 100%);
+}
+
+.formovies-card:hover::after {
+  @apply opacity-100;
+}
+
+.glass-sidebar {
+  @apply bg-white/[0.03] backdrop-blur-xl border-r border-white/5;
+}
+
+.glass-nav-item {
+  @apply relative flex items-center gap-3 px-4 py-3 rounded-xl text-white/50 transition-all duration-300;
+}
+
+.glass-nav-item:hover {
+  @apply text-white bg-white/[0.06];
+}
+
+.glass-nav-item.active {
+  @apply text-formovies-gold bg-formovies-gold/[0.08];
+}
+
+.glass-nav-item.active::before {
+  content: '';
+  @apply absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-formovies-gold;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(245, 166, 35, 0.3);
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 166, 35, 0.5);
 }

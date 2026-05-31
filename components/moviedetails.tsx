@@ -1,129 +1,145 @@
 "use client"
 import { movieDetail } from "@/lib/tmd"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { Loader2, Star } from "lucide-react"
+import { Loader2, Star, Clock, MapPin, Calendar } from "lucide-react"
 import Image from "next/image"
 import { FC, useEffect } from "react"
 import MediaOptions from "./mediaoptions"
 import { RecentlyViewedType } from "@/app/types/recentlyViewed"
 import axios from "axios"
-interface MovieDetailsProps{
-    id:number,
+
+interface MovieDetailsProps {
+    id: number,
 }
-const MovieDetails:FC<MovieDetailsProps> = ({id})=>{
-    
-    const {data:movieDetails, isLoading} = useQuery({
-        queryKey:["movie"],
-        queryFn: async()=>{
-            return await(await movieDetail(id)).data
+
+const MovieDetails: FC<MovieDetailsProps> = ({ id }) => {
+    const { data: movieDetails, isLoading } = useQuery({
+        queryKey: ["movie", id],
+        queryFn: async () => {
+            return await (await movieDetail(id)).data
         },
-        retry:true,
+        retry: true,
     });
-    const {mutate} = useMutation({
-        mutationKey:["moviemutate", id],
-        mutationFn: async(recentlyViewed:RecentlyViewedType)=>{
+
+    const { mutate } = useMutation({
+        mutationKey: ["moviemutate", id],
+        mutationFn: async (recentlyViewed: RecentlyViewedType) => {
             return (await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)).data;
         },
     })
-    useEffect(()=>{
-        if(movieDetails){
+
+    useEffect(() => {
+        if (movieDetails) {
             mutate({
-                id:movieDetails.id.toString(),
-                title:movieDetails.title,
-                media_type:"movie",
-                poster_path:movieDetails.poster_path,
+                id: movieDetails.id.toString(),
+                title: movieDetails.title,
+                media_type: "movie",
+                poster_path: movieDetails.poster_path,
             })
         }
-    },[])
+    }, [id, movieDetails, mutate])
 
-    if(isLoading && !movieDetails)
-    {
-        return(
-        <div className="max-w-[1200px] flex items-center justify-center">
-            <Loader2 className="w-10 h-10 animate-spin"/>
-        </div>)
-    }
-    if(!movieDetails)
-    {
-        return(
-            <div className="max-w-[1200px] flex items-center justify-center">
-                <h1 className="text-xl">No Movie Found</h1>
+    if (isLoading && !movieDetails) {
+        return (
+            <div className="flex items-center justify-center py-20">
+                <Loader2 className="size-8 animate-spin text-formovies-gold" />
             </div>
         )
     }
-    return(
-        <div className="flex md:flex-row flex-col  justify-between  rounded-md bg-white mb-6 ">
-            <div className=" border  mx-auto md:mx-0 relative bg-gray-600 rounded-md max-h-[600px]">
-                    <span className="text-white bg-indigo-500 absolute px-2 rounded-full left-1 text-sm top-1">{movieDetails.genres[0].name}</span>
-                    <Image src={`http://image.tmdb.org/t/p/w500${movieDetails.poster_path}`} className=' h-full rounded-md object-cover' width={400} height={900} alt={movieDetails.name!}/>
+
+    if (!movieDetails) {
+        return (
+            <div className="flex items-center justify-center py-20">
+                <h1 className="text-xl text-white/50 font-body">Movie Not Found</h1>
             </div>
-            <div className="flex flex-col gap-2  md:px-4 md:max-w-[70%] ">
-                <div className="flex items-center justify-between flex-wrap">
-                    <div className="flex flex-col gap-2">
-                        <span className="text-4xl font-bold text-gray-900 leading-tight">{movieDetails.title}</span>
-                        <span className="text-sm  font-semibold bg-indigo-100 text-indigo-600 rounded-full px-3 w-fit">Movie</span>
-                    </div>
-                        <MediaOptions mediaId={movieDetails.id} mediaType="movie" poster_url={movieDetails.poster_path} title={movieDetails.title}/>
+        )
+    }
+
+    return (
+        <div className="grid md:grid-cols-[300px_1fr] gap-8">
+            <div className="relative aspect-[2/3] rounded-xl overflow-hidden formovies-card">
+                <Image
+                    src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+                    alt={movieDetails.title}
+                    fill
+                    className="object-cover"
+                    sizes="300px"
+                />
+                <div className="absolute top-3 left-3">
+                    <span className="px-3 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-formovies-gold/20 text-formovies-gold border border-formovies-gold/30 backdrop-blur-sm">
+                        {movieDetails.genres[0]?.name || "Movie"}
+                    </span>
                 </div>
-                <div className="flex flex-col  ">
-                <div className="mb-10">
-                    <p className="text-gray-700 text-base leading-relaxed mb-6">{movieDetails.overview}</p>
-                </div>
-                    <div className="grid  md:grid-cols-2 text-gray-600 ">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex w-fit items-center space-x-2">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Gener:</span>
-                                <div className="space-x-2  items-center">
-                                {movieDetails.genres.map((gener)=>(
-                                <span className="bg-gray-200 text-gray-700 rounded-full px-2 text-xs font-medium " key={gener.id}>{gener.name}</span>
-                            ))}</div></div>
-                            <div className="flex  w-full items-center space-x-2">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Country:</span>
-                                <div className="flex flex-wrap space-x-2  items-center">
-                                {movieDetails.production_countries.map(country=>(
-                                <span className="rounded-full px-2 text-xs" key={country.iso_3166_1}>{country.name}</span>
-                            ))}</div></div>
-                            <div className="flex items-center space-x-2">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Runtime:</span>
-                                <span className="text-start text-xs">
-                                {`${movieDetails.runtime} min`}
-                                </span>
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex  w-full items-center space-x-2 ">
-                                <span className="font-semibold text-gray-800 text-sm md:text-base">Production:</span>
-                                <div className="flex flex-wrap gap-2  items-center">
-                                {movieDetails.production_companies.map(prod=>(
-                                <span className=" px-2 text-xs" key={prod.id}>{prod.name}</span>
-                            ))}</div>
+            </div>
 
-                                </div>
-
-                                <div className="flex items-center space-x-2">
-                            <span className="font-semibold text-gray-800 text-sm md:text-base">Release Date:</span>
-                            <span className="text-start text-xs">
-                            {new Date(movieDetails.release_date!).toDateString()}
-                            </span> 
-
-                            </div>
-                            
-                            <div className="flex items-center space-x-2">
-                                <span className="font-semibold text-gray-800">Rating:</span> 
-                                <span className="flex items-center gap-1 text-xs">
-                                    <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+            <div className="flex flex-col gap-5">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div className="flex-1 min-w-[200px]">
+                        <h1 className="font-display text-4xl md:text-5xl tracking-wide text-white leading-tight">
+                            {movieDetails.title}
+                        </h1>
+                        <div className="flex items-center gap-2 mt-2">
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-white/10 text-white/70 border border-white/10">
+                                Movie
+                            </span>
+                            <span className="flex items-center gap-1 text-xs text-white/40">
+                                <Star className="size-3.5 text-formovies-gold fill-formovies-gold" />
                                 {movieDetails.vote_average.toFixed(1)}/10
-                                </span>
-                            </div>
-                            
+                            </span>
                         </div>
-
                     </div>
+                    <MediaOptions mediaId={movieDetails.id} mediaType="movie" poster_url={movieDetails.poster_path} title={movieDetails.title} />
+                </div>
+
+                <p className="text-white/60 text-sm leading-relaxed">
+                    {movieDetails.overview}
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5">
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Genres</p>
+                        <div className="flex flex-wrap gap-1.5">
+                            {movieDetails.genres.map((gen) => (
+                                <span key={gen.id} className="px-2 py-0.5 rounded-md text-xs text-white/60 bg-white/5">
+                                    {gen.name}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Duration</p>
+                        <p className="flex items-center gap-1.5 text-xs text-white/60">
+                            <Clock className="size-3 text-white/30" />
+                            {movieDetails.runtime} min
+                        </p>
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Release</p>
+                        <p className="flex items-center gap-1.5 text-xs text-white/60">
+                            <Calendar className="size-3 text-white/30" />
+                            {new Date(movieDetails.release_date!).toDateString()}
+                        </p>
+                    </div>
+                    {movieDetails.production_countries?.length > 0 && (
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Country</p>
+                            <p className="flex items-center gap-1.5 text-xs text-white/60">
+                                <MapPin className="size-3 text-white/30" />
+                                {movieDetails.production_countries.map(c => c.name).join(", ")}
+                            </p>
+                        </div>
+                    )}
+                    {movieDetails.production_companies?.length > 0 && (
+                        <div className="col-span-2">
+                            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/30 mb-1">Production</p>
+                            <p className="text-xs text-white/60">
+                                {movieDetails.production_companies.map(p => p.name).join(", ")}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
-        
-       
     )
 }
 

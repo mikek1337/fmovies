@@ -1,6 +1,4 @@
-import { transform } from "next/dist/build/swc"
 import type { Config } from "tailwindcss"
-import plugin from "tailwindcss"
 
 const config = {
   darkMode: ["class"],
@@ -9,7 +7,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -20,8 +18,14 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        display: ["Bebas Neue", "sans-serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
+      },
       backgroundImage:{
         "home-background": "url('/movieposter.webp')",
+        "grain": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E\")",
+        "formovies-gradient": "linear-gradient(135deg, #0f0f13 0%, #1a1a2e 50%, #16213e 100%)",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -57,6 +61,15 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        formovies: {
+          dark: "#0f0f13",
+          deeper: "#0a0a0f",
+          surface: "#1a1a2e",
+          muted: "#2a2a3e",
+          gold: "#f5a623",
+          amber: "#ffd60a",
+          rose: "#ff3b5c",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -72,10 +85,29 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "fade-in-up": {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(245, 166, 35, 0.1)" },
+          "50%": { boxShadow: "0 0 40px rgba(245, 166, 35, 0.25)" },
+        },
+        "slide-in-left": {
+          "0%": { opacity: "0", transform: "translateX(-30px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        "card-hover": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-8px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in-up": "fade-in-up 0.6s ease-out forwards",
+        "glow-pulse": "glow-pulse 3s ease-in-out infinite",
+        "slide-in-left": "slide-in-left 0.5s ease-out forwards",
       },
     },
   },

@@ -1,24 +1,25 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader, Lock } from "lucide-react";
+import { Loader, Lock, MessageSquare } from "lucide-react";
 import { FC, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import type { Comment } from "@prisma/client";
 import { CommentSchemaType } from "@/app/types/commentschema";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "./ui/textarea";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth-client";
 import Comments from "./comments";
+
 interface CommentProps {
     id: number;
     season?: number;
     episode?: number;
 }
-const Comment: FC<CommentProps> = ({ id, season, episode }) => {
+
+const CommentSection: FC<CommentProps> = ({ id, season, episode }) => {
     const [userComment, setUserComment] = useState<string>("");
     const { toast } = useToast();
-    const session = useSession();
+    const { data: sessionData } = useSession();
     const { isPending: submitting, mutate } = useMutation({
         mutationFn: async (comment: CommentSchemaType) => {
             if (season) {
@@ -27,13 +28,11 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
                     body: JSON.stringify(comment)
                 })
             } else {
-
                 return await fetch(`/api/movies/comments/post?id=${id}`, {
                     method: "POST",
                     body: JSON.stringify(comment)
                 });
             }
-            refetch();
         },
         onSuccess: (data) => {
             if (data.status === 200) {
@@ -56,33 +55,28 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
             })
         },
         throwOnError(error) {
-
             if (error.message == "Unauthorized") {
                 toast({
                     title: "Error",
                     description: "You need to login to comment",
                     variant: "destructive"
                 })
-                //alert("You need to login to comment")
             }
             return false;
         },
     })
+
     const { isPending, data, refetch } = useQuery({
         queryKey: ["comments", id, season, episode],
         queryFn: async () => {
-
             if (season)
                 return await (await fetch(`/api/series/comments?id=${id}&season=${season}&episode=${episode}`)).json()
-
             return await (await fetch(`/api/movies/comments?id=${id}`)).json()
-
         },
     });
-    console.log(data);
 
     const uploadComment = async () => {
-        if (session.status === "unauthenticated") {
+        if (!sessionData) {
             toast({
                 description: "You need to login to comment",
                 variant: "destructive"
@@ -99,9 +93,7 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
                 movieId: "",
                 parentId: ""
             };
-
-        }
-        else {
+        } else {
             comment = {
                 content: userComment,
                 movieId: id.toString(),
@@ -109,66 +101,70 @@ const Comment: FC<CommentProps> = ({ id, season, episode }) => {
             };
         }
         mutate(comment);
-        refetch();
     }
 
     return (
-        <div className="w-full p-1 ">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Comments (<span>{data?.length}</span>)</h2>
-            {isPending && <Loader className="w-5 h-5 animate-spin mx-auto" />}
-            <div className="">
-
-                <div className="w-full bg-gray-50 mb-5">
-
-                    <div className="w-full p-5 h-fit">
-                        {session.status === "authenticated" && (
-                            <div className="flex items-center gap-2  rounded-lg shadow-sm mb-4">
-                                <Avatar className="border">
-                                    <AvatarImage src={session.data?.user?.image || ""} alt={session.data?.user?.name || "User"} />
-                                    <AvatarFallback>{session.data?.user?.name?.[0] || "U"}</AvatarFallback>
-                                </Avatar>
-                                <span className="text-gray-700 font-semibold">{session.data?.user?.name || "User"} (<span>You</span>)</span>
-                            </div>
-                        )}
-                        <Textarea placeholder="Share your thoughts on this movie... " rows={4} className="w-full p-4 border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" onChange={(e) => setUserComment(e.target.value)} />
-                        <div className="text-right mt-5">
-                            <Button onClick={() => uploadComment()} size={'lg'} disabled={submitting} className="gap-2 items-center bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200 ease-in-out shadow-md">
-                                {
-                                    session.status === "unauthenticated" && (<Lock className="w-5 h-5 " />)
-                                }
-
-                                Post Comment
-                            </Button>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="space-y-4">
-                    {
-                        /* eslint-disable @typescript-eslint/no-explicit-any */
-                        data?.map((comment: any) => (
-                            <>
-                                <Comments comment={comment.comment} id={comment.id} key={comment.id}/>
-                                {
-                                    /* eslint-disable @typescript-eslint/no-explicit-any */
-                                    comment.comment.replies.map((replay: any) => (
-                                        <Comments comment={replay} id={replay.id} isReply={true} key={replay.id}/>
-                                    ))
-                                }
-                            </>
-
-
-                        ))}
-
-                </div>
-                <div>
-                    {data?.length == 0 && (<span className="text-center text-zinc-300 text-sm">No Comments</span>)}
-                </div>
-
+        <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-3">
+                <MessageSquare className="size-5 text-formovies-gold" />
+                <h2 className="section-title !mb-0">
+                    Comments <span className="text-white/30 font-body text-sm">({data?.length || 0})</span>
+                </h2>
             </div>
 
-        </div >
+            {isPending && <Loader className="size-5 animate-spin mx-auto text-formovies-gold" />}
+
+            <div className="formovies-card p-6">
+                {sessionData && (
+                    <div className="flex items-center gap-3 mb-4">
+                        <Avatar className="size-8">
+                            <AvatarImage src={sessionData?.user?.image || ""} alt={sessionData?.user?.name || "User"} />
+                            <AvatarFallback className="bg-formovies-gold/10 text-formovies-gold text-xs font-semibold">
+                                {sessionData?.user?.name?.[0] || "U"}
+                            </AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm font-medium text-white/80">
+                            {sessionData?.user?.name || "User"} <span className="text-white/30">(You)</span>
+                        </span>
+                    </div>
+                )}
+                <Textarea
+                    placeholder="Share your thoughts..."
+                    rows={4}
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus-visible:ring-formovies-gold/50 resize-none"
+                    onChange={(e) => setUserComment(e.target.value)}
+                    value={userComment}
+                />
+                <div className="flex justify-end mt-4">
+                    <Button
+                        onClick={() => uploadComment()}
+                        size="lg"
+                        disabled={submitting || !userComment.trim()}
+                        className="bg-formovies-gold text-formovies-dark hover:bg-formovies-amber font-semibold"
+                    >
+                        {!sessionData && <Lock className="size-4" />}
+                        Post Comment
+                    </Button>
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {data?.map((comment: any) => (
+                    <div key={comment.id}>
+                        <Comments comment={comment.comment} id={comment.id} />
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {comment.comment.replies?.map((reply: any) => (
+                            <Comments comment={reply} id={reply.id} isReply={true} key={reply.id} />
+                        ))}
+                    </div>
+                ))}
+                {data?.length === 0 && (
+                    <p className="text-center text-white/30 text-sm py-8">No comments yet. Be the first to share your thoughts!</p>
+                )}
+            </div>
+        </div>
     )
 }
 
-export default Comment;
+export default CommentSection;

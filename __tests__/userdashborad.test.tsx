@@ -1,6 +1,5 @@
 import * as Rece  from '@/components/recentviewed';
 import UserDashboard from '@/components/userdashborad';
-import type { RecentlyViewed } from '@prisma/client';
 import {render, screen} from '@testing-library/react';
 describe("UserDashboard", ()=>{
    const userSession = {
@@ -19,27 +18,39 @@ describe("UserDashboard", ()=>{
 
     })
     it("Check Recently Viewed is rendered", ()=>{
-        const recentlyViewed:RecentlyViewed[] = [
+        const recentlyViewed = [
             {
                 id: "1",
                 userId: "1",
                 mediaId: "1",
                 MediaType: "movie",
-                poster_path: "https://test.com",
+                poster_path: "/test.jpg",
                 title: "Test",
+                season: null,
+                episodeId: null,
                 createdAt: new Date(),
             }
         ];
         render(
             <Rece.default recentlyViewed={recentlyViewed}/>
         );
-        expect(screen.getByText("Recently Viewed")).toBeInTheDocument();
+        expect(screen.getByText("Test")).toBeInTheDocument();
     })
-    it("Check No Recently Viewed is rendered", ()=>{
-        const recentlyViewed:RecentlyViewed[] = [];
-        render(
+    it("Check No Recently Viewed renders nothing", ()=>{
+        const recentlyViewed: {
+    id: string;
+    mediaId: string;
+    MediaType: string;
+    userId: string;
+    poster_path: string;
+    title: string;
+    season: number | null;
+    episodeId: number | null;
+    createdAt: Date;
+    }[] = [];
+        const {container} = render(
             <Rece.default recentlyViewed={recentlyViewed}/>
         );
-        expect(screen.getByText("No Recently Viewed")).toBeInTheDocument();
+        expect(container.innerHTML).toBeFalsy();
     })
 })

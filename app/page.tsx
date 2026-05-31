@@ -1,43 +1,49 @@
-import ToolTip from "@/components/tooltip";
 import { buttonVariants } from "@/components/ui/button";
 import { latestMovies } from "@/lib/tmd";
 import { cn } from "@/lib/utils";
-import { HomeIcon } from "lucide-react";
+import { ArrowRight, Clapperboard } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
   const movies = await (await latestMovies()).data;
- 
+
   return (
-    <div className="bg-home-background">
-      <div className="flex flex-col mx-auto w-full items-center justify-center gap-3 h-screen bg-black/35">
-      <div className="bg-white rounded-md">
-            <div className="my-2">
-              <h1 className="md:text-5xl text-center text-2xl font-extrabold text-indigo-400">Movies</h1>
-            </div>
-            <div className="flex flex-wrap  items-center justify-center max-w-[700px] shadow-md rounded-md p-1 ">
-              {
-                movies.results.map((movie, index:number)=>(
-                  <ToolTip text={movie.title} key={movie.id}>
-                    <div className="flex items-center">
-                    <span  className=" line-clamp-1 text-sm text-zinc-500 max-w-[100px]  ">
-                      <Link href={`/home/watch/${movie.id}`} className="hover:text-indigo-500">
-                        {movie.title}
-                      </Link>
-                    </span>
-                      {index < movies.results.length - 1 && <span className="text-zinc-300">, </span>}
-                    </div>
-                  </ToolTip>
-                ))
-              }
-              <div className="w-full my-10 px-10">
-                <Link href="/home" className={cn(buttonVariants({variant:'ghost'}), "flex items-center gap-2 bg-indigo-500 text-white font-semibold w-full")}>
-                  <HomeIcon className="w-5 h-5 fill-white"/>
-                  Home
-                </Link>
-              </div>
-            </div>
-      </div>
+    <div className="min-h-screen bg-formovies-dark flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-formovies-gold/5 via-formovies-dark to-formovies-deeper" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-formovies-gold/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-formovies-rose/5 rounded-full blur-3xl" />
+
+      <div className="relative z-10 flex flex-col items-center gap-8 px-4 max-w-2xl text-center">
+        <div className="flex items-center gap-3 mb-2">
+          <Clapperboard className="size-10 text-formovies-gold" />
+          <span className="font-display text-5xl tracking-[0.2em] text-white">ForMovies</span>
+        </div>
+        <p className="text-white/40 text-sm md:text-base font-body">
+          Discover, watch, and enjoy thousands of movies and TV series. Your ForMovies experience awaits.
+        </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-2 max-w-xl mb-4">
+          {movies.results.slice(0, 8).map((movie) => (
+            <Link
+              key={movie.id}
+              href={`/home/watch/movie/${movie.id}`}
+              className="px-3 py-1.5 rounded-lg text-xs text-white/40 hover:text-formovies-gold hover:bg-white/5 transition-all duration-200"
+            >
+              {movie.title}
+            </Link>
+          ))}
+        </div>
+
+        <Link
+          href="/home"
+          className={cn(
+            buttonVariants({ variant: "default" }),
+            "bg-formovies-gold text-formovies-dark hover:bg-formovies-amber font-semibold px-8 py-6 text-base gap-2"
+          )}
+        >
+          Enter ForMovies
+          <ArrowRight className="size-4" />
+        </Link>
       </div>
     </div>
   );

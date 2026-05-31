@@ -1,61 +1,63 @@
 "use client"
-import { Clock, Film, History, Home, Settings, Tv, UserCircle2 } from "lucide-react";
+import { Bookmark, Compass, History, Settings, Film, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { FC } from "react"
+import { usePathname } from "next/navigation";
+import { FC, useState } from "react"
 
-const UserSideMenu:FC = () =>{
-    return(
-        <aside className="relative w-fit group shadow-md shadow-indigo-100 transition-all duration-300 ease-in-out   rounded-sm group hover:w-[200px]">
-            <div className="group-hover:flex items-center gap-2 mt-5 mb-10">
-                
-            </div>
-            <ul className="group-hover:w-auto transition-all duration-100 ease-in-out px-2">
-                <li className="h-[60px] group-hover:flex items-center gap-3 text-indigo-500 p-2 transition-all duration-200 ease-in-out  hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                    <Link href="/home/user" className="flex items-center gap-3">
-                    <Home className="w-5 h-5"/>
-                    <span className="text-sm hidden group-hover:block">Dashbord</span>
-                    </Link>
-                </li>
-                <li className=" h-[60px] group-hover:flex items-center gap-3 text-indigo-500 p-2 transition-all duration-200 ease-in-out  hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                    <Link href="/home" className="flex items-center gap-3">
-                        <Film className="w-5 h-5"/>
-                        <span className="text-sm hidden group-hover:block">Movies</span>
-                    </Link>
-                </li>
-                <li className=" h-[60px] group-hover:flex items-center gap-3 text-indigo-500 p-2 transition-all duration-200 ease-in-out hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                <Link href="/home" className="flex items-center gap-3">
-                    <Tv className="w-5 h-5"/>
-                    <span className="text-sm hidden group-hover:block">Series</span>
-                </Link>
-                </li>
-                <li className=" h-[60px] group-hover:flex items-center gap-3 text-indigo-500 p-2 transition-all duration-200 ease-in-out hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                <Link href="/home" className="flex items-center gap-3">
-                    <Clock className="w-5 h-5"/>
-                    <span className="text-sm hidden group-hover:block">Watch Later</span>
-                </Link>
-                </li>
-                <li className=" h-[60px] group-hover:flex items-center gap-3 text-indigo-500 p-2 transition-all duration-200 ease-in-out hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                <Link href="/home" className="flex items-center gap-3">
-                    <History className="w-5 h-5"/>
-                    <span className="text-sm hidden group-hover:block">History</span>
-                </Link>
-                </li>
-                <li className=" h-[60px] group-hover:flex items-center gap-3 text-indigo-500 p-2 transition-all duration-200 ease-in-out  hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                <Link href="/home" className="flex items-center gap-3">
-                    <Settings className="w-5 h-5"/>
-                    <span className="text-sm hidden group-hover:block">Settings</span>
-                </Link>
-                </li>
-                <li className=" h-[60px] w-full absolute bottom-0 group-hover:flex items-center gap-3 transition-all duration-200 ease-in-out text-indigo-500 p-2 hover:bg-indigo-500 hover:rounded-lg hover:text-white">
-                <Link href="/home/user/account" className="flex items-center gap-3">
-                    <UserCircle2 className="w-5 h-5"/>
-                    <span className="text-sm hidden group-hover:block">Account</span>
-                </Link>
-                </li>
-            </ul>
+const navItems = [
+  { href: "/home/user", label: "Continue Watching", icon: History },
+  { href: "/home/user", label: "Watch Later", icon: Bookmark },
+  { href: "/home", label: "Explore", icon: Compass },
+  { href: "/home/user/account", label: "Settings", icon: Settings },
+];
 
-        </aside>
-    )
+const UserSideMenu: FC = () => {
+  const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <aside className={`glass-sidebar h-screen sticky top-0 transition-all duration-500 ${collapsed ? "w-20" : "w-64"}`}>
+      <div className="flex flex-col h-full py-8 px-3">
+        <Link href="/home/user" className="flex items-center gap-3 px-3 mb-10 group">
+          <div className="w-10 h-10 rounded-xl bg-formovies-gold/20 flex items-center justify-center">
+            <Film className="w-5 h-5 text-formovies-gold" />
+          </div>
+          <span className={`font-display text-xl tracking-widest text-white transition-opacity duration-300 ${collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
+            ForMovies
+          </span>
+        </Link>
+
+        <nav className="flex-1 space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`glass-nav-item group ${isActive ? "active" : ""}`}
+              >
+                <Icon className={`w-5 h-5 shrink-0 transition-transform duration-300 ${isActive ? "text-formovies-gold" : ""}`} />
+                <span className={`text-sm font-medium whitespace-nowrap transition-all duration-300 ${collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="glass-nav-item mt-auto justify-center"
+        >
+          <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${collapsed ? "rotate-180" : ""}`} />
+          <span className={`text-xs whitespace-nowrap transition-all duration-300 ${collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
+            Collapse
+          </span>
+        </button>
+      </div>
+    </aside>
+  );
 }
 
 export default UserSideMenu;
