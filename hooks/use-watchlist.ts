@@ -30,13 +30,13 @@ const useWatchList = (options?: UseWatchListOptions)=>{
             options?.onSuccess?.(data);
         },
         onError: (error)=>{
-            if(error.cause === "unauthenticated"){
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
                 toast({
                     title: "Error",
-                    description: "Please login to add to watchlist",
+                    description: "Please login or sign up to add to watchlist",
                     variant: "destructive"
                 })
-            } else{
+            } else {
                 toast({
                     title: "Error",
                     description: "Something went wrong, please try again later.",
