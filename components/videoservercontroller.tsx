@@ -19,7 +19,7 @@ const serverConfigs: Record<string, ServerConfig> = {
   "vidsrc.ru": { moviePath: "/movie/", tvPath: "/tv/", suffix: "?parameters" },
   "vidlink.pro": { moviePath: "/movie/", tvPath: "/tv/" },
   "vidsrc.icu": { moviePath: "/embed/movie/", tvPath: "/embed/tv/" },
-  "2embed.org": { moviePath: "/embed/movie/", tvPath: "/embed/tv/" },
+  "vidsrc-embed.ru": { moviePath: "/embed/movie/", tvPath: "/embed/tv/" },
 };
 
 const VideoServerController: FC<VideoServerControllerProps> = ({ mediaType, additionalParams }) => {
