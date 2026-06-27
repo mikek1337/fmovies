@@ -81,10 +81,10 @@ const VideoServerController: FC<VideoServerControllerProps> = ({ mediaType, addi
     }, []);
 
     useEffect(() => {
-      if (initialRoomId && userId && !room) {
+      if (initialRoomId && !room) {
         joinRoom(initialRoomId);
       }
-    }, [initialRoomId, userId]);
+    }, [initialRoomId]);
 
     const handlePlayerEvent = useCallback(
       (event: PlayerEventData) => {

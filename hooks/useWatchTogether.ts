@@ -3,6 +3,10 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { connectSocket, disconnectSocket, getSocket } from "@/lib/socket";
 import axios from "axios";
 
+function generateGuestId(): string {
+  return `guest_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
 export interface RoomUser {
   userId: string;
   userName: string;
@@ -32,6 +36,7 @@ export function useWatchTogether(userId: string | undefined): WatchTogetherActio
   const [room, setRoom] = useState<WatchRoomState | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const roomIdRef = useRef<string | null>(null);
+  const guestIdRef = useRef<string>(generateGuestId());
 
   useEffect(() => {
     const socket = getSocket();
@@ -98,7 +103,9 @@ export function useWatchTogether(userId: string | undefined): WatchTogetherActio
 
   const joinRoom = useCallback(
     async (roomId: string) => {
-      if (!userId) return false;
+      const effectiveUserId = userId || guestIdRef.current;
+      const displayName = userId ? undefined : `Guest-${effectiveUserId.slice(-6)}`;
+
       try {
         const res = await axios.get(`/api/watch/room/${roomId}`);
         const roomData = res.data as {
@@ -110,13 +117,18 @@ export function useWatchTogether(userId: string | undefined): WatchTogetherActio
           episode: number | null;
         };
 
-        await axios.post(`/api/watch/room/${roomId}`);
+        try {
+          await axios.post(`/api/watch/room/${roomId}`);
+        } catch {
+          // best-effort: DB tracking not critical for guests
+        }
 
         roomIdRef.current = roomId;
         const socket = connectSocket();
         socket.emit("join-room", {
           roomId,
-          userId,
+          userId: effectiveUserId,
+          userName: displayName,
           mediaId: roomData.mediaId,
           mediaType: roomData.mediaType,
           season: roomData.season ?? undefined,
@@ -133,9 +145,10 @@ export function useWatchTogether(userId: string | undefined): WatchTogetherActio
   );
 
   const leaveRoom = useCallback(() => {
-    if (roomIdRef.current && userId) {
+    if (roomIdRef.current) {
       const socket = getSocket();
-      socket.emit("leave-room", { roomId: roomIdRef.current, userId });
+      const lid = userId || guestIdRef.current;
+      socket.emit("leave-room", { roomId: roomIdRef.current, userId: lid });
     }
     roomIdRef.current = null;
     setRoom(null);

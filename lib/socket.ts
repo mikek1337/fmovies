@@ -30,6 +30,7 @@ export interface ClientEvents {
   "join-room": (data: {
     roomId: string;
     userId: string;
+    userName?: string;
     mediaId: string;
     mediaType: string;
     season?: number;

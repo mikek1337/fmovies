@@ -23,11 +23,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 }
 
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getAuthSession();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const { id } = await params;
 
   const room = await db.watchRoom.findUnique({ where: { id } });
@@ -35,14 +30,21 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json({ error: "Room not found or inactive" }, { status: 404 });
   }
 
-  const existing = await db.watchRoomParticipant.findUnique({
-    where: { roomId_userId: { roomId: id, userId: session.user.id } },
-  });
+  try {
+    const session = await getAuthSession();
+    if (session?.user?.id) {
+      const existing = await db.watchRoomParticipant.findUnique({
+        where: { roomId_userId: { roomId: id, userId: session.user.id } },
+      });
 
-  if (!existing) {
-    await db.watchRoomParticipant.create({
-      data: { roomId: id, userId: session.user.id },
-    });
+      if (!existing) {
+        await db.watchRoomParticipant.create({
+          data: { roomId: id, userId: session.user.id },
+        });
+      }
+    }
+  } catch {
+    // best-effort for guests
   }
 
   return NextResponse.json({ success: true });

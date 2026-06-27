@@ -29,7 +29,7 @@ const io = new Server(httpServer, {
 io.on("connection", (socket) => {
   let currentRoom: string | null = null;
 
-  socket.on("join-room", ({ roomId, userId, mediaId, mediaType, season, episode }) => {
+  socket.on("join-room", ({ roomId, userId, userName, mediaId, mediaType, season, episode }) => {
     socket.join(roomId);
     currentRoom = roomId;
 
@@ -47,7 +47,8 @@ io.on("connection", (socket) => {
     }
 
     const room = rooms.get(roomId)!;
-    const user: User = { userId, userName: `User-${userId.slice(0, 6)}`, userImage: null };
+    const displayName = userName || `User-${userId.slice(0, 6)}`;
+    const user: User = { userId, userName: displayName, userImage: null };
     room.users.set(socket.id, user);
 
     io.to(roomId).emit("user-joined", user);
