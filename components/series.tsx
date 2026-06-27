@@ -18,13 +18,16 @@ type prevView = {
 }
 
 interface SeriesProps {
-    id: number
+    id: number;
+    initialRoomId?: string;
+    initialSeason?: number;
+    initialEpisode?: number;
 }
 
-const Series: FC<SeriesProps> = ({ id }) => {
+const Series: FC<SeriesProps> = ({ id, initialRoomId, initialSeason, initialEpisode }) => {
     const session = useSession()
-    const [season, setSeason] = useState(1)
-    const [episode, setEpisode] = useState(1)
+    const [season, setSeason] = useState(initialSeason || 1)
+    const [episode, setEpisode] = useState(initialEpisode || 1)
     const [seasonEpisodes, setSeasonEpisodes] = useState<number>(0);
 
     const changeSeason = (newSeason: number) => {
@@ -109,7 +112,7 @@ const Series: FC<SeriesProps> = ({ id }) => {
             </section>
 
             <section>
-                <VideoServerController mediaType="tv" additionalParams={`${id}/${season}/${episode}`} />
+                <VideoServerController mediaType="tv" additionalParams={`${id}/${season}/${episode}`} initialRoomId={initialRoomId} />
             </section>
 
             <section>

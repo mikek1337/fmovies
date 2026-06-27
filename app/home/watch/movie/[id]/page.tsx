@@ -32,13 +32,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     }
 }
 
-const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+const Page = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ room?: string }>;
+}) => {
     const { id } = await params;
+    const { room } = await searchParams;
     return (
         <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-8">
             <div className="flex flex-col gap-10">
                 <MovieDetails id={parseInt(id)} />
-                <VideoServerController mediaType="movie" additionalParams={id} />
+                <VideoServerController mediaType="movie" additionalParams={id} initialRoomId={room} />
                 <Comment id={parseInt(id)} />
                 <Recommendation id={parseInt(id)} />
             </div>

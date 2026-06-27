@@ -28,6 +28,8 @@ model user {
   Comment        Comment[]
   RecentlyViewed RecentlyViewed[]
   Favorite       Favorite[]
+  hostedWatchRooms     WatchRoom[]              @relation("HostedRooms")
+  watchRoomParticipants WatchRoomParticipant[]
 }
 
 model session {
@@ -137,4 +139,31 @@ model RecentlyViewed {
   season     Int?
   episodeId  Int?
   createdAt  DateTime @default(now())
+}
+
+model WatchRoom {
+  id        String   @id @default(cuid())
+  mediaId   String
+  mediaType String
+  season    Int?
+  episode   Int?
+  hostId    String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  host         user                   @relation("HostedRooms", fields: [hostId], references: [id])
+  participants WatchRoomParticipant[]
+}
+
+model WatchRoomParticipant {
+  id       String   @id @default(cuid())
+  roomId   String
+  userId   String
+  joinedAt DateTime @default(now())
+
+  room WatchRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user user      @relation(fields: [userId], references: [id])
+
+  @@unique([roomId, userId])
 }

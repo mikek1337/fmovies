@@ -29,11 +29,23 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     }
 }
 
-const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+const Page = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ room?: string; season?: string; episode?: string }>;
+}) => {
     const { id } = await params;
+    const { room, season, episode } = await searchParams;
     return (
         <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-8">
-            <Series id={parseInt(id)} />
+            <Series
+              id={parseInt(id)}
+              initialRoomId={room}
+              initialSeason={season ? parseInt(season) : undefined}
+              initialEpisode={episode ? parseInt(episode) : undefined}
+            />
         </div>
     )
 }

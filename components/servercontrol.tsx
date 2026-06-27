@@ -9,7 +9,7 @@ interface ServerControlProps {
 }
 
 const ServerControl: FC<ServerControlProps> = ({ selectServer }) => {
-    const servers = ["vidsrc.ru", "vidlink.pro", "vidsrc.icu", "vidsrc-embed.ru"]
+    const servers = ["vidsrc.ru", "vidlink.pro", "vidfast.pro", "vidsrc.icu", "vidsrc-embed.ru"]
     const [selectedServer, setSelectedServer] = useState<string>(servers[0])
 
     const changeServer = (server: string) => {
@@ -20,6 +20,7 @@ const ServerControl: FC<ServerControlProps> = ({ selectServer }) => {
     const serverLabels: Record<string, string> = {
         "vidsrc.ru": "VidSrc",
         "vidlink.pro": "VidLink",
+        "vidfast.pro": "VidFast",
         "vidsrc.icu": "VidSrc Alt",
         "vidsrc-embed.ru": "VidSrc Embed",
     }
