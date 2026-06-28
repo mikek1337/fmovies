@@ -8,7 +8,7 @@ export async function GET(){
         return res
     }) */
     return new Response(JSON.stringify(movies))
-    } catch(error){
+    } catch {
         return new Response("Unable to connect to API", {status:500})
     }
 }

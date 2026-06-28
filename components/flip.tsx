@@ -19,6 +19,7 @@ const Flip: FC<FlipProps> = ({ children }) => {
                 setNewChildren((prev)=>[...prev, newChild]);
             }
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[current])
     const handleNext = () => {
         console.log(current);

@@ -7,7 +7,7 @@ export async function GET(req:Request){
         try{
             const response = await getRecommendation(parseInt(id));
             return new Response(JSON.stringify(response.data), {status:200})
-        } catch(error){
+        } catch {
             return new Response('Unable to connect to API', {status:500})
         }
        

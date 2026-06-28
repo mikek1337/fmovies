@@ -10,7 +10,7 @@ export async function GET(req:Request){
   try{
     const movies = (await getPopularMovies(parseInt(page))).data;
     return new Response(JSON.stringify(movies), {status: 200});
-  }catch(err){
+  }catch{
     return new Response("Unable to connect to API", {status: 400});
   }
 

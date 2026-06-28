@@ -41,6 +41,13 @@ const Series: FC<SeriesProps> = ({ id, initialRoomId, initialSeason, initialEpis
         seriesReminder(season, newEpisode);
     }
 
+    const { mutate } = useMutation({
+        mutationFn: async (recentlyViewed: RecentlyViewedType) => {
+            const res = await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)
+            return res.data;
+        },
+    });
+
     const { data: series, isLoading } = useQuery({
         queryKey: ['series' + id],
         queryFn: async () => {
@@ -59,7 +66,7 @@ const Series: FC<SeriesProps> = ({ id, initialRoomId, initialSeason, initialEpis
                 poster_path: series?.poster_path,
             })
         }
-    }, [series, session.data?.user]);
+    }, [series, session.data?.user, mutate]);
 
     useEffect(() => {
         const pervPlay = JSON.parse(localStorage.getItem('previous') || '[]') as prevView[];
@@ -68,7 +75,7 @@ const Series: FC<SeriesProps> = ({ id, initialRoomId, initialSeason, initialEpis
             setSeason(currentSeries[0].season);
             setEpisode(currentSeries[0].episode)
         }
-    }, [])
+    }, [id])
 
     const seriesReminder = (season: number, episode: number) => {
         const pervPlay = JSON.parse(localStorage.getItem('previous') || '[]') as prevView[];
@@ -89,13 +96,6 @@ const Series: FC<SeriesProps> = ({ id, initialRoomId, initialSeason, initialEpis
             localStorage.setItem('previous', JSON.stringify(pervPlay))
         }
     }
-
-    const { mutate } = useMutation({
-        mutationFn: async (recentlyViewed: RecentlyViewedType) => {
-            const res = await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)
-            return res.data;
-        },
-    });
 
     if (isLoading) {
         return (

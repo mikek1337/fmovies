@@ -9,6 +9,8 @@ import { useWatchTogetherChat } from "@/hooks/useWatchTogetherChat";
 import { useSession } from "@/lib/auth-client";
 import { PlayerEventData } from "@/lib/postmessage-player";
 import { Clapperboard } from "lucide-react";
+import { getSocket } from "@/lib/socket";
+import { sendCommandToPlayer } from "@/lib/postmessage-player";
 
 interface VideoServerControllerProps {
     mediaType?: string;
@@ -48,7 +50,6 @@ const VideoServerController: FC<VideoServerControllerProps> = ({ mediaType, addi
     const lastSyncRef = useRef(0);
 
     const [domain, setDomain] = useState<string>("vidsrc.ru");
-    const [roomId, setRoomId] = useState<string | null>(initialRoomId || null);
     const [panelOpen, setPanelOpen] = useState(!!initialRoomId);
 
     const {
@@ -76,15 +77,29 @@ const VideoServerController: FC<VideoServerControllerProps> = ({ mediaType, addi
       setPanelOpen((prev) => !prev);
     }, []);
 
-    const handleRoomChange = useCallback((rid: string | null) => {
-      setRoomId(rid);
-    }, []);
-
     useEffect(() => {
       if (initialRoomId && !room) {
         joinRoom(initialRoomId);
+        setDomain("vidfast.pro");
       }
-    }, [initialRoomId]);
+    }, [initialRoomId, joinRoom, room]);
+
+    useEffect(() => {
+      const socket = getSocket();
+      const onSync = (data: { action: "play" | "pause" | "seek"; time: number }) => {
+        const iframe = playerRef.current?.getIframe();
+        if (!iframe) return;
+        if (data.action === "play") {
+          sendCommandToPlayer(iframe, "play");
+        } else if (data.action === "pause") {
+          sendCommandToPlayer(iframe, "pause");
+        } else if (data.action === "seek") {
+          sendCommandToPlayer(iframe, { command: "seek", time: data.time });
+        }
+      };
+      socket.on("sync", onSync);
+      return () => { socket.off("sync", onSync); };
+    }, []);
 
     const handlePlayerEvent = useCallback(
       (event: PlayerEventData) => {
@@ -117,6 +132,7 @@ const VideoServerController: FC<VideoServerControllerProps> = ({ mediaType, addi
     const handleCreateRoom = useCallback(async () => {
       const id = await createRoom(mediaId, mediaType || "movie", season, episode);
       if (id) {
+        setDomain("vidfast.pro");
         setPanelOpen(true);
       }
     }, [createRoom, mediaId, mediaType, season, episode]);
@@ -124,8 +140,7 @@ const VideoServerController: FC<VideoServerControllerProps> = ({ mediaType, addi
     const handleClose = useCallback(() => {
       setPanelOpen(false);
       leaveRoom();
-      handleRoomChange(null);
-    }, [leaveRoom, handleRoomChange]);
+    }, [leaveRoom]);
 
     return (
         <div className="flex flex-col gap-6">

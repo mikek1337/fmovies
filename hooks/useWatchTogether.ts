@@ -72,6 +72,13 @@ export function useWatchTogether(userId: string | undefined): WatchTogetherActio
       console.error("WatchTogether error:", data.message);
     });
 
+    socket.on("sync", (data) => {
+      setRoom((prev) => {
+        if (!prev) return prev;
+        return { ...prev, currentTime: data.time, isPlaying: data.action === "play" };
+      });
+    });
+
     return () => {
       socket.off("connect");
       socket.off("disconnect");
@@ -80,6 +87,7 @@ export function useWatchTogether(userId: string | undefined): WatchTogetherActio
       socket.off("host-changed");
       socket.off("room-state");
       socket.off("error");
+      socket.off("sync");
     };
   }, []);
 
