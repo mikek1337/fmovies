@@ -1,111 +1,136 @@
-import axios from 'axios';
-import { MovieDetail, MovieResponse } from '../app/types/moviedbresponse';
-import { GenerResponse } from '@/app/types/gener';
+import { tmdb, TmdbClient } from "./tmdb";
+import { SearchTvParams } from "@/app/types/tmdb";
 
+export * from "./tmdb";
 
-export const latestMovies = async ()=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/movie/week?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
-        headers:{
-            "Content-Type": "application/json",
-            
-        }
-    })
-}
+/**
+ * Get trending movies of the week
+ */
+export const latestMovies = async () => {
+  return tmdb.trending.movies("week");
+};
 
-export const geners = async ()=>{
-    return axios.get<GenerResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}genre/movie/list?language=en&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`, {
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
-}
+/**
+ * Get movie genres
+ */
+export const geners = async (language?: string) => {
+  return tmdb.genres.movieList(language ? { language } : undefined);
+};
 
-export const popularMovies = async () =>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/popular?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}&page=1`,{
-        headers:{
-            "Content-Type":"application/json"
-        }
-    }
-    )
-}
+/**
+ * Get popular movies (first page)
+ */
+export const popularMovies = async () => {
+  return tmdb.movies.popular({ page: 1 });
+};
 
-export const getPopularMovies = async (page:number) => {
-  return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/popular?language=en-US&page=${page}&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
-    headers:{
-      "Content-Type":"application/json"
-    }
+/**
+ * Get popular movies for a specific page
+ */
+export const getPopularMovies = async (page: number) => {
+  return tmdb.movies.popular({ page: page || 1 });
+};
+
+/**
+ * Get trending TV series of the day
+ */
+export const newSeries = async () => {
+  return tmdb.trending.tv("day");
+};
+
+/**
+ * Get details for a movie
+ */
+export const movieDetail = async (
+  id: number,
+  params?: { append_to_response?: string; language?: string }
+) => {
+  return tmdb.movies.details(id, params);
+};
+
+/**
+ * Get recommendations for a movie or TV show
+ */
+export const getRecommendation = async (
+  id: number,
+  mediaType?: string,
+  page: number = 1
+) => {
+  if (mediaType === "tv") {
+    return tmdb.tv.recommendations(id, { page });
+  }
+  return tmdb.movies.recommendations(id, { page });
+};
+
+/**
+ * Search across multiple media types (movies, TV, people)
+ */
+export const searchMulti = async (
+  query: string,
+  page: number = 1,
+  includeAdult: boolean = false
+) => {
+  return tmdb.search.multi({
+    query,
+    page,
+    include_adult: includeAdult,
   });
-}
+};
 
-export const newSeries = () =>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/tv/day?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
-}
+/**
+ * Get popular TV series for a specific page
+ */
+export const popularSeries = async (page: number = 1) => {
+  return tmdb.tv.popular({ page: page || 1 });
+};
 
-export const movieDetail = (id:number)=>{
-    return axios.get<MovieDetail>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/${id}?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
-}
+/**
+ * Search TV series. Supports both a query string or a structured SearchTvParams object.
+ */
+export const searchSeries = async (queries: string | SearchTvParams) => {
+  if (typeof queries === "string") {
+    const searchParams = new URLSearchParams(
+      queries.startsWith("?") ? queries.slice(1) : queries
+    );
+    const query = searchParams.get("query") || "";
+    const pageStr = searchParams.get("page");
+    const page = pageStr ? parseInt(pageStr, 10) : 1;
+    const yearStr =
+      searchParams.get("first_air_date_year") ||
+      searchParams.get("year") ||
+      searchParams.get("primaryReleaseYear") ||
+      searchParams.get("primary_released_date");
+    const includeAdultStr = searchParams.get("include_adult");
 
-export const getRecommendation = (id:number, mediaType?:string)=>{
-    if(!mediaType){
-        return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}movie/${id}/recommendations?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
-            headers:{
-                "Content-Type":"application/json"
-            }
-        })
-    }
-        return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}${mediaType}/${id}/recommendations?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
-            headers:{
-                "Content-Type":"application/json"
-            }
-        })
-    
-}
+    return tmdb.search.tv({
+      query,
+      page,
+      ...(yearStr ? { first_air_date_year: parseInt(yearStr, 10) } : {}),
+      ...(includeAdultStr !== null
+        ? { include_adult: includeAdultStr === "true" }
+        : {}),
+    });
+  }
 
-export const searchMulti = (query:string)=>{
-        return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/multi?language=en-US&page=1&api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${query}`,{
-            headers:{
-                "Content-Type":"application/json"
-            }
-        })
-   
-}
+  return tmdb.search.tv(queries);
+};
 
-export const popularSeries = (page:number)=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}tv/popular?language=en-US&page=${page}&api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
-}
+/**
+ * Get TV series details
+ */
+export const seriesDetail = async (
+  id: number,
+  params?: { append_to_response?: string; language?: string }
+) => {
+  return tmdb.tv.details(id, params);
+};
 
-export const searchSeries = (queries:string)=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}search/tv?${queries}api_key=${process.env.NEXT_PUBLIC_API_KEY}`,{
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
-}
+/**
+ * Get trending content (all types) of the week
+ */
+export const Trending = async (timeWindow: "day" | "week" = "week") => {
+  return tmdb.trending.all(timeWindow);
+};
 
-export const seriesDetail = (id:number)=>{
-    return axios.get<MovieDetail>(`${process.env.NEXT_PUBLIC_API_BASE_URL}tv/${id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`,{
-        headers:{
-            "Content-Type": "application/json"
-        }
-    })
-}
-
-export const Trending = ()=>{
-    return axios.get<MovieResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL!}trending/all/week?language=en-US&api_key=${process.env.NEXT_PUBLIC_API_KEY!}`,{
-        headers:{
-            "Content-Type": "application/json"
-        }
-    })
-}
+export { tmdb, TmdbClient };
+export default tmdb;

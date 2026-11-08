@@ -1,17 +1,29 @@
-import { seriesDetail } from "@/lib/tmd";
+import { tmdb } from "@/lib/tmdb";
+import { NextResponse } from "next/server";
 
-export async function GET(req:Request){
-    const url = new URL(req.url);
-    const id = url.searchParams.get('id');
-    if(id)
-    {
-        try{
-            const response = await seriesDetail(parseInt(id));
-            return new Response(JSON.stringify(response.data),{status:200});
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const id = url.searchParams.get("id");
+  const appendToResponse = url.searchParams.get("append_to_response") || undefined;
+  const language = url.searchParams.get("language") || undefined;
 
-        } catch(error){
-            return new Response("Unable to connect to API", {status: 500});
-        }
-    }
-    return new Response("id required", {status: 400});
+  if (!id) {
+    return NextResponse.json({ error: "id required" }, { status: 400 });
+  }
+
+  const seriesId = parseInt(id, 10);
+  if (isNaN(seriesId)) {
+    return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+  }
+
+  try {
+    const response = await tmdb.tv.details(seriesId, {
+      append_to_response: appendToResponse,
+      language,
+    });
+    return NextResponse.json(response.data, { status: 200 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unable to connect to API";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

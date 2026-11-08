@@ -64,7 +64,7 @@ const UserTrending: FC<UserTrendingProps> = ({ media }) => {
 
                 <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400">
                   <button
-                    onClick={() => addToList(id, content.media_type, content.poster_path, title)}
+                    onClick={() => addToList(id, content.media_type || "movie", content.poster_path || "", title || "")}
                     className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                       isAdded
                         ? "bg-formovies-gold text-formovies-dark"

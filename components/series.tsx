@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from "react"
 import { MovieDetail } from "@/app/types/moviedbresponse"
 import axios from "axios"
 import SeriesDetails from "./seriesdetails"
+import CastCrew from "./castcrew"
+import Comment from "./comment"
 import { cn } from "@/lib/utils"
 import Recommendation from "./recommendation"
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -27,9 +29,20 @@ const Series: FC<SeriesProps> = ({ id }) => {
     const [episode, setEpisode] = useState(1)
     const [seasonEpisodes, setSeasonEpisodes] = useState<number>(0);
 
+    const { data: series, isLoading } = useQuery({
+        queryKey: ['series' + id],
+        queryFn: async () => {
+            const res = await axios.get<MovieDetail>(`/api/series/detail?id=${id}`)
+            setSeasonEpisodes(res.data.seasons?.filter(seasonValue => seasonValue.season_number === season)[0]?.episode_count || 0)
+            return res.data as MovieDetail;
+        }
+    })
+
     const changeSeason = (newSeason: number) => {
         setSeason(newSeason);
         setEpisode(1);
+        const epCount = series?.seasons?.find(s => s.season_number === newSeason)?.episode_count || 0;
+        if (epCount > 0) setSeasonEpisodes(epCount);
         seriesReminder(newSeason, 1);
     }
 
@@ -38,25 +51,48 @@ const Series: FC<SeriesProps> = ({ id }) => {
         seriesReminder(season, newEpisode);
     }
 
-    const { data: series, isLoading } = useQuery({
-        queryKey: ['series' + id],
-        queryFn: async () => {
-            const res = await axios.get<MovieDetail>(`/api/series/detail?id=${id}`)
-            setSeasonEpisodes(res.data.seasons.filter(seasonValue => seasonValue.season_number === season)[0]?.episode_count || 0)
-            return res.data as MovieDetail;
+    const totalSeasons = series?.seasons?.length || 1;
+    const hasPrevEpisode = episode > 1 || season > 1;
+    const hasNextEpisode = episode < seasonEpisodes || season < totalSeasons;
+
+    const handlePrevEpisode = () => {
+        if (episode > 1) {
+            changeEpisode(episode - 1);
+        } else if (season > 1) {
+            const prevSeasonNum = season - 1;
+            const prevSeasonCount = series?.seasons?.find(s => s.season_number === prevSeasonNum)?.episode_count || 1;
+            setSeason(prevSeasonNum);
+            setEpisode(prevSeasonCount);
+            setSeasonEpisodes(prevSeasonCount);
+            seriesReminder(prevSeasonNum, prevSeasonCount);
         }
-    })
+    };
+
+    const handleNextEpisode = () => {
+        if (episode < seasonEpisodes) {
+            changeEpisode(episode + 1);
+        } else if (season < totalSeasons) {
+            changeSeason(season + 1);
+        }
+    };
+
+    const { mutate } = useMutation({
+        mutationFn: async (recentlyViewed: RecentlyViewedType) => {
+            const res = await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)
+            return res.data;
+        },
+    });
 
     useEffect(() => {
         if (session.data?.user && series) {
             mutate({
-                id: series?.id.toString(),
-                title: series?.name,
+                id: series.id.toString(),
+                title: series.name || series.title || "Series",
                 media_type: "tv",
-                poster_path: series?.poster_path,
+                poster_path: series.poster_path || "",
             })
         }
-    }, [series, session.data?.user]);
+    }, [series, session.data?.user, mutate]);
 
     useEffect(() => {
         const pervPlay = JSON.parse(localStorage.getItem('previous') || '[]') as prevView[];
@@ -65,7 +101,7 @@ const Series: FC<SeriesProps> = ({ id }) => {
             setSeason(currentSeries[0].season);
             setEpisode(currentSeries[0].episode)
         }
-    }, [])
+    }, [id])
 
     const seriesReminder = (season: number, episode: number) => {
         const pervPlay = JSON.parse(localStorage.getItem('previous') || '[]') as prevView[];
@@ -87,13 +123,6 @@ const Series: FC<SeriesProps> = ({ id }) => {
         }
     }
 
-    const { mutate } = useMutation({
-        mutationFn: async (recentlyViewed: RecentlyViewedType) => {
-            const res = await axios.post('/api/movies/recentlyviewed/post', recentlyViewed)
-            return res.data;
-        },
-    });
-
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-20">
@@ -109,7 +138,17 @@ const Series: FC<SeriesProps> = ({ id }) => {
             </section>
 
             <section>
-                <VideoServerController mediaType="tv" additionalParams={`${id}/${season}/${episode}`} />
+                <VideoServerController
+                    mediaType="tv"
+                    additionalParams={`${id}/${season}/${episode}`}
+                    title={series?.name}
+                    season={season}
+                    episode={episode}
+                    hasPrevEpisode={hasPrevEpisode}
+                    hasNextEpisode={hasNextEpisode}
+                    onPrevEpisode={handlePrevEpisode}
+                    onNextEpisode={handleNextEpisode}
+                />
             </section>
 
             <section>
@@ -120,7 +159,7 @@ const Series: FC<SeriesProps> = ({ id }) => {
 
                 <div className="formovies-card p-6">
                     <div className="flex flex-wrap gap-2 mb-6">
-                        {series?.seasons.map((seasonValue) => (
+                        {series?.seasons?.map((seasonValue) => (
                             <button
                                 className={cn(
                                     "px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all duration-200",
@@ -156,7 +195,7 @@ const Series: FC<SeriesProps> = ({ id }) => {
                                         Episode {index + 1}
                                     </h3>
                                     <p className="text-xs text-white/40 line-clamp-1 mt-0.5">
-                                        {series?.seasons[season !== 0 ? season - 1 : season]?.overview || "No description"}
+                                        {series?.seasons?.[season !== 0 ? season - 1 : season]?.overview || "No description"}
                                     </p>
                                     <p className="text-[11px] text-white/30 mt-1">
                                         {series?.first_air_date && new Date(series.first_air_date).toDateString()}
@@ -174,6 +213,21 @@ const Series: FC<SeriesProps> = ({ id }) => {
                         ))}
                     </div>
                 </div>
+            </section>
+
+            <section>
+                <CastCrew id={id} mediaType="tv" />
+            </section>
+
+            <section>
+                <Comment
+                    id={id}
+                    mediaType="tv"
+                    season={season}
+                    episode={episode}
+                    voteAverage={series?.vote_average}
+                    voteCount={series?.vote_count}
+                />
             </section>
 
             <section>

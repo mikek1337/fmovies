@@ -7,19 +7,20 @@ interface FlipProps {
 }
 const Flip: FC<FlipProps> = ({ children }) => {
     const [newChildren, setNewChildren] = useState<React.ReactNode[]>([]);
-    const filpChildren = Children.toArray(children);
     const [current, setCurrent] = useState(0);
-    const totalChildren = filpChildren.length;
-    useEffect(()=>{
-        filpChildren.forEach((child, index) => {
-            if(isValidElement<{className?: string}>(child)){
-                const newChild = index === current
+    const totalChildren = Children.count(children);
+    useEffect(() => {
+        const filpChildren = Children.toArray(children);
+        const mapped = filpChildren.map((child, index) => {
+            if (isValidElement<{ className?: string }>(child)) {
+                return index === current
                     ? cloneElement(child, { className: "scale-125" })
                     : cloneElement(child, { className: "scale-50" });
-                setNewChildren((prev)=>[...prev, newChild]);
             }
-        })
-    },[current])
+            return child;
+        });
+        setNewChildren(mapped);
+    }, [children, current]);
     const handleNext = () => {
         console.log(current);
         setNewChildren([]);

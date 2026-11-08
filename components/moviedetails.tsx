@@ -5,6 +5,7 @@ import { Loader2, Star, Clock, MapPin, Calendar } from "lucide-react"
 import Image from "next/image"
 import { FC, useEffect } from "react"
 import MediaOptions from "./mediaoptions"
+import TrailerModal from "./trailermodal"
 import { RecentlyViewedType } from "@/app/types/recentlyViewed"
 import axios from "axios"
 
@@ -34,7 +35,7 @@ const MovieDetails: FC<MovieDetailsProps> = ({ id }) => {
                 id: movieDetails.id.toString(),
                 title: movieDetails.title,
                 media_type: "movie",
-                poster_path: movieDetails.poster_path,
+                poster_path: movieDetails.poster_path || "",
             })
         }
     }, [id, movieDetails, mutate])
@@ -88,7 +89,17 @@ const MovieDetails: FC<MovieDetailsProps> = ({ id }) => {
                             </span>
                         </div>
                     </div>
-                    <MediaOptions mediaId={movieDetails.id} mediaType="movie" poster_url={movieDetails.poster_path} title={movieDetails.title} />
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <TrailerModal
+                            id={movieDetails.id}
+                            mediaType="movie"
+                            title={movieDetails.title}
+                            overview={movieDetails.overview}
+                            voteAverage={movieDetails.vote_average}
+                            releaseDate={movieDetails.release_date}
+                        />
+                        <MediaOptions mediaId={movieDetails.id} mediaType="movie" poster_url={movieDetails.poster_path || ""} title={movieDetails.title} />
+                    </div>
                 </div>
 
                 <p className="text-white/60 text-sm leading-relaxed">

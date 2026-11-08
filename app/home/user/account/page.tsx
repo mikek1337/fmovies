@@ -12,7 +12,7 @@ import { Globe, Hash, Github, Linkedin, MapPin, Twitter } from "lucide-react";
 const Page = async () => {
     const session = await getAuthSession()
     if(!session || !session.user){
-        redirect('/login')
+        redirect('/signin')
     }
     
     const user = await db.user.findFirst({
@@ -21,7 +21,7 @@ const Page = async () => {
         }
     })
     if(!user){
-        redirect('/login')
+        redirect('/signin')
     }
 
     const updateUserWithId = async (formData: FormData) => {

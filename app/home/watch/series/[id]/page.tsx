@@ -10,22 +10,29 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
             description: "The series you are looking for does not exist.",
         };
     }
-    const movie = await seriesDetail(parseInt(id));
-    return {
-        title: `${movie.data.name} - Watch Series`,
-        description: movie.data.overview,
-        openGraph: {
+    try {
+        const movie = await seriesDetail(parseInt(id));
+        return {
             title: `${movie.data.name} - Watch Series`,
             description: movie.data.overview,
-            images: [
-                {
-                    url: `https://image.tmdb.org/t/p/w500${movie.data.poster_path}`,
-                    width: 800,
-                    height: 600,
-                    alt: movie.data.name,
-                },
-            ],
-        }
+            openGraph: {
+                title: `${movie.data.name} - Watch Series`,
+                description: movie.data.overview,
+                images: [
+                    {
+                        url: `https://image.tmdb.org/t/p/w500${movie.data.poster_path}`,
+                        width: 800,
+                        height: 600,
+                        alt: movie.data.name,
+                    },
+                ],
+            }
+        };
+    } catch {
+        return {
+            title: "Watch Series",
+            description: "Watch series on ForMovies",
+        };
     }
 }
 

@@ -1,19 +1,36 @@
-"use client"
-import { Bookmark, Compass, History, Settings, Film, ChevronRight } from "lucide-react";
+"use client";
+
+import { Bookmark, Compass, History, Settings, Film, ChevronRight, LogOut, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FC, useState } from "react"
+import { usePathname, useRouter } from "next/navigation";
+import { FC, useState } from "react";
+import { signOut } from "@/lib/auth-client";
 
 const navItems = [
-  { href: "/home/user", label: "Continue Watching", icon: History },
-  { href: "/home/user", label: "Watch Later", icon: Bookmark },
+  { href: "/home/user", label: "Dashboard", icon: History },
+  { href: "/home/user", label: "Watchlist", icon: Bookmark },
   { href: "/home", label: "Explore", icon: Compass },
   { href: "/home/user/account", label: "Settings", icon: Settings },
 ];
 
 const UserSideMenu: FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleSignOut = async () => {
+    setIsLoggingOut(true);
+    try {
+      await signOut();
+      router.push("/signin");
+      router.refresh();
+    } catch (err) {
+      console.error("Failed to sign out:", err);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <aside className={`glass-sidebar h-screen sticky top-0 transition-all duration-500 ${collapsed ? "w-20" : "w-64"}`}>
@@ -46,9 +63,30 @@ const UserSideMenu: FC = () => {
           })}
         </nav>
 
+        {/* Sign Out Button */}
         <button
+          type="button"
+          onClick={handleSignOut}
+          disabled={isLoggingOut}
+          className="glass-nav-item mt-auto text-red-400 hover:text-red-300 hover:bg-red-500/10 group transition-colors"
+          title="Sign Out"
+        >
+          {isLoggingOut ? (
+            <Loader2 className="w-5 h-5 shrink-0 animate-spin text-red-400" />
+          ) : (
+            <LogOut className="w-5 h-5 shrink-0 transition-transform duration-300" />
+          )}
+          <span className={`text-sm font-medium whitespace-nowrap transition-all duration-300 ${collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
+            {isLoggingOut ? "Signing Out..." : "Sign Out"}
+          </span>
+        </button>
+
+        {/* Sidebar Collapse Toggle */}
+        <button
+          type="button"
           onClick={() => setCollapsed(!collapsed)}
-          className="glass-nav-item mt-auto justify-center"
+          className="glass-nav-item mt-2 justify-center"
+          title={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
         >
           <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${collapsed ? "rotate-180" : ""}`} />
           <span className={`text-xs whitespace-nowrap transition-all duration-300 ${collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
@@ -58,6 +96,6 @@ const UserSideMenu: FC = () => {
       </div>
     </aside>
   );
-}
+};
 
 export default UserSideMenu;

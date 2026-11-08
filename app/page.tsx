@@ -5,7 +5,15 @@ import { ArrowRight, Clapperboard } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
-  const movies = await (await latestMovies()).data;
+  let movies = { results: [] as Array<{ id: number; title: string }> };
+  try {
+    const res = await latestMovies();
+    if (res?.data) {
+      movies = res.data;
+    }
+  } catch (err) {
+    console.warn("Unable to fetch latest movies for home page:", err);
+  }
 
   return (
     <div className="min-h-screen bg-formovies-dark flex flex-col items-center justify-center relative overflow-hidden">

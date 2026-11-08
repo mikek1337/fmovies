@@ -25,7 +25,7 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
   useEffect(()=>{
     if(query != ""){
         setLoading(true);
-        axios.get<MovieResponse>(`/api/movies/search?query=${query}`).then((res)=>{
+        axios.get<MovieResponse>(`/api/movies/search?query=${encodeURIComponent(query)}`).then((res)=>{
             setMovies(res.data);
             setLoading(false);
         }
@@ -50,7 +50,7 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
                     {movies?.results.map((movie)=>(
                         <CommandItem key={movie?.id}>
                             <Link href={`/home/watch/${movie.media_type==='tv'?'series':'movie'}/${movie.id}`} className="flex gap-2">
-                            <Image src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`} className="w-[50px] h-[50px] rounded-lg" width={500} height={500} alt={movie?.title}/>
+                            <Image src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`} className="w-[50px] h-[50px] rounded-lg" width={500} height={500} alt={movie?.title || "Poster"}/>
                             <div className="flex flex-col gap-2">
                                 <span className="text-xs font-semibold">{movie?.media_type=="tv"?movie?.name:movie?.title}</span>
                                 <div className="flex items-center gap-4">
@@ -60,7 +60,7 @@ const SearchMovies:FC<SearchMoviesProps> =({isOpen, onOpenChange})=>{
                                     </span>
                                     <span className="flex items-center gap-2 text-xs font-semibold">
                                         <Calendar className="w-4 h-4"/>
-                                        {new Date(movie?.media_type=="movie"?movie?.release_date:movie?.first_air_date).toDateString()}
+                                        {new Date((movie?.media_type=="movie"?movie?.release_date:movie?.first_air_date) || "").toDateString()}
                                     </span>
                                     <span className="text-xs rounded-full px-2 bg-indigo-600 text-white capitalize font-semibold">{movie?.media_type}</span>
                                 </div>

@@ -21,7 +21,7 @@ const Page = () => {
     if (query != "") {
       setLoading(true);
       axios
-        .get<MovieResponse>(`/api/movies/search?query=${query}`)
+        .get<MovieResponse>(`/api/movies/search?query=${encodeURIComponent(query)}`)
         .then((res) => {
           setMovies(res.data);
           setLoading(false);
@@ -87,8 +87,8 @@ const Page = () => {
                           </span>
                           <span className="border rounded-full px-2 text-xs">
                             {movie.media_type === "movie"
-                              ? new Date(movie.release_date).toDateString()
-                              : new Date(movie.first_air_date).toDateString()}
+                              ? (movie.release_date ? new Date(movie.release_date).toDateString() : "")
+                              : (movie.first_air_date ? new Date(movie.first_air_date).toDateString() : "")}
                           </span>
                         </div>
                       </div>

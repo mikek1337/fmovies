@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { Play, Star, Calendar } from "lucide-react";
+import TrailerModal from "./trailermodal";
 
 interface HeroProps {
     movies: MovieResponse
@@ -12,10 +13,12 @@ interface HeroProps {
 const Hero: FC<HeroProps> = ({ movies }) => {
     const [movieIndex, setMovieIndex] = useState(0);
     const [movie, setMovie] = useState(movies.results[movieIndex]);
+    const [isTrailerOpen, setIsTrailerOpen] = useState(false);
 
     useEffect(() => {
         let index = movieIndex;
         const interval = setInterval(() => {
+            if (isTrailerOpen) return;
             if (movies.results[index]?.media_type === "person") {
                 index++;
             }
@@ -27,7 +30,7 @@ const Hero: FC<HeroProps> = ({ movies }) => {
         }, 10000);
         return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isTrailerOpen, movieIndex]);
 
     const loadMovieSlide = (index: number) => {
         setMovie(movies.results[index]);
@@ -78,7 +81,7 @@ const Hero: FC<HeroProps> = ({ movies }) => {
                         {movie?.overview}
                     </p>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-wrap">
                         <Link
                             href={`/home/watch/${media_type === "tv" ? "series" : "movie"}/${movie?.id}`}
                             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-formovies-gold text-formovies-dark font-semibold text-sm hover:bg-formovies-amber transition-all duration-300"
@@ -86,6 +89,16 @@ const Hero: FC<HeroProps> = ({ movies }) => {
                             <Play className="size-4 fill-current" />
                             Watch Now
                         </Link>
+                        <TrailerModal
+                            id={movie.id}
+                            mediaType={media_type as "movie" | "tv"}
+                            title={title}
+                            overview={movie.overview}
+                            voteAverage={movie.vote_average}
+                            releaseDate={date}
+                            variant="hero"
+                            onOpenChange={setIsTrailerOpen}
+                        />
                     </div>
                 </div>
             </div>

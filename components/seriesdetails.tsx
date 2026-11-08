@@ -2,6 +2,7 @@ import { MovieDetail } from "@/app/types/moviedbresponse"
 import Image from "next/image"
 import { FC } from "react"
 import MediaOptions from "./mediaoptions"
+import TrailerModal from "./trailermodal"
 import { Star, Clock, Calendar, MapPin, Tv } from "lucide-react"
 
 interface MovieDetailsProps {
@@ -43,7 +44,17 @@ const SeriesDetails: FC<MovieDetailsProps> = ({ seriesDetails }) => {
                             </span>
                         </div>
                     </div>
-                    <MediaOptions mediaId={seriesDetails.id} mediaType="tv" poster_url={seriesDetails.poster_path} title={seriesDetails.title} />
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <TrailerModal
+                            id={seriesDetails.id}
+                            mediaType="tv"
+                            title={seriesDetails.name || seriesDetails.title}
+                            overview={seriesDetails.overview}
+                            voteAverage={seriesDetails.vote_average}
+                            releaseDate={seriesDetails.first_air_date}
+                        />
+                        <MediaOptions mediaId={seriesDetails.id} mediaType="tv" poster_url={seriesDetails.poster_path || ""} title={seriesDetails.title} />
+                    </div>
                 </div>
 
                 <p className="text-white/60 text-sm leading-relaxed">
