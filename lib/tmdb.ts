@@ -42,15 +42,13 @@ import {
 // This prevents 'connect ENETUNREACH 2600:9000:... - Local (:::0)' errors
 // on systems without active IPv6 routing.
 if (typeof window === "undefined") {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const dns = require("dns");
-    if (dns && typeof dns.setDefaultResultOrder === "function") {
-      dns.setDefaultResultOrder("ipv4first");
-    }
-  } catch {
-    // Ignore in non-Node environments
-  }
+  import("node:dns")
+    .then((dns) => {
+      if (dns && typeof dns.setDefaultResultOrder === "function") {
+        dns.setDefaultResultOrder("ipv4first");
+      }
+    })
+    .catch(() => {});
 }
 
 export const FALLBACK_MOVIE_GENRES: Gener[] = [
